@@ -1,0 +1,70 @@
+@import "../../../../../styles/_color.scss";
+
+:host {
+  .list-page {
+    &-header {
+      .buttons-wrapper {
+        button {
+          color: $c-blue1;
+          outline: none;
+          background: transparent;
+        }
+
+        .mat-icon {
+          vertical-align: middle;
+          margin-right: 10px;
+        }
+      }
+    }
+
+    &-title {
+      height: 50px;
+      line-height: 50px;
+      font-size: 1.5rem;
+    }
+
+    &-content {
+      padding: 0 1rem 0 1rem;
+
+      h4 {
+        line-height: 50px;
+      }
+
+      .template-wrapper {
+        box-shadow: 0 0 3px 2px $c-greylight;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        border: 1px solid transparent;
+
+        &:hover {
+          border: 1px solid teal;
+          transition: 0.3s;
+
+          .template-title {
+            background-color:teal;
+            transition: 0.3s;
+          }
+        }
+
+        .template-title {
+          padding: 10px;
+          max-width: 50%;
+          border-radius: 6px 0;
+          background-color: #023b41;
+          color: #fff;
+        }
+
+        .section-image {
+          height: 25px;
+        }
+
+        .remove-btn {
+          position: absolute;
+          top: 0;
+          right: 0;
+        }
+      }
+    }
+  }
+}

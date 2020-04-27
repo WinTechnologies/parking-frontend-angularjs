@@ -1,0 +1,73 @@
+:host {
+  .tariff-enforcement-page {
+    &-header {
+      font-size: 1.1em;
+      font-weight: 300;
+      line-height: 1.7em;
+      color: #31404b;
+    }
+
+    &-header p {
+      margin: auto 0;
+    }
+
+    &-content {
+      margin-top: 48px;
+      .tabs-wrapper {
+        padding: 8px;
+      }
+    }
+  }
+
+  ::ng-deep .mat-tab-header {
+    border-bottom: none;
+    background: white;
+    position: fixed;
+    top: 110px;
+    width: 100%;
+    z-index: 30;
+  }
+
+  ::ng-deep .mat-tab-label {
+    min-width: 140px;
+    font-size: 14px;
+    top: 2px;
+    font-weight: 700;
+    opacity: 1 !important;
+    border-bottom: 2px solid #000;
+    border-radius: 4px 4px 0 0;
+    color: #ccc;
+  }
+
+  ::ng-deep .mat-tab-labels {
+    border-bottom: 2px solid black;
+    background-color: white;
+  }
+
+  ::ng-deep .mat-tab-label-active {
+    border-top: 2px solid black !important;
+    border-right: 2px solid black !important;
+    border-left: 2px solid black !important;
+    border-bottom: 2px solid white;
+    color: rgb(45, 64, 75);
+    border-top-right-radius: 4px !important;
+    border-top-left-radius: 4px !important;
+    text-decoration: underline;
+    background-color: white;
+    opacity: 1;
+    font-weight: 600;
+  }
+
+  ::ng-deep .mat-ink-bar {
+    display: none !important;
+  }
+
+  span {
+    display: inline;
+  }
+
+  .project-id {
+    padding: 0;
+    margin-left: 10rem;
+  }
+}

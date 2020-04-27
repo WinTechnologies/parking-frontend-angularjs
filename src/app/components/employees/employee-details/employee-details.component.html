@@ -1,0 +1,223 @@
+<main class="employee-details-page">
+  <!-- ------------------- Greybar ------------------------ -->
+  <header class="page-top-header">
+    <div class="employee-details-heder-buttons">
+      <button mat-icon-button color="base" (click)="onBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+    <p>List of Employees / Personal Informations</p>
+  </header>
+  <!-- ------------------------------------------- -->
+  <h1 class="employee-details-page-content-title font-weight-bold title-fixed">
+    Personal Informations
+  </h1>
+  <div class="employee-details-page-content mt-50px pr-3 pl-3">
+    <div *ngIf="employee" class="employee-details-page-content-wrapper">
+      <div class="employee-details-info d-flex flex-wrap">
+        <img *ngIf="!employee.img_url" src="assets/noavatar.png">
+        <img *ngIf="employee.img_url" [src]="baseUrl + employee.img_url">
+        <div class="employee-details-info-column">
+          <div class="employee-details-info-row">
+            <span class="info">First Name:</span>
+            <span>{{employee.firstname}}</span>
+          </div>
+          <div class="employee-details-info-row">
+            <span class="info">Last Name:</span>
+            <span>{{employee.lastname}}</span>
+          </div>
+          <div class="employee-details-info-row">
+            <span class="info">Username:</span>
+            <span>{{employee.username}}</span>
+          </div>
+          <div class="employee-details-info-row">
+            <span class="info">Gender:</span>
+            <span>{{employee.sex ? 'Male' : 'Female'}}</span>
+          </div>
+        </div>
+        <div class="employee-details-info-column">
+          <div class="employee-details-info-row">
+            <span class="info">Birth Date:</span>
+            <span>{{employee.day_of_birth | date:'dd/MM/yyyy'}}</span>
+          </div>
+          <div class="employee-details-info-row">
+            <span class="info">Address:</span>
+            <span>{{employee.address}}</span>
+          </div>
+          <div class="employee-details-info-row">
+            <span class="info">Phone #:</span>
+            <span>{{employee?.phone_number}}</span>
+          </div>
+          <div class="employee-details-info-row">
+            <span class="info">Land #:</span>
+            <span>{{employee?.landline}}</span>
+          </div>
+        </div>
+        <div class="employee-details-info-column">
+          <div class="employee-details-info-row">
+            <span class="info">Employee ID:</span>
+            <span>{{employee?.employee_id}}</span>
+          </div>
+          <div class="employee-details-info-row">
+            <span class="info">Department:</span>
+            <span>{{employee?.department}}</span>
+          </div>
+          <div class="employee-details-info-row">
+            <span class="info">Position:</span>
+            <span>{{employee?.job_position}}</span>
+          </div>
+          <div class="employee-details-info-row">
+            <span class="info">Job Type:</span>
+            <span>{{employee?.job_type}}</span>
+          </div>
+        </div>
+        <div class="employee-details-info-column">
+          <div class="employee-details-info-row">
+            <span class="info">Start Date:</span>
+            <span>{{employee?.date_start | date:'dd/MM/yyyy'}}</span>
+          </div>
+          <div class="employee-details-info-row">
+            <span class="info">End Date:</span>
+            <span>{{employee?.date_end | date:'dd/MM/yyyy'}}</span>
+          </div>
+          <div class="employee-details-info-row">
+            <span class="info">Working Status:</span>
+            <span>{{employee?.working_status}}</span>
+          </div>
+          <div class="employee-details-info-row">
+              <span class="info">Projects:</span>
+              <span>
+                  <div *ngFor="let project of employee_projects">
+                    {{project.project_code}}: <strong>{{project.project_name}}</strong>
+                  </div>
+              </span>
+          </div>
+        </div>
+        <div class="employee-details-info-column">
+          <div class="employee-details-info-row">
+            <button *ngIf="!showEditInfo" mat-stroked-button color="primary" type="button" (click)="showEditInfoHandler()">
+              <mat-icon>edit</mat-icon>
+              Edit Profile
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="project-wrapper">
+        <div class="tabs-wrapper">
+          <mat-tab-group
+            class="workplan-tabs"
+            [(selectedIndex)]="selectedTabIndex">
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon>bar_chart</mat-icon>
+                Productivity
+              </ng-template>
+              <app-employee-performance
+                *ngIf="employee && employee_projects"
+                [employee]="employee"
+                [employee_projects]="employee_projects"
+                class="performance-wrapper">
+              </app-employee-performance>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon>person</mat-icon>
+                Admin
+              </ng-template>
+              <app-employee-permission
+                *ngIf="employee?.permission_template"
+                class="admin-wrapper"
+                [template]="employee?.permission_template">
+              </app-employee-permission>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon>event_note</mat-icon>
+                Workplan
+              </ng-template>
+              <div
+                class="workplan-wrapper"
+                *ngIf="selectedTabIndex == 2 && workplan_id">
+                <app-workplan-details
+                  [workplan_id]="workplan_id"
+                  [employeeId]="employee.employee_id">
+                </app-workplan-details>
+              </div>
+              <div
+                *ngIf="!workplan_id"
+                class="no-workplan-wrapper">
+                <span class="no-data">No Workplan has been assigned to this employee</span>
+                <div class="buttons-wrapper">
+                  <button mat-flat-button (click)="onAddWorkplan()">
+                    <mat-icon>add_circle</mat-icon>
+                    Workplan
+                  </button>
+                </div>
+              </div>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon>device_hub</mat-icon>
+                Org. Chart
+              </ng-template>
+              <ng-container *ngIf="selectedTabIndex == 3">
+                <div class="project org-wrapper">
+                  <span>Project:&nbsp;</span>
+                  <mat-form-field>
+                    <mat-select
+                      placeholder="Select Project"
+                      [(ngModel)]="projectId"
+                      (ngModelChange)="onChangeProject($event)">
+                      <mat-option
+                        *ngFor="let project of employee_projects"
+                        [value]="project.project_id">
+                        <strong>{{project.project_code}}:</strong> {{project.project_name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div class="buttons-wrapper">
+                    <button mat-flat-button (click)="onAddProject()">
+                      <mat-icon>add_circle</mat-icon>
+                      Project
+                    </button>
+                  </div>
+                </div>
+                <app-org-chart
+                  *ngIf="projectId"
+                  [projectId]="projectId"
+                  [employee]="employee"
+                  [canUpdate]="true"
+                ></app-org-chart>
+                <div *ngIf="!isProjectAvailable" class="text-center p-5">
+                  <span>No project has been assigned to this employee</span>
+                </div>
+              </ng-container>
+            </mat-tab>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon>event_note</mat-icon>
+                Notes
+              </ng-template>
+              <app-notes
+                [employee]="employee"
+                [projects]="projects"
+                [employee_projects]="employee_projects"
+              ></app-notes>
+            </mat-tab>
+            <mat-tab *ngIf="showEditInfo">
+              <ng-template mat-tab-label>
+                <mat-icon>edit</mat-icon>
+                Edit Info
+              </ng-template>
+              <app-update-employee
+                [employee]="employee"
+                [canUpdate]="this.permission.isUpdate && employee['working_status'] === 'Active'"
+                (employeeUpdated)="onEmployeeUpdated($event)"
+              ></app-update-employee>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

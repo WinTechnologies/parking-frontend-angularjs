@@ -1,0 +1,19 @@
+<div mat-dialog-title>
+    <h1>Activity</h1>
+    <button mat-icon-button (click)="onNoClick()"><mat-icon>close</mat-icon></button>
+  </div>
+<div mat-dialog-content>
+  <mat-selection-list #list [(ngModel)]="selectedOptions">
+      <mat-list-option *ngFor="let activity of activities" checkboxPosition='before'
+      [(selected)]="activity.selected" [value]="activity">
+        <div class="list-wrapper">
+          <img [src]="activity.icon">
+          {{activity.name}}
+        </div>
+      </mat-list-option>
+    </mat-selection-list>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-stroked-button color="primary" type="button" class="mr-2" (click)="onNoClick()">Cancel</button>
+  <button mat-flat-button color="primary" (click)="onAdd()">Add</button>
+</div>

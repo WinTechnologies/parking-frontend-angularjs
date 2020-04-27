@@ -1,0 +1,76 @@
+<main class="project-list-page">
+  <!-- ------------------- Greybar ------------------------ -->
+  <header class="page-top-header">
+    <div class="d-flex align-items-center justify-content-between">
+      <mat-icon>search</mat-icon>
+      <div class="project-list-page-header-filter">
+        <mat-form-field class="project-filter h-50px">
+          <input
+            matInput
+            (keyup)="applyFilterProjects($event.target.value)"
+            placeholder="Search Projects"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="project-list-page-header-buttons">
+      <button
+        *ngIf="permission.isCreate"
+        color="basic"
+        mat-flat-button
+        [routerLink]="['/project/new']"
+      >
+        <mat-icon>
+          add_circle
+        </mat-icon>
+        Project
+      </button>
+    </div>
+  </header>
+  <!-- -------------------------------------------- -->
+  <div class="project-list-page-title title-fixed" fxLayout="row" fxLayoutAlign="space-between center">
+    <h1 class="font-weight-bold">List of Projects</h1>
+    <button class="mr-2 btn-primary mat-raised-button" (click)="editColumns()">Customize Columns</button>
+  </div>
+  <div class="container-fluid mt-50px">
+    <div class="project-list-page-content mt-50px">
+      <div class="project-list-page-table-wrapper">
+        <ngx-datatable class="material bg-white"
+             style="height: calc(100vh - 230px)"
+             [columnMode]="'force'"
+             [headerHeight]="50"
+             [footerHeight]="50"
+             [rowHeight]="50"
+             [limit]="10"
+             scrollbarV="true"
+             (reorder)="reorderColumns($event)"
+             [rows]="filteredProjects"
+             (activate)="onSelect($event)">
+          <ngx-datatable-column *ngFor="let field of tableFields" name="{{field.label}}" prop="{{field.name}}">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+            <span [matTooltip]="row[field.name]" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+              <ng-container [ngSwitch]="field.name">
+                <ng-container *ngSwitchCase="'start_date'">
+                  {{ row[field.name] | date:'dd/MM/yyyy' }}
+                </ng-container>
+                <ng-container *ngSwitchCase="'end_date'">
+                  {{ row[field.name] | date:'dd/MM/yyyy' }}
+                </ng-container>
+                <ng-container *ngSwitchCase="'action'">
+                  <button
+                    mat-icon-button
+                    (click)="onDelete(row); $event.stopPropagation()"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </ng-container>
+                <ng-container *ngSwitchDefault>{{ row[field.name] }}</ng-container>
+              </ng-container>
+            </span>
+            </ng-template>
+          </ngx-datatable-column>
+        </ngx-datatable>
+      </div>
+    </div>
+  </div>
+</main>

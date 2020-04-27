@@ -1,0 +1,186 @@
+<div class="escalations-new-page">
+  <div class="mat-dialog-title">
+    <h4 class="title-escalation">{{escalation.id ? 'Edit' : 'New'}} Escalation</h4>
+  </div>
+  <div class="mat-dialog-content">
+    <form
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+      *ngIf="form"
+      autocomplete="off"
+      novalidate
+    >
+      <div class="escalation-info-name">
+        <div class="form-field">
+          <label>Name <span class="required">*</span>: </label>
+          <mat-form-field>
+            <input matInput type="text" formControlName="escalation_name" required>
+            <mat-error>Name is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <hr>
+      <div class="escalation-info-rules">
+        <h5>Escalation Rules</h5>
+        <div class="row">
+          <div class="col-sm-12 d-flex">
+            <div class="outstanding-violations-wrapper">
+              <div class="outstanding-violations-label">
+                <label>Outstanding Violations</label>
+              </div>
+              <div class="outstanding-violations-items-wrapper">
+                <div class="outstanding-violations-value">
+                  <mat-form-field>
+                    <input matInput type="number" formControlName="outstanding_violation_nbr">
+                    <mat-error>Violations value is required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="outstanding-violations-items d-flex align-items-center">
+                  <div class="image-wrapper"
+                       [class.selected]="outstanding.violation === OutstandingStatus.Clamp"
+                       (click)="onClickOutstanding('violation', OutstandingStatus.Clamp)">
+                    <img src="assets/assets-section/clamp_white.svg">
+                  </div>
+                  <span>Clamps</span>
+                </div>
+                <div class="outstanding-violations-items d-flex align-items-center">
+                  <div class="image-wrapper"
+                       [class.selected]="outstanding.violation === OutstandingStatus.Tow"
+                       (click)="onClickOutstanding('violation', OutstandingStatus.Tow)">
+                    <img src="assets/assets-section/tow_truck_white.svg">
+                  </div>
+                  <span>Tow</span>
+                </div>
+              </div>
+            </div>
+            <div class="operator-wrapper">
+              <div class="operator-and-or">
+              <span class="select-item"
+                    [class.selected]="logicalRule == LogicalRuleStatus.And"
+                    (click)="onClickLogical(LogicalRuleStatus.And)">
+                And
+              </span>
+                <span>/</span>
+                <span class="select-item"
+                      [class.selected]="logicalRule == LogicalRuleStatus.Or"
+                      (click)="onClickLogical(LogicalRuleStatus.Or)">
+                Or
+              </span>
+              </div>
+            </div>
+            <div class="outstanding-days-wrapper">
+              <div class="outstanding-violations-label">
+                <label>Outstanding Days</label>
+              </div>
+              <div class="outstanding-violations-items-wrapper">
+                <div class="outstanding-violations-value">
+                  <mat-form-field>
+                    <input matInput type="number" formControlName="outstanding_days_nbr" required>
+                    <mat-error>Days is required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="outstanding-violations-items d-flex align-items-center">
+                  <div class="image-wrapper"
+                       [class.selected]="outstanding.days === OutstandingStatus.Clamp"
+                       (click)="onClickOutstanding('days', OutstandingStatus.Clamp)">
+                    <img src="assets/assets-section/clamp_white.svg">
+                  </div>
+                  <span>Clamps</span>
+                </div>
+                <div class="outstanding-violations-items d-flex align-items-center">
+                  <div class="image-wrapper"
+                       [class.selected]="outstanding.days === OutstandingStatus.Tow"
+                       (click)="onClickOutstanding('days', OutstandingStatus.Tow)">
+                    <img src="assets/assets-section/tow_truck_white.svg">
+                  </div>
+                  <span>Tow</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 d-flex">
+            <div class="fees-wrapper">
+              <div class="fee-label">Fees</div>
+              <div *ngIf="outstanding.violation === OutstandingStatus.Tow || outstanding.days === OutstandingStatus.Tow" class="form-field">
+                <span>Tow Fee: </span>
+                <mat-form-field>
+                  <input matInput type="number" formControlName="fee_tow"  >
+                  <mat-error>Tow Fee is required</mat-error>
+                </mat-form-field>
+              </div>
+              <div *ngIf="outstanding.violation === OutstandingStatus.Clamp || outstanding.days === OutstandingStatus.Clamp" class="form-field">
+                <span>Clamp Fee: </span>
+                <mat-form-field>
+                  <input matInput type="number" formControlName="fee_clamp"  >
+                  <mat-error>Clamp Fee is required</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div *ngIf="outstanding.violation === OutstandingStatus.Tow || outstanding.days === OutstandingStatus.Tow" class="storage-wrapper">
+              <div class="storage-label">Storage</div>
+              <div class="form-field">
+                <span>Fee: </span>
+                <mat-form-field>
+                  <input matInput type="number" formControlName="storage_fee">
+                  <mat-error>Fee is required</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-select formControlName="storage_fee_unit">
+                    <mat-option value="Hour">Hour</mat-option>
+                    <mat-option value="Day">Day</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-field">
+                <span>Max: </span>
+                <mat-form-field>
+                  <input matInput type="number" formControlName="storage_max">
+                  <mat-error>Max is required</mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-select formControlName="storage_max_unit">
+                    <mat-option value="Daily">Daily</mat-option>
+                    <mat-option value="Monthly">Monthly</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-field">
+                <span>Applied: </span>
+                <mat-checkbox formControlName="applied_immediately" (change)="onChangeAppliedImmediately($event)">Immediately</mat-checkbox>
+                <span>- or - after </span>
+                <mat-form-field class="applied-after">
+                  <input matInput type="number" formControlName="applied_after">
+                  <mat-error>The time after applied is required</mat-error>
+                </mat-form-field>
+                <mat-form-field class="applied-after-unit">
+                  <mat-select  formControlName="applied_after_unit">
+                    <mat-option value="Hours">Hours</mat-option>
+                    <mat-option value="Days">Days</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="select-zones-wrapper">
+        <app-project-zones-selector
+          *ngIf="selectedZones"
+          [selectedZones]="selectedZones"
+          [project_id]="projectId"
+          (selectZones)="onSelectZones($event)"
+        >
+        </app-project-zones-selector>
+        <mat-error *ngIf="formSubmitted && !selectedZones.length">At lest one zone is required</mat-error>
+      </div>
+      <hr>
+      <div class="action-buttons-wrapper">
+        <button class="mr-2" mat-stroked-button color="primary" type="button" (click)="onCancel()">Cancel</button>
+        <button mat-flat-button color="primary">{{ escalation.id ? 'Update' : 'Create'}}</button>
+      </div>
+    </form>
+  </div>
+</div>

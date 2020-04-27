@@ -1,0 +1,251 @@
+:host {
+  .permission-template {
+    padding: 0;
+    margin-top: -20px;
+
+    .permission-template-header {
+      display: flex;
+      max-height: 60px;
+      align-items: flex-end;
+
+      h4 {
+        line-height: 30px !important;
+        top: unset !important;
+        position: relative !important;
+        max-width: 10%;
+        padding: 0;
+        padding-right: 10px;
+
+        @media (max-width: 1440px) {
+          max-width: 15% !important;
+        }
+      }
+
+      .permission-template-change {
+        max-width: 235px;
+        display: flex;
+        flex-direction: column;
+
+        h6 {
+          font-size: 12px !important;
+          font-weight: 700;
+        }
+
+        ::ng-deep ngx-dropdown-treeview {
+          div.dropdown.show, .dropdown-toggle {
+            min-width: 235px;
+            max-height: 30px;
+          }
+
+          .dropdown-toggle {
+            font-size: inherit;
+            font-weight: 600;
+            font-family: Roboto Condensed;
+            color: #0073ae;
+
+            &:hover, &[aria-expanded="true"] {
+              color: #fff;
+              background-color: #0073ae !important;
+              border-color: #0073ae;
+            }
+          }
+
+          div.dropdown-menu.show {
+            width: 100%;
+          }
+
+          .treeview-container {
+            padding-right: 0;
+
+            .row-item {
+              .form-check {
+                width: 100%;
+                justify-content: start !important;
+                color: #fff;
+
+                input {
+                  display: none;
+                }
+
+                label {
+                  width: 100%;
+                  color: #28404c;
+                  justify-content: start !important;
+
+                  &:hover {
+                    background-color: #afafaf;
+                    cursor: pointer;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    h4 {
+      font-size: 18px;
+      line-height: 24px;
+      margin: 0;
+      padding-left: 0;
+      color: #28404c;
+      font-weight: 800;
+      padding: 0 1rem;
+    }
+
+    .template-name {
+      font-size: 12px !important;
+
+      &.error > * {
+        color: #f44336 !important;
+      }
+
+      span {
+        color: #a2a2a2;
+        margin-right: 0.5rem;
+      }
+
+      ::ng-deep mat-form-field {
+        .mat-input-element {
+          font-size: 12px !important;
+          color: #0073ae;
+          font-weight: 600;
+        }
+
+        .mat-form-field-wrapper {
+          padding-bottom: 0.85rem;
+        }
+      }
+    }
+
+    .feature-list {
+      background-color: #EDEEF0;
+
+      .feature-sub-list {
+        .mat-stroked-button {
+          line-height: 30px;
+        }
+
+        .go-back-btn {
+          border: 0;
+          color: #28404c;
+          padding: 0 1rem;
+
+          &:hover {
+            background-color: #EDEEF0 !important;
+          }
+
+          .lt-symbol {
+            &::after {
+              content: '\2039';
+              margin-top: -2px;
+              font-size: 32px;
+              color: #0073ae;
+            }
+          }
+        }
+      }
+
+      .features-rights {
+        flex-wrap: unset !important;
+        overflow-x: auto;
+        border-top: 1px solid #c0c0c0;
+        border-bottom: 1px solid #c0c0c0;
+      }
+      .feature-right {
+        &:last-child {
+          padding-right: 1rem;
+        }
+
+        ::ng-deep ngx-treeview {
+          .form-check {
+            color: #fff;
+
+            label {
+              position: relative;
+              font-weight: normal;
+              z-index: 100;
+            }
+          }
+
+          .treeview-container > ngx-treeview-item > .treeview-item > div.row-item {
+            i {
+              display: none !important;
+            }
+
+            & > .form-check {
+              input {
+                display: none;
+
+                &:checked + label:first-of-type {
+                  background-color: #28404c !important;
+                }
+
+                &:disabled + label {
+                  cursor: not-allowed;
+                }
+              }
+
+              & >  label {
+                position: relative;
+                font-weight: normal;
+                width: 200px;
+                height: 40px;
+                background-color: #afafaf !important;
+              }
+            }
+          }
+
+          .treeview-container > ngx-treeview-item > .treeview-item > div[class="ng-star-inserted"] ngx-treeview-item .treeview-item {
+            margin-left: 0;
+
+            div.row-item {
+              i {
+                display: none !important;
+              }
+
+              & > .form-check {
+                input {
+                  display: none;
+
+                  &:checked + label:first-of-type {
+                    background-color: #0073ae;
+                  }
+
+                  &:disabled + label {
+                    cursor: not-allowed;
+                  }
+                }
+
+                & >  label {
+                  margin: 0.35rem auto 0.15rem 0;
+                  position: relative;
+                  font-weight: normal;
+                  width: 200px;
+                  height: 25px;
+                  background-color: #afafaf;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .actions-wrapper {
+        button {
+          height: 30px;
+          background-color: #0073ae !important;
+          margin-top: -10px;
+          margin: 0 20px 20px 20px;
+          width: 150px;
+          text-transform: uppercase;
+        }
+      }
+    }
+  }
+
+  .title-fixed {
+    top: 160px;
+  }
+}

@@ -1,0 +1,64 @@
+<div class="route-details" *ngIf="route">
+  <div class="route-details-header">
+    <div class="route-details-header-filter">
+      <mat-form-field class="filter">
+        <mat-icon>search</mat-icon>
+        <input matInput  (keyup)="applyFilterStaff($event.target.value)" placeholder="Search Staff">
+      </mat-form-field>
+    </div>
+    <div class="route-details-distance">
+      <span class="label-text">Length</span>
+      {{route.distance_meters}} meters
+    </div>
+    <div class="route-details-time">
+      <mat-icon>directions_walk</mat-icon><span>{{route.distance_mins}} mins</span>
+    </div>
+    <div class="route-details-streets">
+      <span class="label-text">Street</span>
+      <ul class="street-list" *ngIf="route.waypoints.length">
+        <ng-container *ngFor="let point of route.waypoints; let i = index">
+          <li *ngIf="i < 3">{{point['name']}}</li>
+        </ng-container>
+      </ul>
+    </div>
+    <div class="buttons-wrapper">
+      <button mat-flat-button color="basic" (click)="onAdd()"><mat-icon>add_circle</mat-icon>Staff</button>
+      <!-- <button mat-flat-button><mat-icon>delete</mat-icon></button> -->
+      <button class="mr-2 btn-primary mat-raised-button" (click)="editColumns()">Customize Columns</button>
+    </div>
+  </div>
+  <div class="route-details-content">
+    <div class="route-details-content-table-wrapper">
+      <ngx-datatable class="material bg-white"
+                     style="height: calc(100vh - 390px)"
+                     [columnMode]="'force'"
+                     [headerHeight]="50"
+                     [footerHeight]="50"
+                     [rowHeight]="70"
+                     [limit]="10"
+                     [rows]="employees"
+                     scrollbarV="true"
+                     (activate)="onSelectEmployee($event)"
+                     (reorder)="reorderColumns($event)">
+        <ngx-datatable-column *ngFor="let field of tableFields" name="{{field.label}}" prop="{{field.name}}">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <span [matTooltip]="row[field.name]" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+              <ng-container [ngSwitch]="field.name">
+                <ng-container *ngSwitchCase="'avatar'">
+                  <img *ngIf="row.img_url" [src]="baseUrl + row.img_url" alt="">
+                  <img *ngIf="!row.img_url" src="assets/noavatar.png" alt="">
+                </ng-container>
+                <ng-container *ngSwitchCase="'action'">
+                  <button mat-icon-button (click)="$event.stopPropagation(); onDeleteEmployee(row)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </ng-container>
+                <ng-container *ngSwitchDefault>{{ row[field.name]? row[field.name] : '' }}</ng-container>
+              </ng-container>
+            </span>
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
+    </div>
+  </div>
+</div>

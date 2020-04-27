@@ -1,0 +1,36 @@
+@each $color_name, $scolor in $solid-colors {
+    $alt: map-get($scolor, alt);
+    $color: map-get($scolor, color);
+    $foreground: map-get($scolor, foreground);
+
+    .ngx-datatable.header-#{$color_name} {
+      .datatable-header {
+        background: $color;
+        .datatable-header-cell {
+          color: $foreground;
+        }
+      }
+    }
+
+    .#{$color_name} {
+        background: $color !important;
+        color: $foreground !important;
+        .mat-table {
+          background: transparent !important;
+        }
+        .ngx-datatable.material *,
+        .mat-table,
+        .mat-cell,
+        .mat-header-cell {
+            color: $foreground !important;
+        }
+        .ngx-datatable.material:not(.cell-selection) .datatable-body-row:hover,
+        .ngx-datatable.material:not(.cell-selection) .datatable-body-row:hover .datatable-row-group {
+            background: lighten($color, 5)
+        }
+
+    }
+    .text-#{$color_name} {
+        color: $color;
+    }
+  }

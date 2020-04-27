@@ -1,0 +1,64 @@
+<div class="select-wrapper" [formGroup]="form">
+  <div>
+    <mat-form-field>
+      <mat-select placeholder="Client type" formControlName="type_client" (selectionChange)="onChangeBasicData('default')" required>
+        <mat-option *ngFor="let type of clientTypes" [value]="type">
+          {{type}}
+        </mat-option>
+      </mat-select>
+      <mat-error>Client type is required</mat-error>
+    </mat-form-field>
+    <mat-radio-group formControlName="street_type" (change)="onChangeStreetType($event)">
+      <mat-radio-button class="mr-2" [value]="ParkingStreetType.OnStreet">On street</mat-radio-button>
+      <mat-radio-button [value]="ParkingStreetType.Carpark">Carpark</mat-radio-button>
+    </mat-radio-group>
+<!--    <mat-checkbox formControlName="is_onstreet" (change)="onChangeStreetType($event)">On street / Off street</mat-checkbox>-->
+  </div>
+
+  <div>
+    <mat-form-field>
+      <mat-select placeholder="Project" formControlName="project_id" (selectionChange)="onChangeBasicData('project')" required>
+        <mat-option *ngFor="let project of basicData.projects" [value]="project.id">
+          {{project.project_code}}:{{project.project_name}}
+        </mat-option>
+      </mat-select>
+      <mat-error>Project is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="Zone" formControlName="zone_id" (selectionChange)="onChangeBasicData('zone')" required>
+        <mat-option *ngFor="let zone of basicData.zones" [value]="zone.id">
+          {{zone.zone_code}}
+        </mat-option>
+      </mat-select>
+      <mat-error>Zone is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="form.value.street_type === ParkingStreetType.OnStreet">
+      <mat-select placeholder="Parking" formControlName="parking_id" (selectionChange)="onChangeBasicData('default')" required>
+        <mat-option *ngFor="let parking of basicData.parkings" [value]="parking.id">
+          {{parking.parking_code}}
+        </mat-option>
+      </mat-select>
+      <mat-error>Parking is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="form.value.street_type === ParkingStreetType.Carpark">
+      <mat-select placeholder="CarPark" formControlName="carpark_id" (selectionChange)="onChangeBasicData('carpark')" required>
+        <mat-option *ngFor="let carpark of basicData.carparks" [value]="carpark.id">
+          {{carpark.carpark_name}}
+        </mat-option>
+      </mat-select>
+      <mat-error>Carpark is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="form.value.street_type === ParkingStreetType.Carpark">
+      <mat-select placeholder="CarPark Zone" formControlName="carpark_zone_id" (selectionChange)="onChangeBasicData('default')" required>
+        <mat-option *ngFor="let carparkZone of basicData.carparkZones" [value]="carparkZone.id">
+          {{carparkZone.name_en}}
+        </mat-option>
+      </mat-select>
+      <mat-error>Carpark zone is required</mat-error>
+    </mat-form-field>
+  </div>
+</div>

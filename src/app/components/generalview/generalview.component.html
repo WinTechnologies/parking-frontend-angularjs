@@ -1,0 +1,80 @@
+<main class="generalview-page">
+  <!-- ------------- M.A.P.S. ----------- -->
+  <div class="container-fluid p-0">
+    <mat-card-content>
+      <header class="page-top-header">
+          <!-- buttons -->
+          <div *ngIf="permissions.filter || permissions.predictive"
+            class="generalview-page-header-buttons d-flex pl-1">
+            <button *ngIf="permissions.filter" mat-icon-button (click)="openFilterDialog()" class="" >
+              <mat-icon>tune</mat-icon>
+            </button>
+            <button *ngIf="permissions.predictive" mat-icon-button (click)="onHeatMapView()" class="">
+              <mat-icon>remove_red_eye</mat-icon>
+            </button>
+          </div>
+          <!-- Form for the heatmap -->
+          <form *ngIf="isHeatMapView" (ngSubmit)="onSubmit()" class="d-flex flex-wrap">
+              <div class="pt-2 align-self-end pr-4 pl-3">
+                <mat-form-field class="input-el">
+                  <input
+                    appInputDateFormat
+                    matInput
+                    [matDatepicker]="date_"
+                    placeholder="Date"
+                    [formControl]="dateControl"
+                    [(ngModel)]="date"
+                    required
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="date_"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #date_></mat-datepicker>
+                  <mat-error>
+                    Date is required
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="pt-2 align-self-end pr-4" #cityList>
+                <mat-form-field class="input-el" (click)="showCityList($event)">
+                  <mat-select class="city" [(ngModel)]="selectedCities[0]" placeholder="City" name="city"
+                              [disabled]="true" required #citySelectList>
+                    <mat-option *ngFor="let city of cities" [value]="city">
+                      {{ city.label | titlecase }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="d-flex align-self-center pr-4">
+                <button type="submit" mat-flat-button color="primary">Choose Date</button>
+              </div>
+          </form>
+      </header>
+      <div class="generalview-page-content">
+        <!-- The map of general view -->
+        <ng-container *ngIf="!isHeatMapView">
+          <app-mapview-new
+            [options]="mapOptions"
+            [mapDataJSON]="mapdata"
+            [mapCenter]="mapCenter"
+            [isForceCenter]="false"
+          >
+          </app-mapview-new>
+          <br />
+        </ng-container>
+        <!-- The heatmap -->
+        <ng-container *ngIf="isHeatMapView">
+          <app-heatmap
+            [options]="mapOptions"
+            [mapdata]="mapdataOfHeatMap"
+            [date]="date"
+            [cities]="selectedCities"
+            [submit]="submit">
+          </app-heatmap>
+          <br />
+        </ng-container>
+      </div>
+    </mat-card-content>
+  </div>
+</main>

@@ -1,0 +1,15 @@
+<div class="scroller">
+    <div class="controls pr-1" (click)="moveLeft()">
+        <button mat-icon-button color="base">
+            <mat-icon>navigate_before</mat-icon>
+        </button>
+    </div>
+    <div #wrapper class="scroller-subject">
+        <ng-content></ng-content>
+    </div>
+    <div class="controls pl-1" (click)="moveRight()">
+        <button mat-icon-button color="base">
+            <mat-icon>navigate_next</mat-icon>
+        </button>
+    </div>
+</div>

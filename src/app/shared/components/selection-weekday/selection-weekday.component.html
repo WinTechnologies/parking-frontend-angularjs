@@ -1,0 +1,5 @@
+<div class="selection-weekday">
+  <div class="weekday" *ngFor="let day of weekDaysAll" (click)="onSetDay(day)" [class.checked]="day.checked">
+    {{day.name | uppercase}}
+  </div>
+</div>

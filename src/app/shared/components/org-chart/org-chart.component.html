@@ -1,0 +1,56 @@
+<div class="org-chart-page" (mouseover)="addDragStartHandler()">
+  <div class="row" *ngIf="isOrgChartAvailable">
+    <div class="org-chart-wrap text-center" [ngClass]="{'col-12': !isShowSidebar, 'col-9': isShowSidebar}">
+      <div id="org_chart" #org_chart (dragover)="dragover($event)"></div>
+      <button *ngIf="canUpdate" mat-flat-button color="primary" class="btn-reset" (click)="onOrgChartReset()">Reset</button>
+    </div>
+
+    <a *ngIf="canUpdate" (click)="toggleRightPart()" #btn_hide [ngClass]="{'button-showed': !isShowSidebar, 'button-hidden': isShowSidebar}">
+      <div class="button-hide button-hidden">{{isShowSidebar ? '&#62;&#62;' : '&#60;&#60;'}}</div>
+    </a>
+    <div *ngIf="canUpdate && isShowSidebar"
+         id="r_container"
+         class="col-3 background-rs"
+         (dragover)="dragoverBack($event)"
+         (drop)="dropBack($event)"
+         (dragover)="dragover($event)"
+    >
+      <div *ngIf="!employee">
+        <div class="form-group mt-3 mb-3 ml-1 p-1">
+          <h6>
+            Assign Employee
+            <mat-icon class="info-icon-button" mat-button #tooltip="matTooltip" [matTooltip]="userGuideTooltipText" aria-hidden="false" (click)="tooltip.toggle()" matTooltipPosition="right">info</mat-icon>
+          </h6>
+          <div class="input-group">
+            <span class="input-group-addon bg-white border-right-0"><i class="fa fa-search"></i></span>
+            <input placeholder="Search Employee Name" class="col-9 form-control border-left-0 " type="text" [(ngModel)]="query">
+          </div>
+        </div>
+        <div *ngFor="let item of listUsers | searchFilterPipe : query" [id]="item.employee_id" class="node dragged-user"
+          draggable="true" (dragend)="dragend($event)">
+          <div class="d-flex flex-row align-items-center">
+            <img src="assets/noavatar.png" draggable="false" class="d-block" alt="img" width="50px;">
+            <div class="d-block p-1">
+              <div class="fullname" draggable="false">{{item.fullname}}</div>
+              <div class="position" draggable="false">{{item.position}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="employee">
+        <div *ngFor="let item of listUsers" [id]="item.employee_id" class="node dragged-user" draggable="true" (dragend)="dragend($event)">
+          <div class="d-flex flex-row align-items-center">
+            <img src="assets/noavatar.png" draggable="false" class="d-block" alt="img" width="50px;">
+            <div class="d-block p-1">
+              <div class="fullname" draggable="false">{{item.fullname}}</div>
+              <div class="position" draggable="false">{{item.position}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!isOrgChartAvailable" class="text-center p-5">
+    No org.chart available for this project, Please assign employees to the project.
+  </div>
+</div>

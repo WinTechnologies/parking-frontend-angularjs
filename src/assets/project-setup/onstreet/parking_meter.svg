@@ -1,0 +1,30 @@
+<svg id="Group_14798" data-name="Group 14798" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 49.798 57.451">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #1b75ab;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        opacity: 0.54;
+        fill: url(#radial-gradient);
+      }
+    </style>
+    <radialGradient id="radial-gradient" cx="14.321" cy="51.201" r="127.726" gradientTransform="translate(12.874 50.675) scale(0.101 0.01)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#231f20"/>
+      <stop offset="1" stop-color="#231f20" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <path id="Path_15003" data-name="Path 15003" class="cls-1" d="M16.235,49.884H5.267A3.276,3.276,0,0,1,2,46.617V5.267A3.276,3.276,0,0,1,5.267,2h41.35a3.276,3.276,0,0,1,3.267,3.267v41.35a3.276,3.276,0,0,1-3.267,3.267H35.6L25.9,55.018Z" transform="translate(-1.067 -1.067)"/>
+  <path id="Path_15004" data-name="Path 15004" class="cls-2" d="M45.551,1.867A2.34,2.34,0,0,1,47.884,4.2V45.55a2.34,2.34,0,0,1-2.334,2.334H34.3l-.42.233-9.054,4.807-9.007-4.854-.42-.233H4.2A2.34,2.34,0,0,1,1.867,45.5V4.2A2.34,2.34,0,0,1,4.2,1.867h41.35m0-1.867H4.2A4.183,4.183,0,0,0,0,4.2V45.55a4.213,4.213,0,0,0,4.2,4.2H14.935l9.941,5.227,9.941-5.227H45.6a4.213,4.213,0,0,0,4.2-4.2V4.2A4.283,4.283,0,0,0,45.551,0Z" transform="translate(0 0)"/>
+  <ellipse id="Ellipse_21" data-name="Ellipse 21" class="cls-3" cx="12.928" cy="1.307" rx="12.928" ry="1.307" transform="translate(12.228 54.838)"/>
+  <g id="Group_14003" data-name="Group 14003" transform="translate(12.828 7.032)">
+    <path id="Path_16373" data-name="Path 16373" class="cls-2" d="M23.137,0H1.094L0,1.5S0,2.705,1.842,4.259s3.4,2.763,3.4,3.856H18.993c0-1.151,1.554-2.3,3.4-3.856S24.231,1.5,24.231,1.5ZM12.087,1.151H1.036L1.5.46H22.734l.46.691Z"/>
+    <rect id="Rectangle_3130" data-name="Rectangle 3130" class="cls-2" width="7.655" height="4.835" transform="translate(8.288 12.95)"/>
+    <path id="Path_16374" data-name="Path 16374" class="cls-2" d="M9.1,15.6V43.572H22.913V15.6ZM20.784,29.989a26.331,26.331,0,0,0-4.835-.576,26.331,26.331,0,0,0-4.835.576,19.776,19.776,0,0,1-1.036-6.274,18.689,18.689,0,0,1,.863-5.871s3.338-.345,5.007-.345,5.007.345,5.007.345a18.689,18.689,0,0,1,.863,5.871A19.776,19.776,0,0,1,20.784,29.989Z" transform="translate(-3.862 -6.621)"/>
+  </g>
+</svg>

@@ -1,0 +1,63 @@
+<div mat-dialog-title>
+  <h1>Add {{position}}</h1>
+  <button mat-icon-button (click)="onCancel()"><mat-icon>close</mat-icon></button>
+</div>
+<div mat-dialog-content>
+  <div class="enforcement-eo-new-page">
+    <div class="enforcement-eo-new-page-header" fxLayout="row" fxLayoutAlign="space-between center">
+      <div class="enforcement-eo-new-page-header-filter">
+        <mat-form-field class="employee-filter">
+          <mat-icon>search</mat-icon>
+          <input matInput  (keyup)="applyFilterEmployee($event.target.value)" placeholder="Search employee">
+        </mat-form-field>
+      </div>
+      <button class="mr-4 btn-primary mat-raised-button" (click)="editColumns()">Customize Columns</button>
+    </div>
+    <div class="enforcement-eo-new-page-content">
+      <div class="enforcement-eo-new-page-table-wrapper">
+        <ngx-datatable class="material bg-white"
+                       style="height: calc(65vh - 60px)"
+                       [columnMode]="'force'"
+                       [headerHeight]="50"
+                       [footerHeight]="50"
+                       [rowHeight]="50"
+                       [limit]="10"
+                       scrollbarV="true"
+                       (reorder)="reorderColumns($event)"
+                       [rows]="employees"
+                       (activate)="onSelect($event)">
+          <ngx-datatable-column *ngFor="let field of tableFields" name="{{field.label}}" prop="{{field.name}}">
+            <ng-template let-column="column" ngx-datatable-header-template *ngIf="field.name === 'checkbox'">
+              <ng-container *ngIf="field.name === 'checkbox'">
+                <mat-checkbox (change)="changeAllCheck()" [(ngModel)]="allChecked"></mat-checkbox>
+              </ng-container>
+            </ng-template>
+            <ng-template let-row="row" ngx-datatable-cell-template>
+            <span [matTooltip]="row[field.name]" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+              <ng-container [ngSwitch]="field.name">
+                <ng-container *ngSwitchCase="'checkbox'">
+                  <mat-checkbox (change)="changeCheckItem()" (click)="$event.stopPropagation();" [(ngModel)]="row.checked"></mat-checkbox>
+                </ng-container>
+                <ng-container *ngSwitchCase="'avatar'">
+                  <img *ngIf="row.img_url" [src]="baseUrl + '/' + row.img_url" alt="">
+                  <img *ngIf="!row.img_url" src="assets/noavatar.png" alt="">
+                </ng-container>
+                <ng-container *ngSwitchDefault>{{ row[field.name] }}</ng-container>
+              </ng-container>
+            </span>
+            </ng-template>
+          </ngx-datatable-column>
+        </ngx-datatable>
+      </div>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <div class="enforcement-eo-new-page-footer">
+    <span>Selected: {{selectedCount}}</span>
+    <div class="buttons-wrapper">
+      <button mat-stroked-button color="primary" class="mr-2" (click)="onCancel()">Cancel</button>
+      <button mat-flat-button color="primary" (click)="onAdd()">Add</button>
+    </div>
+  </div>
+</div>

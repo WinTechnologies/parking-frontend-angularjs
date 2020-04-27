@@ -1,0 +1,104 @@
+<div mat-dialog-title>
+  <h4 class="font-weight-bold text-capitalize">Parking Price Simulation</h4>
+  <button mat-icon-button (click)="onCancel()"><mat-icon>close</mat-icon></button>
+</div>
+<div mat-dialog-content>
+  <div class="fields-wrapper d-flex">
+    <div class="filed-item">
+      <span class="item-label">Client type:</span>
+      <span class="item-value">{{basicData.type_client}}</span>
+    </div>
+    <div class="filed-item">
+      <span class="item-label">Street Type:</span>
+      <span class="item-value">
+        {{basicData.street_type === ParkingStreetType.OnStreet ? 'On street' : 'Carpark'}}
+      </span>
+    </div>
+  </div>
+  <div class="fields-wrapper d-flex">
+    <div class="filed-item">
+      <span class="item-label">Project:</span>
+      <span class="item-value">{{basicData.project.project_code}}:{{basicData.project.project_name}}</span>
+    </div>
+    <div class="filed-item">
+      <span class="item-label">Zone:</span>
+      <span class="item-value">{{basicData.zone.zone_code}}</span>
+    </div>
+    <div *ngIf="basicData.street_type === ParkingStreetType.OnStreet" class="filed-item">
+      <span class="item-label">Parking:</span>
+      <span class="item-value">{{basicData.parking.parking_code}}</span>
+    </div>
+    <div *ngIf="basicData.street_type === ParkingStreetType.Carpark" class="filed-item">
+      <span class="item-label">CarPark:</span>
+      <span class="item-value">{{basicData.carpark.carpark_name}}</span>
+    </div>
+    <div *ngIf="basicData.street_type === ParkingStreetType.Carpark" class="filed-item">
+      <span class="item-label">CarPark Zone:</span>
+      <span class="item-value">{{basicData.carpark_zone.name_en}}</span>
+    </div>
+  </div>
+  <div class="fields-wrapper">
+    <mat-form-field>
+      <input
+        appInputDateFormat
+        matInput
+        [(ngModel)]="duration.start_date"
+        [matDatepicker]="pickerDateStart"
+        [max]="duration.end_date"
+        placeholder="Start date"
+        required
+      >
+      <mat-datepicker-toggle matSuffix [for]="pickerDateStart"></mat-datepicker-toggle>
+      <mat-datepicker #pickerDateStart></mat-datepicker>
+      <mat-error>Start date is required</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input atp-time-picker
+             matInput
+             [(ngModel)]="duration.start_time"
+             placeholder="Start time"
+             required
+      >
+      <mat-error>Start time is required</mat-error>
+    </mat-form-field>
+  </div>
+  <div class="fields-wrapper">
+    <mat-form-field>
+      <input
+        appInputDateFormat
+        matInput
+        [(ngModel)]="duration.end_date"
+        [matDatepicker]="pickerDateEnd"
+        [min]="duration.start_date"
+        placeholder="End date"
+        required
+      >
+      <mat-datepicker-toggle matSuffix [for]="pickerDateEnd"></mat-datepicker-toggle>
+      <mat-datepicker #pickerDateEnd></mat-datepicker>
+      <mat-error>End date is required</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input atp-time-picker
+             matInput
+             [(ngModel)]="duration.end_time"
+             placeholder="End time"
+             required
+      >
+      <mat-error>End time is required</mat-error>
+    </mat-form-field>
+  </div>
+  <div *ngIf="parkingPriceResponse" class="result">
+    <div class="filed-item">
+      <span class="item-label">Total Price:</span>
+      <span class="item-value">{{parkingPriceResponse.totalPrice}}</span>
+    </div>
+    <div class="filed-item">
+      <span class="item-label">Currency:</span>
+      <span class="item-value">{{parkingPriceResponse.currency}}</span>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-stroked-button type="button" color="primary" class="mr-2" (click)="onCancel()">Cancel</button>
+  <button mat-flat-button color="primary" [disabled]="!checkEnableCalc()" (click)="onSubmit()">Calculate</button>
+</div>

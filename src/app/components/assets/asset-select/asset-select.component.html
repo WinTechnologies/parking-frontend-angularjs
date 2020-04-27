@@ -1,0 +1,31 @@
+<main class="assets-select-page">
+    <div class="assets-select-page-content container-fluid mt-50px" *ngIf="!switchComponent">
+      <h1 class="assets-select-page-content-title font-weight-bold">
+        <button mat-icon-button color="base" (click)="onBack()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        Create New
+      </h1>
+      <div class="assets-select-page-content-wrapper d-flex flex-wrap">
+        <ng-container *ngFor="let asset of filterAssets">
+          <div class="asset-container" *ngIf="asset.name" (click)="onSelectAsset(asset)">
+            <div class="icon">
+              <img *ngIf="asset.icon_url" [src]="asset.icon_url.startsWith('uploads') ?  apiEndpoint + '/' + asset.icon_url : asset.icon_url" />
+              <img *ngIf="!asset.icon_url" [src]="'/assets/Icons/Projects_section/topbar/assets_icon.svg'" />
+            </div>
+            <div class="name">
+              {{asset.name}}
+            </div>
+          </div>
+        </ng-container>
+        <div class="asset-container">
+          <div class="add-icon" (click)="onAddNewType()">
+            <mat-icon>add</mat-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-container *ngIf="switchComponent && routeParams">
+      <app-asset-select-model [params]="routeParams" (goBackEvent)="onGoBackEvent($event)"></app-asset-select-model>
+    </ng-container>
+</main>

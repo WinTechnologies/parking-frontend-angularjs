@@ -1,0 +1,57 @@
+.intl-tel-input-wrapper {
+  padding-bottom: 1.25em;
+  position: relative;
+
+  &.no-label {
+    border-top: 0.84375em solid transparent;
+  }
+
+  &.has-error {
+    label {
+      color: #f44336;
+    }
+
+    /deep/.intl-tel-input {
+      input[type="text"] {
+        border-bottom-color: #f44336;
+      }
+    }
+  }
+
+  label {
+    display: block;
+    font-size: 11px;
+    font-weight: normal;
+    margin-bottom: 0;
+    color: rgba(0, 0, 0, 0.54);
+
+    &.error {
+      position: absolute;
+      width: 100%;
+      overflow: hidden;
+      margin-top: 0.54166667em;
+      line-height: 1;
+    }
+  }
+
+  label.field-label {
+    &:after {
+      content: "*";
+      display: inline-block;
+      margin-left: 2px;
+    }
+  }
+
+  /deep/.intl-tel-input {
+    .country-list {
+      max-height: 150px;
+    }
+
+    input[type="text"] {
+      width: 100% !important;
+      border: none;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.54);
+      outline: none;
+    }
+  }
+}

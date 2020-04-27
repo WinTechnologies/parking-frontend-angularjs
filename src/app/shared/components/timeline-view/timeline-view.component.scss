@@ -1,0 +1,49 @@
+@import "../../../../styles/color";
+
+:host {
+  .timeline-view {
+    //width: 1100px;
+    overflow-x: auto;
+    &::-webkit-scrollbar-track
+    {
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+      border-radius: 10px;
+      background-color: #F5F5F5;
+    }
+    
+    &::-webkit-scrollbar
+    {
+      width: 12px;
+      height: 6px;
+      background-color: #F5F5F5;
+    }
+    
+    &::-webkit-scrollbar-thumb
+    {
+      border-radius: 10px;
+      -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+      background-color: #a8a9ad;
+    }
+    
+    .time-ruler {
+      .ruler {
+        list-style: none;
+        display: flex;
+        padding: 0;
+        margin: 0;
+        font-size: 12px;
+        color: $c-grey;
+        &-label {
+          width: 60px;
+        }
+      }
+    }
+
+    .time-slots {
+      position: relative;
+      font-size: 12px;
+      height: 40px;
+      color: $c-white;
+    }
+  }
+}

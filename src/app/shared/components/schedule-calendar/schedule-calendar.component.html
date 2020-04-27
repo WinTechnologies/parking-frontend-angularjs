@@ -1,0 +1,9 @@
+<div class="schedule-calendar-wrapper">
+  <div *ngIf="calendarOptions" class="calendar">
+    <ng-fullcalendar #ucCalendar [options]="calendarOptions"
+    [(eventsModel)]="events"
+    (eventRender)="eventRender($event.detail)"
+    >
+    </ng-fullcalendar>
+  </div>
+</div>

@@ -1,0 +1,148 @@
+<div class="group-details-page">
+  <ng-container *ngIf="!singleViolationValue && form">
+    <div class="page-title-header">
+      <div class="d-flex">
+        <button mat-icon-button class="pt-1" color="base" (click)="onCancel()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <h4 class="font-weight-bold">
+          {{isCreate ? 'Create Group' : 'Update Group'}}
+        </h4>
+      </div>
+      <button
+        color="basic"
+        class="create-btn"
+        mat-flat-button
+        *ngIf="permission?.isCreate && group"
+        (click)="onAddAssignment()">
+        <mat-icon>
+          add_circle
+        </mat-icon>
+        Assignment
+      </button>
+    </div>
+    <form [formGroup]="form" class="pt-50px">
+      <div class="area-name">
+        <label>Name <span class="required">* </span>: </label>
+        <mat-form-field>
+          <input
+            matInput
+            formControlName="group_name"
+            (change)="updateFlag()"
+            required
+          >
+          <mat-error *ngIf="form.get('group_name').hasError('required')">Name is required</mat-error>
+        </mat-form-field>
+      </div>
+      <h5 class="area-assignment-name">
+        Global Schedule
+      </h5>
+      <div class="area-schedule">
+        <div>
+          <label>Date <span class="required">* </span>: </label>
+          <mat-form-field class="picker_date">
+            <input
+              appInputDateFormat
+              formControlName="date_start"
+              matInput
+              [matDatepicker]="dateStart"
+              [min]="group ? group.date_start : today"
+              [max]="form.value.date_end"
+              placeholder="From"
+              required
+            />
+            <mat-datepicker-toggle matSuffix [for]="dateStart" ></mat-datepicker-toggle>
+            <mat-datepicker #dateStart></mat-datepicker>
+            <mat-error *ngIf="form.get('date_start').hasError('required')">Date from is required</mat-error>
+            <mat-error *ngIf="!form.get('date_end').hasError('required')">Invalid date</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input
+              appInputDateFormat
+              formControlName="date_end"
+              matInput
+              [matDatepicker]="dateEnd"
+              [min]="!group ? today : form.value.date_start"
+              placeholder="To"
+              (change)="updateFlag()"
+              (ngModelChange)="updateFlag()"
+            />
+            <mat-datepicker-toggle matSuffix [for]="dateEnd"></mat-datepicker-toggle>
+            <mat-datepicker #dateEnd></mat-datepicker>
+            <mat-error *ngIf="!form.get('date_end').hasError('required')">Invalid date</mat-error>
+          </mat-form-field>
+        </div>
+        <!------------- Days of the week --------------->
+        <div>
+          <label>Apply to <span class="required">* </span>: </label>
+          <app-selection-weekday
+            [weekdays]="form.get('working_days').value"
+            (changedWeekdays)="onChangedWeekdays($event); updateFlag()"
+          ></app-selection-weekday>
+          <mat-error *ngIf="formSubmitted && form.get('working_days').hasError('required')">Working days are required</mat-error>
+        </div>
+        <!------------- hours --------------->
+        <div class="slots-wrapper">
+          <label>Time <span class="required">* </span>: </label>
+          <mat-form-field>
+            <input
+              id="timeFrom"
+              type="time"
+              atp-time-picker
+              matInput
+              placeholder="From"
+              (change)="updateFlag()"
+              (ngModelChange)="updateFlag()"
+              formControlName="time_from">
+          </mat-form-field>
+          <!------------- Time To ------------------>
+          <mat-form-field>
+            <input
+              id="timeTo"
+              type="time"
+              atp-time-picker
+              matInput
+              placeholder="To"
+              (change)="updateFlag()"
+              (ngModelChange)="updateFlag()"
+              formControlName="time_to">
+          </mat-form-field>
+          <button type="button" mat-stroked-button color="primary" class="mr-1" (click)="onClearTimeSlot()">Clear</button>
+          <button type="button" mat-flat-button color="primary" (click)="onAddTimeSlot()">Add</button>
+        </div>
+        <mat-error *ngIf="this.slots.length==0">Time is required</mat-error>
+        <!------------- area hours --------------->
+        <div class="area-timeline">
+          <app-timeline-view class="mt-5" [timeslots]="slots" [color]="'#2d404b'">
+          </app-timeline-view>
+        </div>
+      </div>
+      <div class="buttons d-flex justify-content-end mt-50px">
+        <button class="mr-3" mat-stroked-button color="primary" (click)="onCancel()" type="button">
+          Cancel
+        </button>
+        <button  mat-flat-button color="primary" (click)="onSubmit()" [disabled]="!changeFlag">
+          {{isCreate ? 'Create' : 'Update'}}
+        </button>
+      </div>
+      <div class="violations-container mt-3" *ngIf="group && !isCreate">
+        <h5>Assignment</h5>
+        <app-enforcement-violations
+          [projectId]="projectId"
+          [isAssignments]="true"
+          [assignmentId]="assignmentId"
+          [groupId]="groupId"
+          (selectViolation)="selectingViolation($event)"
+        >
+        </app-enforcement-violations>
+      </div>
+    </form>
+  </ng-container>
+  <app-assignment-details
+    *ngIf="singleViolationValue"
+    [projectId]="projectId"
+    [violation]="singleViolationValue"
+    [groupId]="groupId"
+    (closeAssignment)="closeAssignment($event)">
+  </app-assignment-details>
+</div>

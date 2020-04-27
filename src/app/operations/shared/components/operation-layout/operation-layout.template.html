@@ -1,0 +1,31 @@
+<div class="app-admin-wrap" [dir]='layoutConf.dir'>
+      <!-- App content -->
+      <div class="main-content-wrap" [perfectScrollbar]="" [disabled]="layoutConf.topbarFixed || !layoutConf.perfectScrollbar">
+        <!-- Header for side navigation layout -->
+        <!-- ONLY REQUIRED FOR **SIDE** NAVIGATION LAYOUT -->
+        <div class="rightside-content-hold" [perfectScrollbar]="scrollConfig" [disabled]="!layoutConf.topbarFixed || !layoutConf.perfectScrollbar">
+          <!-- View Loader -->
+          <div class="view-loader" *ngIf="isModuleLoading">
+            <div class="spinner">
+              <div class="double-bounce1 mat-bg-accent"></div>
+              <div class="double-bounce2 mat-bg-primary"></div>
+            </div>
+          </div>
+          <!-- Breadcrumb -->
+          <app-breadcrumb></app-breadcrumb>
+          <!-- View outlet -->
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+      <!-- View overlay for mobile navigation -->
+      <div class="sidebar-backdrop"
+      [ngClass]="{'visible': layoutConf.sidebarStyle !== 'closed' && layoutConf.isMobile}"
+      (click)="closeSidebar()"></div>
+
+      <!-- Notificaation bar -->
+      <mat-sidenav #notificationPanel mode="over" class="" position="end">
+        <div class="" fxLayout="column">
+          <app-notifications [notificPanel]="notificationPanel"></app-notifications>
+        </div>
+      </mat-sidenav>
+  </div>

@@ -1,0 +1,127 @@
+<main class="promotions-wrapper">
+  <!-- ------------------- Greybar ------------------------ -->
+  <header class="page-top-header">
+    <div class="d-flex align-items-center">
+      <div class="value-added-list-page-buttons">
+        <button mat-icon-button color="base" (click)="onBack()">
+          <mat-icon>arrow_back</mat-icon></button>
+      </div>
+      <div>Tariff / Promotion</div>
+    </div>
+    <div class="current-time">
+      {{ today | date:'dd/MM/yyyy hh:mm a'}}
+    </div>
+  </header>
+  <!-- ------------------------------------------- -->
+  <h4 class="font-weight-bold title-fixed promotions-title">
+    Promotion
+  </h4>
+  <div class="content-wrapper mt-50px">
+    <div class="promotions-search-header">
+      <div class="filter-wrapper d-flex align-items-center">
+        <mat-icon>search</mat-icon>
+        <mat-form-field class="filter">
+          <input matInput
+                 (keyup)="applyFilterService($event.target.value)"
+                 placeholder="Search">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Arrange by" (selectionChange)="arrangeByField($event.value)">
+            <mat-option *ngFor="let field of arrangeFields" [value]="field.fieldName"> {{field.label}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="View" (selectionChange)="filterPromotions()" [(ngModel)] = "selectedView" >
+            <mat-option *ngFor="let filter of viewFilters" [value]="filter"> {{filter}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Activity" (selectionChange)="filterPromotions()" [(ngModel)] = "selectedActivity">
+            <mat-option value="all">All</mat-option>
+            <mat-option *ngFor="let filter of activityFilters" [value]="filter.featureName"> {{filter.name}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <button *ngIf="permission.isCreate" [routerLink]="['new']" mat-flat-button color="basic" class="create-btn">
+        <mat-icon>add_circle</mat-icon>
+        <span class="ml-1">Promotion</span>
+      </button>
+    </div>
+
+    <div class="promotions-list">
+      <div *ngFor="let promotion of filteredPromotions" class="col-lg-4 p-2">
+        <div [routerLink]="[promotion.id]" class="promotion-item-wrapper" [class.expired]="checkExpired(promotion)">
+          <div *ngIf="checkExpired(promotion)" class="expired-watermark">Expired</div>
+          <div class="promotion-item-header">
+            <div class="promotion-title">
+              {{promotion.promo_name_en}}
+            </div>
+            <button *ngIf="permission.isDelete" mat-icon-button color="warn" class="remove-btn" (click)="onRemovePromotion($event, promotion);">
+              <mat-icon>remove_circle</mat-icon>
+            </button>
+          </div>
+          <div class="promotion-item-content px-2 pt-3">
+            <div class="field">
+              <div class="field-label">Code:</div>
+              <div class="field-value">{{promotion.promo_code}}</div>
+            </div>
+            <div class="field" *ngIf="promotion.discount_value">
+              <div class="field-label">Discount(Value):</div>
+              <div class="field-value">{{promotion.discount_value}}</div>
+            </div>
+            <div class="field" *ngIf="promotion.discount_percetage">
+              <div class="field-label">Discount(Percentage):</div>
+              <div class="field-value">{{promotion.discount_percetage}}%</div>
+            </div>
+            <div class="field" *ngIf="promotion.credit_value">
+              <div class="field-label">Credit:</div>
+              <div class="field-value">{{promotion.credit_value}}</div>
+            </div>
+            <div class="field">
+              <div class="field-label">Min.Spending:</div>
+              <div class="field-value">{{promotion.min_spending}}</div>
+            </div>
+            <div class="field">
+              <div class="field-label">Country:</div>
+              <div class="field-value">Saudi Arab</div>
+            </div>
+            <div class="field">
+              <div class="field-label">Activity:</div>
+              <div class="field-value">{{getActivityName(promotion.activity)}}</div>
+            </div>
+            <div class="field">
+              <div class="field-label">Valid Date:</div>
+              <div class="field-value">{{promotion.date_start | date: 'dd/MM/yyyy'}} to {{promotion.date_end | date:'dd/MM/yyyy'}}</div>
+            </div>
+            <div class="field">
+              <div class="field-label">Valid Time:</div>
+              <div class="field-value">{{promotion.timeslot}}</div>
+            </div>
+          </div>
+          <div class="promotion-item-footer p-2">
+            <div class="terms-and-conditions mb-3">
+              <span [matTooltip]="promotion.term_conditions">Terms & Conditions</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-end">
+              <div class="field">
+                <span class="field-label">Created:</span>
+                <span class="field-value">{{promotion.date_created | date:'dd/MM/yyyy'}}</span>
+              </div>
+              <div class="d-flex">
+                <div class="additional-info-item">
+                  <div class="field-value text-uppercase">{{promotion.nbr_instances === -1 ? 'Unlimited' : promotion.nbr_instances}}</div>
+                  <div class="field-label text-uppercase">Instance</div>
+                </div>
+                <div *ngIf="false" class="additional-info-item ml-1">
+                  <div class="field-value">5</div>
+                  <div class="field-label text-uppercase">Remaining</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

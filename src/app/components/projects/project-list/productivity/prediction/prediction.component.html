@@ -1,0 +1,66 @@
+<div>
+  <div class="forecast_div_1">
+    Number of spaces : <span class="forecast_span">{{project.parking_spaces}}</span>
+    <div style="color: red;" *ngIf="project.parking_spaces === 0">*No spaces available, Please set up On Street Activity in Project Info</div>
+  </div>
+  <div class="forecast_div_2">
+    <label for="issuance_rate" class="insuance_rate_label mark">Issuance Rate ({{prediction?.issuance_unity}}): </label>
+    <input class="mark issuance_rate_input"
+           type="number" min="1" id="issuance_rate"
+           [(ngModel)]="prediction.issuance_rate" size="8"
+           [disabled]="!canUpdate"
+           (keyup)="setForecastDeployed()"
+           (change)="setForecastDeployed()">
+  </div>
+  <div class="forecast_table">
+    <h5>Forecast:</h5>
+    <table class="wrapper" *ngIf="prediction?.issuance_unity === 'hour'">
+      <tr class="wp_row">
+        <th class="wp_th">Operating Hours<br>({{prediction?.issuance_unity}})</th>
+        <td *ngFor="let operating_hour of operating_hours_hours">{{operating_hour}}</td>
+      </tr>
+      <tr class="qt_row">
+        <th class="qt_th">Quantity</th>
+        <td *ngFor="let operating_hour of operating_hours_hours">{{operating_hour/prediction.issuance_rate | number : '1.0-2'}}</td>
+      </tr>
+    </table>
+    <table class="wrapper" *ngIf="prediction?.issuance_unity === 'min'">
+      <tr class="wp_row">
+        <th class="wp_th">Operating Hours<br>({{prediction?.issuance_unity}})</th>
+        <td *ngFor="let operating_hour of operating_hours_min">{{operating_hour}}</td>
+      </tr>
+      <tr class="qt_row">
+        <th class="qt_th">Quantity</th>
+        <td *ngFor="let operating_hour of operating_hours_min">{{operating_hour/prediction.issuance_rate | number : '1.0-2'}}</td>
+      </tr>
+    </table>
+  </div>
+  <div class="container-empty">
+    <div class="row"></div>
+  </div>
+  <div class="team">
+    <h5 class="h5">{{prediction?.groupage}} : </h5>
+    <div class="team_p1 mark" *ngIf="job_position === 'Tow Truck' || job_position === 'Clamp Van'">
+      1 {{job_position}} per <input type="number" [(ngModel)]="prediction.forecast_per_unity" size="5"
+                                       class="nb_space_input" [disabled]="!canUpdate"
+                                    (keyup)="setForecastDeployed()"
+                                    (change)="setForecastDeployed()"> {{prediction?.forecast_unity}}
+    </div>
+    <div class="team_p1 mark" *ngIf="job_position !== 'Tow Truck' && job_position !== 'Clamp Van'">
+      1 Enforcement Officer per <input type="number" [(ngModel)]="prediction.forecast_per_unity" size="5" min="1"
+                                       class="nb_space_input" (keyup)="setForecastDeployed()"> {{prediction?.forecast_unity}}
+    </div>
+    <br><br>
+    <div class="team_p2">
+      Forecast:
+      <span class="forecast_span">{{prediction.forecast_deployed}} Deployed</span>
+    </div>
+  </div>
+  <div class="container-empty">
+    <div class="row"></div>
+  </div>
+  <br>
+  <div *ngIf="canUpdate" class="validation_button">
+    <button mat-button class="add_button" mat-flat-button color="primary" (click)="onSubmit()" [disabled]="!changeFlag">Confirm</button>
+  </div>
+</div>

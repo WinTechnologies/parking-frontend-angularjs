@@ -1,0 +1,58 @@
+<div class="schedule-new">
+  <div class="schedule-new-header"></div>
+  <div class="schedule-new-content">
+    <div class="schedule-new-content-settings">
+      <div class="schedule-new-content-add-wrapper pr-3">
+        <mat-form-field>
+          <input
+            atp-time-picker
+            matInput
+            placeholder=" - - : - -"
+            [(ngModel)]="start_time"
+            [disabled]="!canUpdate"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            atp-time-picker
+            matInput
+            placeholder=" - - : - -"
+            [(ngModel)]="end_time"
+            [disabled]="!canUpdate"
+          />
+        </mat-form-field>
+        <button
+          *ngIf="canUpdate"
+          type="button"
+          mat-stroked-button
+          color="primary"
+          (click)="onClearTimeSlot()"
+        >
+          Clear
+        </button>
+        <button
+          *ngIf="canUpdate"
+          type="button"
+          mat-flat-button
+          color="primary"
+          (click)="onAddTimeSlot()"
+        >
+          Add
+        </button>
+      </div>
+      <div class="schedule-new-content-applydate-wrapper">
+        Apply to:
+        <app-selection-weekday
+          [weekdays]="this.schedule.working_days"
+          (changedWeekdays)="onChangedWeekdays($event)"
+        ></app-selection-weekday>
+      </div>
+    </div>
+    <div class="schedule-new-content-timeline-wrapper">
+      <app-timeline-view
+        [timeslots]="slots"
+        [color]="color"
+      ></app-timeline-view>
+    </div>
+  </div>
+</div>

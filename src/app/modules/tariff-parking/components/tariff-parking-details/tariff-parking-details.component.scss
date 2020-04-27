@@ -1,0 +1,104 @@
+:host {
+  .tariff-parking-details {
+    margin-top: 50px;
+
+    .title {
+      line-height: 50px;
+    }
+
+    .label-gray {
+      color: gray;
+      font-size: 12px;
+    }
+
+    .applicable-days-wrapper {
+      margin: 15px 0;
+      ::ng-deep .selection-weekday {
+        .weekday {
+          border-radius: 0;
+          width: 90px;
+          font-size: 12px;
+        }
+      }
+    }
+    ::ng-deep .mat-radio-button.mat-accent .mat-radio-outer-circle
+    {
+      border-color: #2d404b !important;
+    }
+    ::ng-deep .mat-radio-button.mat-accent .mat-radio-inner-circle {
+      background-color: #2d404b !important;
+    }
+
+    .error-required {
+      font-size: 75%;
+    }
+
+    .mat-radio-button {
+      margin-right: 15px;
+    }
+
+    .custom-segment-pricetype-title {
+      border-bottom: 1px solid;
+      margin: 15px 0;
+
+      span {
+        background: #2d404b;
+        padding: 3px 10px;
+        color: #ffffff;
+      }
+    }
+
+    .list-breaks-wrapper {
+      .list-breaks {
+        list-style: none;
+
+        .mat-form-field:not(:last-child) {
+          margin-right: 0.25rem;
+        }
+      }
+
+      .mat-button {
+        width: 36px;
+        min-width: 36px;
+        padding: 0;
+      }
+    }
+
+    .main-fields-wrapper,
+    .interval-fields {
+      .mat-form-field:not(:last-child) {
+        margin-right: 0.25rem;
+      }
+    }
+
+    .time-wrapper {
+      .time-pickers {
+        .mat-form-field,
+        button {
+          margin-right: 0.25rem;
+        }
+      }
+
+    }
+
+    .extra-day-link {
+      text-decoration: underline;
+    }
+  }
+
+  .tariff-parking-details-content {
+    padding: 50px 1rem 1rem;
+
+    .content-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .select-wrapper {
+      .mat-form-field {
+        margin-right: 0.25rem;
+      }
+    }
+  }
+}

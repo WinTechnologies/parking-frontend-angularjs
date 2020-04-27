@@ -1,0 +1,95 @@
+<ng-container *ngIf="data">
+  <div class="d-flex justify-content-between align-items-center">
+    <app-widget-element-universal
+      *ngIf="options.occupancy"
+      color="#023b41"
+      icon="on street_icon.svg"
+      elemWidth="99%">
+    </app-widget-element-universal>
+    <app-widget-element-universal
+      color="#023b41"
+      *ngIf="options.occupancy"
+      [value]="data?.occupancy"
+      [units_of_measurement]="'%'"
+      elemWidth="100%"
+      label="PAID OCCUPANCY ">
+    </app-widget-element-universal>
+  </div>
+  <app-widget-element-universal-advanced
+    [color]="'darkblue'"
+    label="SPACES"
+    *ngIf="options.spaces"
+    icon="pin1_icon.svg"
+    [value_current]="data?.spacesAvailable"
+    [value_total]="data?.spacesCount"
+    [label_value_current]="'AVAILABLE SPACES'"
+    [label_value_total]="'TOTAL NUMBER OF SPACES'"
+    elemWidth="100%">
+  </app-widget-element-universal-advanced>
+  <div class="d-flex justify-content-between align-items-center">
+    <app-widget-element-universal
+      *ngIf="options.als"
+      color="#023b41"
+      icon="clock_icon.svg"
+      label="ALS"
+      [value]="data?.als"
+      [units_of_measurement]="'HRS'"
+      elemWidth="99%"></app-widget-element-universal>
+    <app-widget-element-universal
+      [color]="'darkblue'"
+      *ngIf="options.atv"
+      icon="money_icon.svg"
+      label="AVT"
+      [value]="data?.atv?.value"
+      [isNumber]="true"
+      [units_of_measurement]="data?.atv?.currency"
+      elemWidth="100%">
+    </app-widget-element-universal>
+  </div>
+  <app-widget-element-chart
+    *ngIf="options.payment"
+    label="PAYMENTS"
+    color="#023b41"
+    icon="money_icon.svg"
+    elemWidth="100%"
+    [pieData]="data?.payment">
+  </app-widget-element-chart>
+  <app-widget-element-chart
+    label="VIOLATIONS"
+    *ngIf="false"
+    color="#023b41"
+    elemWidth="100%"
+    [pieData]="data?.violationsChart">
+  </app-widget-element-chart>
+  <app-widget-element-universal
+    *ngIf="options.revenue"
+    label="REVENUE"
+    color="#023b41"
+    icon="money_icon.svg"
+    [value]="data?.revenue?.value"
+    [isNumber]="true"
+    [units_of_measurement]="data?.revenue?.currency"
+    elemWidth="100%">
+  </app-widget-element-universal>
+  <app-widget-element-universal
+    *ngIf="options.revenue_spaces"
+    color="#023b41"
+    icon="money_icon.svg"
+    label="REVENUE / SPACE / 12M"
+    [isNumber]="true"
+    [value]="data?.revenue_spaces?.value"
+    [units_of_measurement]="data?.revenue_spaces?.currency"
+    elemWidth="100%">
+  </app-widget-element-universal>
+  <app-widget-element-universal-advanced
+    *ngIf="options.pnd"
+    label="PARKING METER"
+    color="orange"
+    icon="parking meter_icon.svg"
+    [value_current]="data?.working_pnd"
+    [value_total]="data?.total_pnd"
+    [label_value_current]="'WORKING PNDs'"
+    [label_value_total]="'TOTAL NUMBER OF PNDs'"
+    elemWidth="100%">
+  </app-widget-element-universal-advanced>
+</ng-container>

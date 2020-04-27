@@ -1,0 +1,104 @@
+@import "../../../../styles/_color.scss";
+
+:host {
+  .assets-select-page {
+    /deep/ .page-top-header {
+      justify-content: normal;
+    }
+
+    &-header {
+      .mat-icon-button {
+        outline: none;
+      }
+    }
+
+    &-content {
+      padding-top: 5px;
+      padding-bottom: 1rem;
+
+      &-title {
+        height: 50px;
+        line-height: 50px;
+        font-size: 1.5rem;
+      }
+
+      &-wrapper {
+        padding: 20px 25px;
+        background-color: $c-greylight1;
+
+        .asset-container {
+          width: 170px;
+          height: 180px;
+          margin: 15px;
+          background-color: $c-greylight;
+          cursor: pointer;
+          box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2),
+            0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+
+          &:hover {
+            background-color: $c-blue;
+
+            .name {
+              color: $c-white;
+            }
+
+            .icon {
+              img {
+                &:not([src*='uploads']) {
+                  filter: brightness(0) invert(1);
+                }
+              }
+            }
+
+            .mat-icon {
+              color:whitesmoke;
+            }
+          }
+
+          .icon {
+            height: 150px;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+
+            img {
+              height: 120px;
+              width: 100px;
+            }
+          }
+
+          .name {
+            text-align: center;
+          }
+
+          .add-icon {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+            color: $c-blue;
+
+            .mat-icon {
+              height: 48px;
+              width: 48px;
+              font-size: 48px;
+            }
+          }
+        }
+      }
+
+      &-buttons {
+        padding: 20px 40px;
+        .mat-flat-button {
+          background-color: $c-yellowgreen;
+          outline: none;
+        }
+      }
+    }
+  }
+
+  p {
+    margin: 0;
+  }
+}

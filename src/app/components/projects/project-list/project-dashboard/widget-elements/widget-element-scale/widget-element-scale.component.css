@@ -1,0 +1,96 @@
+.element {
+    height: 135px;
+    padding: 5px;
+    margin: 2px;
+}
+
+h6 {
+    font-family: 'Roboto Condensed', sans-serif;
+    color: white
+}
+
+.scale{
+    width: 98%;
+    height: 30px;
+    background-color: white;
+    border-radius: 3px;
+    padding: 2px;
+    position: relative;
+    margin: 0 auto;
+}
+
+.scale .triangle-down {
+	width: 0;
+    height: 0;
+    position: absolute;
+    top: 100%;
+	border-left: 3px solid transparent;
+	border-right: 3px solid transparent;
+	border-top: 6px solid white;
+}
+
+.scale .triangle-down span {
+    color: white;
+    font-size: 9px;
+    margin-left: -7px;
+    display: inline-block;
+}
+
+.scale #triangle2 {
+    left: 96%;
+}
+
+.scale #triangle2::before {
+    content: 'T';
+    color: white;
+    position: absolute;
+    margin-top: -49px;
+    font-size: 8px;
+    margin-left: -2px;
+}
+
+.scale #triangle1 {   
+    left: 70%;
+}
+
+
+.scale #triangle1::before {
+    content: 'D';
+    color: white;
+    position: absolute;
+    margin-top: -49px;
+    font-size: 8px;
+    margin-left: -2px;
+}
+
+.percent {
+    margin: 10px 5px 2px 5px;
+}
+
+.scale-value {
+    height: 26px;
+    background-color: rgb(83, 122, 182);
+    max-width: 100%;
+}
+
+.scale-value span {
+    font-size: 14px;
+    margin: 2px 5px;
+}
+span{
+    font-size: 10px;
+
+    color: white;
+}
+.percent-span{
+    font-size: 20px;
+}
+.green{
+    color: lightgreen;
+}
+.yellow{
+    color: yellow;
+}
+.red{
+    color: red;
+}

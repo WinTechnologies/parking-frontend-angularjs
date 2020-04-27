@@ -1,0 +1,100 @@
+<div class="assets-new-type-page">
+  <div class="assets-new-type-page-header d-flex align-items-center">
+    <div class="assets-new-type-heder-buttons">
+      <button mat-icon-button color="base" (click)="onBack()"><mat-icon>arrow_back</mat-icon></button>
+    </div>
+    <p>Assets / Create New Asset / Create New Asset Type</p>
+  </div>
+  <div class="assets-new-type-page-content container-fluid mt-50px">
+    <h1 class="assets-new-type-page-content-title font-weight-bold">Create New Asset Type</h1>
+    <form class="assets-new-type-page-content-wrapper"
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+      *ngIf="form"
+      autocomplete="off"
+      novalidate>
+      <div class="row">
+        <div class="col-lg-4">
+          <mat-form-field>
+            <input matInput type="text" formControlName="name" placeholder="Type name...">
+            <mat-error>Asset Name is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4">
+            <ng2-file-input
+              (onRemoved)="onPictureRemoved($event)"
+              (onAdded)="onPictureAdded($event)"
+              (onAction)="onPictureAction($event)"
+              [multiple]="false"
+              accept="['jpg', 'jpeg', 'png', 'gif']"
+              [show-previews]="false"
+              [drop-text]="'Picture'"
+              [browse-text]="'Browse'">
+             </ng2-file-input>
+        </div>
+      </div>
+      <div class="asset-fields-wrapper d-flex flex-wrap">
+        <div class="asset-field-container" *ngFor="let field of assetFields; let i=index" >
+          <div class="form-field">
+            <span [class.fixed]="field.type == AssetFieldType.CheckboxList">{{field.name}}:</span>
+            <ng-container *ngIf="field.type == AssetFieldType.TextInput">
+              <mat-form-field>
+                <input matInput type="text">
+              </mat-form-field>
+            </ng-container>
+            <ng-container *ngIf="field.type == AssetFieldType.Droplist">
+              <mat-form-field>
+                <mat-select>
+                  <mat-option *ngFor="let option of field.options" [value]="option">
+                    {{option}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </ng-container>
+            <ng-container *ngIf="field.type == AssetFieldType.Calendar">
+              <mat-form-field>
+                <input matInput [matDatepicker]="i" placeholder="Choose a date">
+                <mat-datepicker-toggle matSuffix [for]="i"></mat-datepicker-toggle>
+                <mat-datepicker #i></mat-datepicker>
+              </mat-form-field>
+            </ng-container>
+            <ng-container *ngIf="field.type == AssetFieldType.CheckboxList">
+              <button type="button" mat-icon-button color="base"
+                (click)="onDelete(i)">
+                <mat-icon>Cancel</mat-icon>
+              </button>
+              <mat-selection-list>
+                <mat-list-option *ngFor="let option of field.options" checkboxPosition='before'>
+                  {{option}}
+                </mat-list-option>
+              </mat-selection-list>
+            </ng-container>
+            <button type="button" mat-icon-button color="base"
+              *ngIf="field.type !== AssetFieldType.CheckboxList"
+              (click)="onDelete(i)">
+              <mat-icon>Cancel</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="asset-field-container">
+          <div class="form-field add-button">
+            <span></span>
+            <mat-form-field>
+              <input matInput type="text" readonly>
+            </mat-form-field>
+            <button type="button" mat-icon-button color="base"
+              (click)="onAdd(i)">
+              <mat-icon>add_circle</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="assets-new-type-page-content-buttons">
+        <button mat-stroked-button type="button" (click)="onCancel()" color="basic">Cancel</button>
+        <button mat-flat-button class="add">Create</button>
+      </div>
+    </form>
+  </div>
+</div>

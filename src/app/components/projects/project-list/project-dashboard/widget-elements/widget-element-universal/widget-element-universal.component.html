@@ -1,0 +1,16 @@
+<div class="element" [ngStyle]="defineStyle('element')">
+  <h6 *ngIf="label" class="label">{{label}}</h6>
+  <div class="d-flex align-items-center justify-content-center" [ngClass]="defineClass('d-flex')">
+    <div class="icon" *ngIf="icon">
+      <img [src]="'../../../../../assets/Icons/Projects_section/Dashboard_Icons/' + icon" [ngStyle]="defineStyle('icon')" />
+    </div>
+    <div *ngIf="value"
+      [ngClass]="defineClass('value')">
+      {{isNumber ? (value | number) : value}}
+      <span *ngIf="units_of_measurement">{{units_of_measurement}}</span>
+    </div>
+  </div>
+  <div class="image text-center" *ngIf="image">
+    <img [src]="'../../../../../assets/Icons/Projects_section/Dashboard_Icons/' + image" />
+  </div>
+</div>

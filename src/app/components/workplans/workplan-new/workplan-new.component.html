@@ -1,0 +1,132 @@
+<main class="workplan-new-page">
+  <!-- ------------------- Greybar ------------------------ -->
+  <header class="page-top-header">
+    <div class="workplan-new-heder-buttons d-flex align-items-center">
+      <button mat-icon-button color="base" (click)="onBack()">
+        <mat-icon>arrow_back</mat-icon></button>
+    </div>
+      <p>Workplan / Create Workplan</p>
+  </header>
+  <!-- -------------------------------------------- -->
+  <h1 class="workplan-new-page-content-title font-weight-bold title-fixed">Create Workplan</h1>
+  <div *ngIf="form" class="workplan-new-page-content container-fluid pl-3 pr-3 mt-50px">
+    <div class="workplan-new-page-content-wrapper mt-50px">
+      <form
+      id="ngForm"
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+      *ngIf="form"
+      autocomplete="off"
+      novalidate>
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="form-field">
+              <span>Workplan Name <sup>*</sup> :</span>
+              <mat-form-field>
+                <input matInput type="text" formControlName="wp_name">
+                <mat-error *ngIf="form.get('wp_name').hasError('required')">Workplan Name is required</mat-error>
+                <mat-error *ngIf="form.get('wp_name').hasError('duplicatedName')">Workplan Name is duplicated
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-field">
+              <span>Location :</span>
+              <mat-form-field>
+                <input matInput type="text" formControlName="location">
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-field">
+              <span>Country Code :</span>
+              <mat-form-field>
+                <input matInput type="text" formControlName="country_code">
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="form-field">
+              <span>Description:</span>
+              <mat-form-field class="w-50">
+                <textarea matInput rows="2" formControlName="description"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="form-field">
+              <span>Date Start <sup>*</sup> :</span>
+              <mat-form-field>
+                <input
+                appInputDateFormat
+                matInput
+                formControlName="date_start"
+                [matDatepicker]="datestart"
+                [matDatepickerFilter]="startDateFilter.bind(this)"
+                placeholder="Choose a date">
+                <mat-datepicker-toggle matSuffix [for]="datestart"></mat-datepicker-toggle>
+                <mat-datepicker #datestart></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="form-field">
+              <span>Date End:</span>
+              <mat-form-field>
+                <input
+                appInputDateFormat
+                matInput
+                formControlName="date_end"
+                [matDatepicker]="dateend"
+                [matDatepickerFilter]="endDateFilter.bind(this)"
+                placeholder="Choose a date">
+                <mat-datepicker-toggle matSuffix [for]="dateend"></mat-datepicker-toggle>
+                <mat-datepicker #dateend></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="workplan-new-page-content-schedule-wrapper">
+      <h1 class="workplan-new-page-content-title font-weight-bold">Schedules</h1>
+      <div class="workplan-new-page-content-reoccuring-wrapper">
+        <h1 class="workplan-new-page-content-reoccuring-title">Reoccuring</h1>
+        <ng-container *ngFor="let reoccuring of reoccurings; let i = index;">
+          <app-reoccuring-new [(reoccuring)]="reoccuring" (close)="onRemoveReoccuring(i)"></app-reoccuring-new>
+        </ng-container>
+      </div>
+      <div class="workplan-new-page-content-schedule-buttons-wrapper">
+        <button mat-flat-button color="basic" (click)="onAddReoccuring()">
+          <div class="d-flex align-items-center">
+            <mat-icon class="mr-2">add_circle</mat-icon>
+            <span>Reoccurings</span>
+          </div>
+        </button>
+      </div>
+      <div class="workplan-new-page-content-exceptions-wrapper">
+        <h1 class="workplan-new-page-content-exceptions-title">Exceptions</h1>
+        <ng-container *ngFor="let exception of exceptions; let i = index;">
+          <app-exception-new [(exception)]="exception" (close)="onRemoveException(i)"></app-exception-new>
+        </ng-container>
+      </div>
+      <div class="workplan-new-page-content-schedule-buttons-wrapper">
+        <button mat-flat-button color="basic" (click)="onAddException()">
+          <div class="d-flex align-items-center">
+            <mat-icon class="mr-2">add_circle</mat-icon>
+            <span>Exceptions</span>
+          </div>
+        </button>
+      </div>
+    </div>
+    <div class="workplan-new-page-content-buttons-wrapper d-flex mb-3 justify-content-end">
+      <button class="mr-1" mat-stroked-button color="secondary" (click)="onClear()">Clear</button>
+      <button mat-flat-button color="primary" [disabled]="!checkValidForm()" form="ngForm">Next</button>
+    </div>
+  </div>
+</main>

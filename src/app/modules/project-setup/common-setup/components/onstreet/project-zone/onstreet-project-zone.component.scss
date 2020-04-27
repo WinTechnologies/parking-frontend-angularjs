@@ -1,0 +1,164 @@
+@import '../../../../../../../styles/color';
+
+:host {
+    .zone {
+      display: flex;
+      margin-top: 20px;
+      background: white;
+      ::ng-deep .map-view {
+        height: calc(100vh - 200px) !important;
+      }
+
+      ::ng-deep .leaflet-control-attribution {
+        display: none;
+      }
+
+      .width-calc {
+        width: calc(100% - 400px);
+      }
+
+      .right-sidebar {
+        margin-right: 0 !important;
+        margin-left: 20px;
+      }
+      &-sidebar {
+        padding: 30px;
+        height: calc(100vh - 200px);
+        overflow-y: auto;
+        background: #fafafb;
+        margin-right: 20px;
+
+        app-mapview-new {
+          ::ng-deep .map-view {
+            max-height: 225px;
+            margin: -30px 0 30px -30px;
+            width: calc(100% + 60px);
+          }
+        }
+
+        &-title {
+          font-weight: 600;
+          font-size: 22px;
+          margin-bottom: 20px;
+        }
+
+        &-error {
+          color: red;
+          width: 300px;
+        }
+
+        .form-field {
+          span {
+            display: block;
+            font-size: 17px;
+            b.span-bold {
+              color: #bcbcbc;
+              font-size: 15px;
+            }
+          }
+          .mat-form-field.units {
+            width: 120px;
+            ::ng-deep .mat-form-field-infix {
+              text-align: right;
+              padding-right: 10px;
+            }
+          }
+          .units.line-height-15 {
+            ::ng-deep .mat-form-field-infix {
+              line-height: 15px;
+            }
+          }
+          .mat-form-field {
+            width: 300px;
+            &.units {
+              width: 120px;
+            }
+            &.place_LL {
+              width: 150px;
+            }
+          }
+          textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            color: #bcbcbc;
+          }
+          ::ng-deep .mat-form-field-infix {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.42);
+            border-radius: 5px;
+            padding: 8px 8px 8px 8px;
+            color: #0073AE;
+            font-size: 17px;
+            .mat-select-arrow {
+              color: #0073AE;
+            }
+            span {
+              color: #0073AE;
+            }
+          }
+          .border-right-0 {
+            ::ng-deep .mat-form-field-infix {
+              border-right: 0 !important;
+              border-top-right-radius: 0 !important;
+              border-bottom-right-radius: 0 !important;
+            }
+          }
+          .border-left-0 {
+            ::ng-deep .mat-form-field-infix {
+              border-left: 0 !important;
+              border-top-left-radius: 0 !important;
+              border-bottom-left-radius: 0 !important;
+            }
+          }
+          ::ng-deep .mat-form-field-invalid .mat-form-field-infix {
+            border: 1px solid #f44336;
+          }
+          ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline {
+            height: 0 !important;
+          }
+          ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-ripple {
+            height: 0 !important;
+          }
+        }
+        .payment-method {
+          margin-left: 8rem;
+        }
+
+        .buttons-wrapper {
+          justify-content: flex-end;
+          display: flex;
+          button {
+            min-width: 45%;
+            margin: 20px 2%;
+          }
+          span {
+            display: flex;
+            font-size: 18px;
+            color: darkgray;
+          }
+          span:hover {
+            color: red;
+            cursor: pointer;
+          }
+        }
+      }
+
+      &-map-wrapper {
+        flex-grow: 1;
+      }
+      .notification-box {
+        text-align: center;
+        padding: 1rem;
+        background-color: white;
+        span {
+          font-weight: bold;
+          color: $mawgif-primary;
+          font-size: 20px;
+        }
+        button {
+          width: 100px;
+        }
+      }
+    }
+}

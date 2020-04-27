@@ -1,0 +1,106 @@
+<h1 mat-dialog-title *ngIf="!data.isUpdate">Create New <span>{{typeAsset}}</span> Model</h1>
+<h1 mat-dialog-title *ngIf="data.isUpdate">'Modify <span>{{typeAsset}}</span> Model <span>{{data.updateModel.name}}</span>'</h1>
+<form [formGroup]="form" *ngIf="form" autocomplete="off" novalidate>
+  <div mat-dialog-content>
+    <div class="mat-form-field">
+      <ng2-file-input *ngIf="!data.isUpdate"
+                      (onRemoved)="onPictureRemoved($event)"
+                      (onAdded)="onPictureAdded($event)"
+                      (onAction)="onPictureAction($event)"
+                      [multiple]="false"
+                      accept="['jpg', 'jpeg', 'png', 'gif', 'svg]"
+                      [show-previews]="true"
+                      [drop-text]="'Picture'"
+                      [browse-text]="'Browse'">
+      </ng2-file-input>
+      <ng-container *ngIf="data.isUpdate">
+        <ng2-file-input
+          (onRemoved)="onPictureRemoved($event)"
+          (onAdded)="onPictureAdded($event)"
+          (onAction)="onPictureAction($event)"
+          [multiple]="false"
+          accept="['jpg', 'jpeg', 'png', 'gif', 'svg]"
+          [show-previews]="true"
+          [drop-text]="'Picture'"
+          [browse-text]="'Browse'">
+        </ng2-file-input>
+        <img *ngIf="!picture || !picture.length" class="original-image" [src]="defineUrl(data.updateModel.img_url)" onError="this.src='/assets/nophoto.jpg';">
+      </ng-container>
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="form-field disabled">
+          <span>Asset Type <span class="required">* </span>:</span>
+          <mat-form-field>
+            <input matInput type="text" formControlName="type_asset" readonly>
+            <mat-error>Asset Type is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span>Model Name <span class="required">* </span>:</span>
+          <mat-form-field>
+            <input matInput type="text" formControlName="name">
+            <mat-error>Model Name is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-field disabled">
+          <span>Category <span class="required">* </span>:</span>
+          <mat-form-field>
+            <input matInput type="text" formControlName="category_asset" readonly>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span>Manufacturer <span class="required">* </span>:</span>
+          <mat-form-field>
+            <input matInput type="text" formControlName="manufacturer">
+            <mat-error>Manufacturer is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-field">
+          <span>Configurations <span class="required">* </span>:</span>
+          <mat-form-field>
+            <input matInput type="text" formControlName="configurations">
+            <mat-error>Configurations is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span>Firmware Version <span class="required">* </span>:</span>
+          <mat-form-field>
+            <input matInput type="text" formControlName="firmware_version">
+            <mat-error>Firmware Version is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span>Fullspecs Links <span class="required">* </span>:</span>
+          <mat-form-field>
+            <input matInput type="text" formControlName="fullspecs_link">
+            <mat-error>Fullspecs Link are required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span>Product Warranty <span class="required">* </span>:</span>
+          <mat-form-field>
+            <input matInput [matDatepicker]="product_warranty" [min]="today" placeholder="Choose a date"
+                   formControlName="product_warranty">
+            <mat-datepicker-toggle matSuffix [for]="product_warranty"></mat-datepicker-toggle>
+            <mat-datepicker #product_warranty></mat-datepicker>
+            <mat-error>Product Warranty is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span>Description :</span>
+          <mat-form-field>
+            <textarea matInput type="text" formControlName="notes"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-stroked-button type="button" color="basic" (click)="onCancel()">Cancel</button>
+    <button *ngIf="!data.isUpdate" mat-button class="add" (click)="onAdd()" cdkFocusInitial>Add</button>
+    <button *ngIf="data.isUpdate" mat-button class="add" (click)="onUpdate()" cdkFocusInitial>Update</button>
+  </div>
+</form>

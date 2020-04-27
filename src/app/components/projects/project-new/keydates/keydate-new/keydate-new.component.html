@@ -1,0 +1,95 @@
+<div mat-dialog-title>
+  <h1>Key Dates</h1>
+  <button mat-icon-button (click)="onNoClick()"><mat-icon>close</mat-icon></button>
+</div>
+<form
+id="ngForm"
+[formGroup]="form"
+(ngSubmit)="onSubmit()"
+*ngIf="form"
+autocomplete="off"
+novalidate>
+<div mat-dialog-content>
+  <div class="row">
+    <div class="col-8">
+      <div class="form-field">
+        <span>Title:</span>
+        <mat-form-field class="title">
+          <input matInput type="text" formControlName="task_name">
+          <mat-error>Title is required</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="col-4 allday">
+      <div class="form-field">
+        <mat-checkbox labelPosition="before" formControlName="allday" (change)="toggleVisibility($event)">All-day</mat-checkbox>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-6">
+      <div class="form-field">
+        <span>Starts:</span>
+        <mat-form-field>
+          <input
+            appInputDateFormat
+            matInput formControlName="start_date"
+            [matDatepicker]="start_date"
+            [matDatepickerFilter]="startDateFilter.bind(this)"
+            placeholder="Choose a date">
+          <mat-datepicker-toggle matSuffix [for]="start_date"></mat-datepicker-toggle>
+          <mat-datepicker #start_date></mat-datepicker>
+          <mat-error>Starts is required</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="col-6">
+      <div *ngIf="marked == false" class="form-field">
+        <span>Ends:</span>
+        <mat-form-field>
+          <input
+              appInputDateFormat
+              matInput formControlName="end_date"
+              [matDatepicker]="end_date"
+              placeholder="Choose a date"
+              [matDatepickerFilter]="endDateFilter.bind(this)"
+          >
+          <mat-datepicker-toggle matSuffix [for]="end_date"></mat-datepicker-toggle>
+          <mat-datepicker #end_date></mat-datepicker>
+          <mat-error>Ends is required</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-6">
+      <div class="form-field">
+        <span>Repeat:</span>
+        <mat-form-field>
+          <mat-select formControlName="repeat">
+            <mat-option *ngFor="let option of repeats" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-select>
+          <mat-error>Repeat is required</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="form-field">
+        <span>Remarks:</span>
+        <mat-form-field class="remarks">
+          <textarea matInput type="text" formControlName="remarks"></textarea>
+          <mat-error>Remarks is required</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-stroked-button color="primary" type="button" class="mr-2" (click)="onNoClick()">Cancel</button>
+  <button mat-flat-button color="primary">{{keydate ? 'Update' : 'Add'}}</button>
+</div>
+</form>

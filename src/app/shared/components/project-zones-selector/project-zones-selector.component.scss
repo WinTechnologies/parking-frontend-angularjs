@@ -1,0 +1,56 @@
+@import "../../../../styles/color";
+
+.parking-wrapper{
+    font-size: 15px;
+
+    img{
+        width: 40px;
+    }
+
+    .top-panel {
+        height: 65px;
+        justify-content: inherit;
+    }
+
+    ::ng-deep .mat-expansion-panel-header {
+        background: $c-blue!important;
+
+        .mat-checkbox-label{
+            color:white!important;
+        }
+        &:hover {
+            background: $c-blue;
+            color:white;
+        }
+    }
+
+    ::ng-deep .mat-expansion-panel-body {
+        padding: 0!important;
+
+        table{
+
+            tr{ 
+                ::ng-deep td {    
+                    height: 50px;
+                    color: $c-blue;
+                    padding: 20px;
+                    font-size: 16px;
+                    text-align: center;
+                    font-weight: 700;
+
+                    span {
+                        color: gray
+                    }
+                }
+
+                &:hover {
+                    background-color: rgb(195, 230, 241);
+                    cursor: pointer;
+                }
+            }
+
+        }
+
+    }
+
+}

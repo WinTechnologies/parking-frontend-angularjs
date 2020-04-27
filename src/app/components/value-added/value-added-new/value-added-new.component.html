@@ -1,0 +1,142 @@
+<main class="value-added-new-page">
+  <!-- ------------------- Greybar ------------------------ -->
+  <header class="page-top-header">
+    <div class="d-flex align-items-center">
+      <div class="value-added-new-page-buttons">
+        <button mat-icon-button color="base" (click)="onBack()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+      <p>Tariff / Value Added</p>
+    </div>
+    <span class="">
+      Local Date / Time {{ today | date: "dd/MM/yyyy hh:mm a" }}
+    </span>
+  </header>
+  <!-- ------------------------------------------- -->
+    <h1 class="title-fixed value-added-new-page-title font-weight-bold ">
+      {{ service?.id ? "Edit Value Added" : "Create Value Added" }}
+    </h1>
+  <div class="value-added-new-page-content mt-50px">
+    <div class="value-added-new-page-content-wrapper mt-50px">
+      <form
+        id="ngForm"
+        #documentEditForm="ngForm"
+        [formGroup]="form"
+        (ngSubmit)="onSubmit()"
+        *ngIf="form"
+        autocomplete="off"
+        novalidate
+      >
+        <div class="row">
+          <div class="col-lg-8 col-md-8 col-sm-6">
+            <div class="form-field">
+              <span>English: </span>
+              <mat-form-field>
+                <input matInput type="text" formControlName="service_name_en" />
+                <mat-error>Name is required</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="form-field">
+              <span>Arabic: </span>
+              <mat-form-field>
+                <input matInput type="text" formControlName="service_name_ar" />
+                <mat-error>Arabic Name is required</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="form-field">
+              <span>Fee: </span>
+              <mat-form-field>
+                <input matInput type="number" formControlName="fee" min="1"  onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+                <mat-error>Fee is required</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-4 col-sm-2">
+            <div class="form-field">
+              <span>Image: </span>
+              <ng2-file-input
+                *ngIf="canUpdate && (!service.id || !service.img_url)"
+                [drop-text]="' '"
+                accept="['image/jpeg']"
+                (onAdded)="onImageAdded($event)"
+              >
+              </ng2-file-input>
+              <div
+                *ngIf="service.id && service.img_url"
+                class="service-image-wrapper"
+              >
+                <span class="text">{{ service.img_url }}</span>
+                <img class="imgfield" [src]="img_url + service.img_url" />
+                <span
+                  *ngIf="canUpdate"
+                  class="remove"
+                  (click)="onRemoveImage()"
+                >
+                  <p>Remove</p>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12">
+            <h1 class="value-added-new-page-title">Schedules</h1>
+            <app-value-added-schedule
+              [schedule]="schedule"
+              [canUpdate]="canUpdate"
+            ></app-value-added-schedule>
+          </div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-10">
+            <div class="form-field textarea">
+              <span>Description:</span>
+              <mat-form-field>
+                <textarea
+                  matInput
+                  type="text"
+                  formControlName="decription"
+                  rows="5"
+                ></textarea>
+                <mat-error>Description is required</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="form-field textarea">
+              <span>Terms & Conditions:</span>
+              <mat-form-field>
+                <textarea
+                  matInput
+                  type="text"
+                  formControlName="term_conditions"
+                  rows="5"
+                ></textarea>
+                <mat-error>Terms & Conditions is required</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-10">
+            <div *ngIf="canUpdate" class="action-buttons-wrapper">
+                <button
+                  type="button"
+                  mat-stroked-button
+                  color="basic"
+                  (click)="onClear()"
+                >
+                  Clear
+                </button>
+                <button class="add" mat-flat-button color="primary">
+                  {{ service?.id ? "Update" : "Create" }}
+                </button>
+              </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>

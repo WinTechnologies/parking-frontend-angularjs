@@ -1,0 +1,150 @@
+@import "../../styles/promotion-common";
+
+:host {
+  .promotions {
+    &-title {
+      height: 50px;
+      line-height: 50px;
+      font-size: 1.5rem;
+    }
+
+    &-search-header {
+      display:flex;
+      position: fixed;
+      justify-content: space-between;
+      background-color: white;
+      z-index: 40;
+      right: 0;
+      left: 15rem;
+      padding:0 1rem 0 1rem;
+    }
+  }
+
+  .color-active {
+    color: $active-dark-blue;
+  }
+
+  .background-active {
+    background-color: $active-dark-blue;
+  }
+
+  header {
+    .mat-icon-button {
+      outline: none;
+    }
+  }
+
+  .content-wrapper {
+    padding: 3.5rem 1rem 1rem;
+
+    h4 {
+      line-height: 50px;
+    }
+
+    .filter-wrapper {
+      .mat-form-field:not(:first-child) {
+        margin-right: 1rem;
+      }
+    }
+
+    .create-btn {
+      /deep/ .mat-button-wrapper {
+        display: flex;
+        align-items: center;
+        color: $active-blue;
+      }
+    }
+
+    .field {
+      display: flex;
+      align-items: center;
+      padding-bottom: 0.25rem;
+
+      .field-label {
+        color: $inactive-grey;
+        flex: 0 0 30%;
+        text-align: right;
+      }
+
+      .field-value {
+        padding-left: 0.5rem;
+        color: $active-dark-blue;
+      }
+    }
+
+    .promotions-list {
+      padding-top: 60px;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .promotion-item-wrapper {
+      box-shadow: 0 0 3px 2px lightgrey;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+
+      &.expired {
+        .field .field-value {
+          color: $inactive-grey;
+        }
+
+        .promotion-title {
+          color: #fff;
+          background-color: $inactive-grey;
+        }
+
+        .promotion-item-footer * {
+          color: $inactive-grey !important;
+        }
+      }
+
+      .expired-watermark {
+        font-size: 4rem;
+        font-weight: bold;
+        transform: rotate(-45deg);
+        position: absolute;
+        bottom: 30%;
+        left: 15%;
+        transform-origin: 30%;
+        text-transform: uppercase;
+        color: $inactive-grey;
+      }
+
+      .remove-btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+
+      .promotion-title {
+        padding: 10px;
+        max-width: 50%;
+        border-radius: 7px 0;
+        background-color: $active-dark-blue;
+        color: #fff;
+      }
+
+      .promotion-item-footer {
+        .terms-and-conditions {
+          color: $active-dark-blue;
+          margin-top: 1rem;
+        }
+
+        .additional-info-item {
+          color: $active-dark-blue;
+          text-align: center;
+
+          .field-value {
+            font-weight: bold;
+            font-size: 1.5rem;
+          }
+
+          .field-label {
+            font-size: 0.75rem;
+          }
+        }
+      }
+    }
+  }
+}

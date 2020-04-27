@@ -1,0 +1,182 @@
+@import "../../../../../styles/color";
+
+:host {
+  .title {
+    height: 50px;
+    line-height: 50px;
+    font-size: 1.5rem;
+  }
+
+  .contraventions-table {
+    padding-left: 1rem;
+  }
+
+  .page-top-header {
+    .inline {
+      display: flex !important;
+    }
+
+    form {
+      .mat-form-field {
+        margin-right: 0.5rem;
+      }
+    }
+
+    height: 70px;
+  }
+
+  .content-wrap {
+    margin-top: 70px;
+  }
+
+  .category {
+    width: 80%;
+    height: 30px;
+    display: block;
+    text-align: center;
+    padding-top: 5px;
+    color: $c-darkgrey;
+  }
+
+  .observation-in-progress {
+    background-color: white;
+    border: 1px solid gray;
+
+    display: block;
+    width: 80%;
+    height: 30px;
+  }
+
+  .observation-ready-to-use {
+    background-color: #efa170;
+    display: block;
+    width: 80%;
+    height: 30px;
+  }
+
+  .observation-canceled {
+    background-color: #ffff0b;
+    display: block;
+    width: 80%;
+    height: 30px;
+  }
+
+  .contravention-observation {
+    background-color: #149fec;
+    display: block;
+    width: 80%;
+    height: 30px;
+  }
+
+  .contravention-status {
+    background-color: #244185;
+    display: block;
+    width: 80%;
+    height: 30px;
+  }
+
+  .contravention-canceled {
+    background-color: #fb0007;
+    display: block;
+    width: 80%;
+    height: 30px;
+  }
+
+  .contravention-paid {
+    background-color: #16a53f;
+    display: block;
+    width: 80%;
+    height: 30px;
+  }
+
+  .highlight{
+    background: #023b41;
+
+    .mat-cell {
+      color: white;
+    }
+  }
+
+  .list-page-table-wrapper {
+    border-bottom: 1px solid #9a9caf;
+    .mat-table {
+        height: calc( 100vh - 260px);
+        overflow: initial;
+    }
+  }
+
+  .list-details-container {
+    .title {
+      background-color: #023b41;
+      color: white;
+      text-align: center;
+      padding: 0 1rem;
+    }
+
+    .information-item-value {
+      border-radius: 15px;
+      min-width: 66.66% !important;
+      background-color: aliceblue;
+    }
+
+    display: flex;
+  }
+
+  ngx-gallery /deep/ .ngx-gallery-arrow-wrapper {
+    z-index: 49;
+  }
+  /* On screens that are 992px wide or less, go from four columns to two columns */
+  @media screen and (max-width: 1200px) {
+    .page-top-header {
+      display: block;
+      height: auto;
+    }
+
+    .content-wrap {
+      margin-top: 110px;
+    }
+  }
+
+  @media screen and (max-width: 900px) {
+    .page-top-header {
+      display: block;
+      height: auto;
+    }
+
+    .content-wrap {
+      margin-top: 110px;
+    }
+
+    .mat-form-field-infix {
+      width: 150px;
+    }
+  }
+
+  /* On screens that are 600px wide or less, make the columns stack on top of each other instead of next to each other */
+  @media screen and (max-width: 610px) {
+    .page-top-header {
+      height: auto;
+      padding-bottom: 10px;
+
+      .inline {
+        display: block !important;
+      }
+    }
+
+    .content-wrap {
+      margin-top: 260px;
+    }
+  }
+}
+
+.mat-form-field-appearance-legacy {
+  .mat-form-field-wrapper {
+    padding-bottom: 0 !important;
+  }
+  .mat-form-field-underline {
+    bottom: 0 !important;
+  }
+  .mat-form-field-subscript-wrapper {
+    top: 100%;
+  }
+}

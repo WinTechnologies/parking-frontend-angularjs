@@ -1,0 +1,17 @@
+{
+    "common": {
+      "finance": "Finance",
+      "enforcement": "Enforcement",
+      "cashier": "Cashier",
+      "cn_challenge": "CN Challenge",
+      "cn_review": "CN Review",
+      "car_parks": "Car Parks",
+      "profile": "Profile",
+      "account_settings": "Account Settings",
+      "disable_alerts": "Disable alerts",
+      "sign_out": "Sign out"
+    },
+    "finance": {
+      "works": "Finance Works!"
+    }
+  }

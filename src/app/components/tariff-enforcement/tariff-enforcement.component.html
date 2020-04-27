@@ -1,0 +1,64 @@
+<div>
+  <header class="page-top-header" *ngIf="!projectId && projectId != 0">
+    <div class="select-project-wrapper">
+      <span>Project:&nbsp;</span>
+      <mat-form-field>
+        <mat-select
+          [(ngModel)]="projectIdSelected"
+          (ngModelChange)="onChangeProject($event)">
+          <ng-container *ngFor="let project of projects" >
+            <mat-option [value]="project.id">
+              {{project.project_code}}:{{project.project_name}}
+            </mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div>
+      <span>{{ today | date:'dd/MM/yyyy hh:mm a'}}</span>
+    </div>
+  </header>
+  <div class="tariff-enforcement-page-content">
+    <div class="tabs-wrapper">
+      <mat-tab-group
+        [(selectedIndex)]="selectedTab"
+      >
+        <mat-tab *ngIf="canView(currentUser, 'tariff_enforcement_violation')">
+          <ng-template mat-tab-label>
+            Violations
+          </ng-template>
+          <app-enforcement-violations
+            [projectId]="projectIdSelected"
+            [isAssignments]="false"
+            [currentUser]="currentUser"
+          >
+            <!--[singleProjectMode]="singleProjectMode"-->
+          </app-enforcement-violations>
+        </mat-tab>
+
+        <mat-tab *ngIf="canView(currentUser, 'tariff_enforcement_group')">
+          <ng-template mat-tab-label>
+            Groups
+          </ng-template>
+          <app-enforcement-groups
+            [projectId]="projectIdSelected"
+            [currentUser]="currentUser"
+          >
+            <!-- *ngIf="selectedTab===1" -->
+            <!-- [selectedTab]="selectedTab" -->
+          </app-enforcement-groups>
+        </mat-tab>
+
+        <mat-tab *ngIf="canView(currentUser, 'tariff_enforcement_escalation')">
+          <ng-template mat-tab-label>
+            Escalations
+          </ng-template>
+          <app-escalations-list
+            [projectId]="projectIdSelected"
+            [currentUser]="currentUser">
+          </app-escalations-list>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</div>

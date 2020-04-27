@@ -1,0 +1,87 @@
+@import "../../../../../styles/color";
+
+:host {
+  .date-range-selector {
+    .mat-form-field {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+.analytics {
+  ::ng-deep .mat-tab-label {
+    opacity: 1 !important;
+    padding: 0 30px !important;
+  }
+
+  ::ng-deep .mat-ink-bar {
+    height: 0 !important;
+  }
+
+  ::ng-deep .mat-tab-label-content {
+    font-size: 15px;
+    font-weight: bold;
+    font-family: sans-serif;
+    color: rgba(0, 0, 0, 0.5);
+
+    img {
+      width: 25px;
+      margin-right: 10px;
+    }
+  }
+
+  ::ng-deep .mat-tab-label-active {
+    .mat-tab-label-content {
+      color: black;
+      opacity: 1;
+
+      img.myLibrary {
+        content: url("/assets/library_icons/Ma_library_active.svg");
+      }
+
+      img.publicLibrary {
+        content: url("/assets/library_icons/Public_library_active.svg");
+      }
+
+      img.libraryGroups {
+        content: url("/assets/library_icons/Library_Groups_active.svg");
+      }
+    }
+  }
+
+  ::ng-deep .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background, ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+    background-color: #3189CE;
+  }
+
+  ::ng-deep .mat-checkbox-layout {
+    display: inline-block !important;
+  }
+
+  ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline {
+    height: 0 !important;
+  }
+
+  ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix {
+    border: 1px solid #3189CE;
+    border-radius: 5px;
+    padding: 10px 10px 5px !important;
+
+    .mat-select-value {
+      color: #3189CE !important;
+    }
+  }
+
+  ::ng-deep .mat-select-arrow {
+    color: #3189CE !important;
+  }
+
+  ::ng-deep .mat-form-field {
+    width: calc(100% - 40px);
+    font-size: 16px;
+    margin: 0 20px;
+  }
+
+  ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-ripple {
+    height: 0 !important;
+  }
+}

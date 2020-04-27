@@ -1,0 +1,119 @@
+<main class="value-added-list-page">
+  <!-- ------------------- Greybar ------------------------ -->
+  <header class="page-top-header">
+    <div class="d-flex align-items-center">
+      <div class="value-added-list-page-buttons">
+        <button mat-icon-button color="base" (click)="onBack()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+      <!-- <p>Tariff / Value Added</p> -->
+      <div class="filter-wrapper d-flex align-items-center">
+        <mat-icon>search</mat-icon>
+        <mat-form-field class="filter">
+          <input
+            matInput
+            (keyup)="applyFilterService($event.target.value)"
+            placeholder="Search"
+          />
+        </mat-form-field>
+        <mat-form-field class="service-type">
+          <mat-select
+            [(value)]="selectedType"
+            (selectionChange)="onChangeType($event.value)"
+          >
+            <mat-option *ngFor="let item of types" [value]="item">
+              {{ item }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div>
+      <p class="mb-0">{{ today | date: "dd/MM/yyyy hh:mm a" }}</p>
+    </div>
+  </header>
+  <!-- ------------------------------------------- -->
+  <h4 class="font-weight-bold title-fixed value-added-list-page-content-title">Value Added</h4>
+  <div class="selections-wrapper d-flex justify-content-between float-right mt-50px">
+    <!-- <div class="divider"></div> -->
+    <div *ngIf="permission.isCreate" class="buttons-wrapper">
+      <button mat-flat-button color="basic" (click)="onAddValue()">
+        <mat-icon>add_circle</mat-icon>
+        Value Added
+      </button>
+      <button mat-flat-button color="basic" (click)="onAddBundle()">
+        <mat-icon>add_circle</mat-icon>
+        Bundle
+      </button>
+    </div>
+    <br />
+  </div>
+  <div class="value-added-list-page-content">
+    <div class="value-added-list-page-content-wrapper mt-50px">
+      <ng-container *ngIf="selectedType == 'All' || selectedType == 'Service'">
+        <div
+          *ngFor="let service of filteredValueAddedds"
+          class="service-info"
+          (click)="onEdit(service)"
+        >
+          <div class="service-title">
+            <div class="service-info-name">
+              {{ service.service_name_en }}
+            </div>
+            <button
+              *ngIf="permission.isDelete"
+              mat-icon-button
+              color="warn"
+              (click)="onRemove(service); $event.stopPropagation()"
+            >
+              <mat-icon>remove_circle</mat-icon>
+            </button>
+          </div>
+          <div class="service-info-item">
+            <img
+              *ngIf="service.img_url"
+              [src]="img_url + service.img_url"
+            />
+            <img *ngIf="!service.img_url" src="assets/logo.png" />
+            <div class="divider"></div>
+            <span class="title">SAR</span>
+            <span class="value">{{ service.fee }}</span>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="selectedType == 'All' || selectedType == 'Bundle'">
+        <div
+          *ngFor="let service of filteredBundles"
+          class="service-info bundle"
+          (click)="onEditBundle(service)"
+        >
+          <div class="service-title">
+            <div class="service-info-name bundle">
+              {{ service.bundle_name_en }}
+            </div>
+            <button
+              *ngIf="permission.isDelete"
+              mat-icon-button
+              color="warn"
+              (click)="onRemoveBundle(service); $event.stopPropagation()"
+            >
+              <mat-icon>remove_circle</mat-icon>
+            </button>
+          </div>
+          <div class="service-info-item">
+            <img
+              *ngIf="service.img_url"
+              [src]="img_url + service.img_url"
+            />
+            <img *ngIf="!service.img_url" src="assets/logo.png" />
+            <div class="divider"></div>
+            <span class="title">SAR</span>
+            <span class="value">{{ service.fee }}</span>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</main>

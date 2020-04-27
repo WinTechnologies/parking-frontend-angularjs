@@ -1,0 +1,19 @@
+:host {
+  .assigned-employees-wrapper {
+    padding: 0 1rem 0 1rem;
+  }
+
+  .table-filter {
+    padding: 0 20px 0 24px;
+
+    mat-icon {
+      position: absolute;
+      left: -24px;
+    }
+  }
+
+  .btn-add {
+    color: #13a7e2;
+    background: none;
+  }
+}

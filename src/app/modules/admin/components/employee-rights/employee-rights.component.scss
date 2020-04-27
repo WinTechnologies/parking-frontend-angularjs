@@ -1,0 +1,33 @@
+:host {
+  .permission-filter {
+    .feature-sub-list {
+      max-height: calc(100vh - 300px);
+      overflow-y: auto;
+    }
+
+    /deep/.mat-expansion-panel-header {
+      padding: 0 1rem;
+    }
+
+    /deep/ .mat-expansion-panel-body {
+      padding: 0 1rem 1rem;
+    }
+
+    .feature-right {
+      /deep/ ngx-treeview {
+
+        label {
+          font-weight: normal;
+        }
+
+        .treeview-item {
+          .row-item {
+            i {
+              display: none !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}

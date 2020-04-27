@@ -1,0 +1,63 @@
+<div class="incentive-title">
+  <div class="d-flex align-items-center justify-content-between">
+    <h5>{{ label }}</h5>
+      <button
+        *ngIf="canUpdate"
+        color="basic"
+        class="d-flex align-items-center justify-content-center color"
+        mat-flat-button
+        (click)="openDialog('add')"
+      >
+        <mat-icon>add_circle</mat-icon>
+        <span class="pl-2">Add</span>
+      </button>
+  </div>
+  <hr />
+  <div class="incentive_list">
+    <div class="incentive-item">
+      <div
+        class="incentive-item-wrapper"
+        *ngFor="let incentive of incentives; let i = index"
+      >
+        <div class="incentive-item-contain-title">
+          <div class="incentive-item-title" (click)="openDialog('update', i)">
+            <span>{{ incentive.incentive_name }}</span>
+          </div>
+          <div *ngIf="canUpdate" class="incentive-item-delete">
+            <button mat-icon-button color="warn" (click)="onDelete(i)">
+              <mat-icon>remove_circle</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="incentive-item-content" (click)="openDialog('update', i)">
+          <div class="incentive-item-column-wrapper">
+            <ng-container>
+              <span class="input-span"
+                ><span class="label">Workplan: </span
+                ><span class="value">{{ incentive.workplan }}</span></span
+              >
+              <span class="input-span"
+                ><span class="label">Incentive Type: </span
+                ><span class="value">{{ incentive.incentive_type }}</span></span
+              >
+            </ng-container>
+          </div>
+          <div class="incentive-item-column-wrapper">
+            <ng-container>
+              <span class="input-span"
+                ><span class="label">Type: </span
+                ><span class="value">{{ incentive.option }}</span></span
+              >
+              <span class="input-span"
+                ><span class="label">Incentives: </span
+                ><span class="value">{{
+                  incentive.incentive_unity
+                }}</span></span
+              >
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

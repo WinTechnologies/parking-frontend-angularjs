@@ -1,0 +1,145 @@
+<div *ngIf="challenge" class="cn-challenge-details">
+  <div class="cn-challenge-details-header" fxLayout="row wrap" fxLayoutAlign="space-between">
+    <button mat-flat-button class="bg-none mat-color-primary"
+    [disabled]="selectedIndex == 0"
+    (click)="onPrev()"><mat-icon>arrow_back_ios</mat-icon>{{'cn_review.back'| translate}}</button>
+    <h5 class="title-wrapper m-0" fxLayout="row wrap" fxLayoutAlign="center center">
+      <span class="pr-1">{{'cn_review.cn#'| translate}} {{ challenge?.cn_number }}</span>
+      <span class="pr-1">{{ challenge?.creation | date:'dd/MM/yyyy' }}</span>
+      <span class="pr-1">{{ challenge?.creation | date:'hh:mm:a' }}</span>
+      <span class="pr-1">{{ challenge?.creator_username }}</span>
+    </h5>
+    <button mat-flat-button class="bg-none mat-color-primary"
+    [disabled]="selectedIndex == challenges.length - 1"
+    (click)="onNext()">{{'cn_review.next'| translate}}<mat-icon>arrow_forward_ios</mat-icon></button>
+  </div>
+  <div class="cn-challenge-details-content mat-elevation-z2" fxLayout="row wrap">
+    <div class="car-number-review p-333">
+      <div class="image-slider-wrapper">
+        <img *ngIf="challenge.plate_picture" [src]="baseUrl + challenge?.plate_picture" (error)="img.src = 'assets/images/no_image_available.jpg'" #img>
+        <img *ngIf="!challenge.plate_picture" src="assets/images/no_image_available.jpg">
+      </div>
+    </div>
+    <div class="car-number-review">
+      <div class="image-slider-wrapper">
+        <img *ngIf="violation_picture" [src]="baseUrl + violation_picture[0]" (error)="img.src = 'assets/images/no_image_available.jpg'" #img>
+        <img *ngIf="!violation_picture" src="assets/images/no_image_available.jpg">
+      </div>
+    </div>
+    <div class="challenge-detail">
+      <div fxLayout="row wrap" fxLayoutAlign="space-between">
+        <div class="form-field">
+          <span class="text-muted">{{'cn_review.issued'| translate}}:</span>
+          <mat-form-field>
+            <!-- <mat-select>
+              <mat-option>KSA</mat-option>
+            </mat-select> -->
+            <input matInput [value]="challenge?.plate_country" readonly>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span class="text-muted">{{'cn_review.plate'| translate}}:</span>
+          <mat-form-field>
+            <input matInput [value]="challenge?.car_plate" readonly>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span class="text-muted">{{'cn_review.type'| translate}}:</span>
+          <mat-form-field>
+            <input matInput [value]="challenge?.plate_type" readonly>
+          </mat-form-field>
+        </div>
+
+        <div class="form-field" fxLayout fxLayoutAlign="center center">
+          <span class="w-80 text-muted text-center">{{'cn_review.violation_code'| translate}}:</span>
+          <mat-form-field class="w-80">
+            <input matInput [value]="violation_code" readonly>
+          </mat-form-field>
+        </div>
+
+        <div class="form-field w-500" fxLayout fxLayoutAlign="center center" fxFlex="30%">
+          <span class="text-muted text-center">{{'cn_review.violation_desc'| translate}}:</span>
+          <mat-form-field class="label-fullwidth">
+            <textarea matInput [value]="violation_desc" readonly rows="1"></textarea>
+          </mat-form-field>
+        </div>
+        <div class="form-field w-300" fxFlex="20%">
+          <span class="text-muted">{{'cn_review.error'| translate}}:</span>
+          <mat-form-field class="label-fullwidth">
+            <input matInput [value]="challenge?.decision_reason" readonly>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div class="modified-detail mt-1" *ngIf="lastModifiedData && lastModifiedData.length else noModified">
+      <div fxLayout="row">
+        <p class="font-weight-bold text-17 w-300">{{'cn_review.modified_data_of_last_review' | translate}}</p>
+        <p class="font-weight-bold text-17 w-150">{{'cn_review.info' | translate}}</p>
+        <p class="font-weight-bold text-17 w-150 text-center">{{'cn_review.initial_data' | translate}}</p>
+        <p class="font-weight-bold text-17 w-150 text-center">{{'cn_review.new_data' | translate}}</p>
+      </div>
+
+      <div *ngFor="let entry of lastModifiedData" fxLayout="row">
+        <p class="font-weight-bold text-17 w-300"></p>
+        <p class="font-weight-bold text-15 w-150">{{labels[entry[0]] | translate}}</p>
+        <p class="font-weight-bold text-15 w-150 text-red text-center">{{entry[1].original_data}}</p>
+        <p class="font-weight-bold text-15 w-150 text-green text-center">{{entry[1].new_data}}</p>
+      </div>
+      <div fxLayout="row">
+        <p class="font-weight-bold text-17 w-300"></p>
+        <p class="font-weight-bold text-15 w-150">{{labels.error | translate}}</p>
+        <p class="font-weight-bold text-15 w-300 text-red text-center">{{challenge.error}}</p>
+      </div>
+    </div>
+    <ng-template #noModified>
+      <div class="modified-detail mt-1" *ngIf="challenge.status_review !== 'Unreviewed'">
+        <div fxLayout="row">
+          <p class="font-weight-bold text-17 mr-1">{{'cn_review.modified_data_of_last_review' | translate}}: </p>
+          <p class="font-weight-bold text-17 text-green">{{'cn_review.no_modification' | translate}}</p>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  <div class="cn-challenge-details-footer m-1" fxLayout="row wrap" fxLayoutAlign="space-between">
+    <div class="form-field reason">
+      <span class="text-muted">{{'cn_review.reason'| translate}}:</span>
+      <span class="w-400">{{challenge?.challenge_reason}}</span>
+    </div>
+    <div class="form-field">
+      <span class="text-muted">{{'cn_review.requested_by'| translate}}:</span>
+      <span>{{challenge?.requested_by || ' - '}}</span>
+    </div>
+    <div class="form-field">
+      <span class="text-muted">{{'common.id'| translate}}:</span>
+      <span>{{challenge?.requester_username || ' - '}}</span>
+    </div>
+    <div class="form-field">
+      <span class="text-muted">{{'cn_review.date'| translate}}:</span>
+      <span>{{ challenge?.requested_at | date:'dd/MM/yyyy' }}</span>
+    </div>
+  </div>
+
+  <div *ngIf="permission?.isUpdate && (!challenge.status_challenge || challenge.status_challenge === 'Challenge requested')"
+    class="cn-challenge-details-footer m-1"
+    fxLayout="row wrap"
+    fxLayoutAlign="space-between">
+      <button mat-raised-button color="primary" (click)="onReject()" [disabled]="isProcessing" class="mr-1">{{'cn_review.reject'| translate}}</button>
+      <button mat-raised-button color="primary" (click)="onCancel()" [disabled]="isProcessing">{{'cn_review.cancel_contravention'| translate}}</button>
+  </div>
+
+  <ng-container *ngIf="challenge.status_challenge && challenge.status_challenge !== 'Challenge requested'">
+    <div
+      class="cn-challenge-details-footer m-1"
+      fxLayout="row wrap"
+      fxLayoutAlign="flex-end">
+      <h4 class="rounded secondary p-05">{{challenge.status_challenge}}</h4>
+    </div>
+    <div
+      class="cn-challenge-details-footer m-1"
+      fxLayout="row wrap"
+      fxLayoutAlign="flex-end">
+        <span class="text-muted mr-05">{{'cn_review.reason'| translate}}:</span>
+        <span class="w-200">{{ decisionReason }}</span>
+    </div>
+  </ng-container>
+</div>

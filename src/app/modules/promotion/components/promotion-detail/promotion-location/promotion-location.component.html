@@ -1,0 +1,53 @@
+<h4 class="font-weight-bold">Location</h4>
+<div class="section-content">
+  <div class="search-panel pt-3">
+    <mat-form-field [formGroup]="formGroup">
+      <mat-label>Activity</mat-label>
+      <mat-select formControlName="activity" (selectionChange)="onChangeActivity($event)" required>
+        <mat-option *ngFor="let activity of activityTypes" [value]="activity.featureName"> {{activity.name}} </mat-option>
+      </mat-select>
+      <mat-error>Activity type is required</mat-error>
+    </mat-form-field>
+    <mat-form-field class="table-filter ml-3">
+      <mat-icon>search</mat-icon>
+      <input matInput  (keyup)="applyFilterProjects($event.target.value)" placeholder="Search projects">
+    </mat-form-field>
+    <button class="mr-2 btn-primary mat-raised-button float-right" (click)="editColumns()">Customize Columns</button>
+  </div>
+
+  <div class="table-wrapper">
+    <ngx-datatable class="material bg-white"
+                   style="height: 350px; margin-bottom: 20px;"
+                   [columnMode]="'force'"
+                   [headerHeight]="50"
+                   [footerHeight]="50"
+                   [rowHeight]="50"
+                   [limit]="5"
+                   scrollbarV="true"
+                   (reorder)="reorderColumns($event)"
+                   [rows]="filteredProjectActivities">
+      <ngx-datatable-column *ngFor="let field of tableFields" name="{{field.label}}" prop="{{field.name}}">
+        <ng-template let-column="column" ngx-datatable-header-template *ngIf="field.name === 'checked'">
+          <ng-container *ngIf="field.name === 'checked'">
+            <mat-checkbox [ngModel]="getAllChecked()" (change)="checkAll($event)" [disabled]="!canUpdate">ALL</mat-checkbox>
+          </ng-container>
+        </ng-template>
+        <ng-template let-row="row" ngx-datatable-cell-template>
+            <span [matTooltip]="row[field.name]" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+              <ng-container [ngSwitch]="field.name">
+                <ng-container *ngSwitchCase="'checked'">
+                  <mat-checkbox [(ngModel)]="row.checked" (change)="checkProject()" [disabled]="!canUpdate"></mat-checkbox>
+                </ng-container>
+                <ng-container *ngSwitchCase="'activities'">
+                  <ng-container *ngFor="let activityType of activityTypes" >
+                    <img *ngIf="!!row[activityType.featureName]" class="activity-icon" [src]="activityType.icon" alt="">
+                  </ng-container>
+                </ng-container>
+                <ng-container *ngSwitchDefault>{{ row[field.name] }}</ng-container>
+              </ng-container>
+            </span>
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable>
+  </div>
+</div>

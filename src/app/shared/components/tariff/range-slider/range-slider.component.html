@@ -1,0 +1,12 @@
+
+<div class="range-slider">
+
+  <ul class="ruler d-flex">
+    <li *ngFor="let hour of hours" (click)="clickHour(hour)" [class]="hour.active ? 'hour-selected' : ''" >
+      <span class="outer-ruler-span"></span>
+      <span class="inner-ruler-span">{{hour.label}}</span>
+      <span class="ruler-inactive" [class]="hour.active ? 'ruler-active' : 'ruler-inactive'"></span>
+    </li>
+  </ul>
+
+</div>

@@ -1,0 +1,117 @@
+@import "../../../../../../../styles/color";
+
+:host {
+  .mat-dialog-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    h1 {
+      font-weight: 700;
+      font-size: 24px;
+      color: #13a7e2;
+    }
+  }
+  .enforcement-eo-new-page {
+    &-header {
+      display: flex;
+      align-items: center;
+      height: 50px;
+
+      &-filter {
+        padding: 0 20px 0 44px;
+        mat-icon {
+          position: absolute;
+          position: absolute;
+          left: -24px;
+        }
+      }
+
+      &-buttons {
+        button {
+          outline: none;
+        }
+        .mat-flat-button.add {
+          background-color: $c-yellowgreen;
+          margin: 0 20px;
+        }
+      }
+    }
+
+    &-content {
+      margin: 5px 20px;
+      background-color: $c-greylight1;
+      
+      &-title {
+        height: 50px;
+        line-height: 50px;
+        font-weight: 700;
+        font-size: 16px;
+        background-color: $c-white;
+      }
+      
+      &-name {
+        span {
+          font-weight: 500;
+        }
+      }
+
+      button.mat-icon-button {
+        color: $c-greylight;
+        outline: none;
+      }
+      .mat-table {
+
+        .mat-header-row {
+          background-color: $c-blue;
+
+          /deep/ .mat-sort-header-button {
+            color: $c-white !important;
+          }
+
+          /deep/ .mat-sort-header-arrow {
+            color: #32a8cd;
+          }
+        }
+
+        .mat-row {
+          
+          &:hover {
+            cursor: pointer;
+            background-color: #2E626A;
+            .mat-cell {
+              color: $c-white;
+            }
+          }
+        }
+      }
+      
+      .mat-column-avatar {
+        flex: 0 0 60px;
+        img {
+          width: 50px;
+          height: 50px;
+        }
+      }
+      .mat-column-checkbox {
+        flex: 0 0 50px;
+        .mat-checkbox {
+          color: $c-white;
+          ::ng-deep .mat-checkbox-frame {
+            background-color: $c-white;
+          }
+          ::ng-deep .mat-checkbox-label {
+            font-size: 12px;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+
+    &-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+  }
+}

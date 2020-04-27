@@ -1,0 +1,33 @@
+{
+  "reciept": {
+    "vat": "الرقم الضريبي",
+    "receipt": "رقم الفاتورة",
+    "phone_number": "تليفون",
+    "contraventions": "مخالفات",
+    "payment_time": "وقت الدفع",
+    "length_of_stay": "مدة الوقوف",
+    "charges_details": "تفاصيل المبلغ",
+    "amount": "المبلغ",
+    "total_amount": "الإجمالي",
+    "employee_id": "رقم الموظف",
+    "date": "تاريخ",
+    "invoice": "فاتورة",
+    "plate": "رقم اللوحة",
+    "charges_detail": "تفاصيل المبلغ",
+    "tow_fee": "سحب",
+    "storage_charges": "حجز",
+    "cns": "مخالفات",
+    "tendered_amount": "المبلغ المدفوع",
+    "change": "المتبقي",
+    "datetime_in": "وقت الدخول",
+    "datetime_out": "وقت الخروج",
+    "service_number": "تلفون",
+    "total_invoice_including_VAT": "اجمالي الفاتورة شاملة ضريبة القيمة المضافة"
+  },
+  "car_parks": {
+    "cashier": {
+      "parking_fee": ""
+    }
+  }
+}
+

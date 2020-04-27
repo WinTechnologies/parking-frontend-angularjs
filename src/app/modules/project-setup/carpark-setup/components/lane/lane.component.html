@@ -1,0 +1,215 @@
+<ng-template #zoneSelector let-v="viewMode">
+  <div class="form-field">
+    <h4 *ngIf="v === ViewMode.ListView" class="list-table-header">Zone</h4>
+    <span *ngIf="v === ViewMode.MapView">Select zone</span>
+    <mat-form-field class="select-zone">
+      <mat-select [(ngModel)]="selectedZone" (selectionChange)="onZoneSelection($event.value)">
+        <mat-option *ngIf="v === ViewMode.ListView" [value]="EmptyPrZone">All</mat-option>
+        <mat-option *ngFor="let zone of allZones" [value]="zone">{{zone.zone_code}}: {{zone.zone_name}} </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</ng-template>
+<ng-template #terminalSelector let-v="viewMode">
+  <div class="form-field">
+    <h4 *ngIf="v === ViewMode.ListView" class="list-table-header">Terminal</h4>
+    <span *ngIf="v === ViewMode.MapView">Select terminal</span>
+    <mat-form-field class="select-terminal">
+      <mat-select [(ngModel)]="selectedTerminal" (selectionChange)="onTerminalSelection($event.value)">
+        <mat-option *ngIf="v === ViewMode.ListView" [value]="EmptyTerminal">All</mat-option>
+        <mat-option *ngFor="let terminal of terminals" [value]="terminal">{{terminal.terminal_code}}: {{terminal.terminal_name}} </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</ng-template>
+<ng-template #parkSelector let-v="viewMode">
+  <div class="form-field">
+    <h4 *ngIf="v === ViewMode.ListView" class="list-table-header">Parking</h4>
+    <span *ngIf="v === ViewMode.MapView">Select parking</span>
+    <mat-form-field class="select-parking">
+      <mat-select [(ngModel)]="selectedParking" (selectionChange)="onParkingSelection($event.value)">
+        <mat-option *ngIf="v === ViewMode.ListView" [value]="EmptyParking">All</mat-option>
+        <mat-option *ngFor="let parking of parkings" [value]="parking">{{parking.code}}: {{parking.carpark_name}} </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</ng-template>
+<ng-template #levelSelector let-v="viewMode">
+  <div class="form-field">
+    <h4 *ngIf="v === ViewMode.ListView" class="list-table-header">Level</h4>
+    <span *ngIf="v === ViewMode.MapView">Select level</span>
+    <mat-form-field class="select-level">
+      <mat-select [(ngModel)]="selectedParkLevel" (selectionChange)="onLevelSelection($event.value)">
+        <mat-option *ngIf="v === ViewMode.ListView" [value]="EmptyParkLevel">All</mat-option>
+        <mat-option *ngFor="let level of parkLevels" [value]="level">{{level.code}}: {{level.name}} </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</ng-template>
+<ng-template #parkZoneSelector let-v="viewMode">
+  <div class="form-field">
+    <h4 *ngIf="v === ViewMode.ListView" class="list-table-header">ParkZone</h4>
+    <span *ngIf="v === ViewMode.MapView">Select parkzone</span>
+    <mat-form-field class="select-park-zone">
+      <mat-select [(ngModel)]="selectedParkZone" (selectionChange)="onParkZoneSelection($event.value)">
+        <mat-option *ngIf="v === ViewMode.ListView" [value]="EmptyParkZone">All</mat-option>
+        <mat-option *ngFor="let zone of parkZones" [value]="zone">{{zone.name_en}} </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</ng-template>
+<ng-template #gateSelector let-v="viewMode">
+  <div class="form-field">
+    <h4 *ngIf="v === ViewMode.ListView" class="list-table-header">Gate</h4>
+    <span *ngIf="v === ViewMode.MapView">Select gate</span>
+    <mat-form-field class="select-gate">
+      <mat-select [(ngModel)]="selectedGate" (selectionChange)="onGateSelection($event.value)">
+        <mat-option *ngIf="v === ViewMode.ListView" [value]="EmptyGate">All</mat-option>
+        <mat-option *ngFor="let gate of gates" [value]="gate">{{gate.name_en}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</ng-template>
+<ng-template #laneSelector>
+  <div class="form-field" *ngIf="formMode !== FormMode.CREATING">
+    <span>Select gate <b class="span-bold">(or select on map)</b></span>
+    <mat-form-field class="select-lane">
+      <mat-select [(ngModel)]="selectedLane" (selectionChange)="onLaneSelection($event.value)">
+        <mat-option *ngFor="let lane of lanes" [value]="lane">{{lane.name_en}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <span *ngIf="lanes && lanes.length === 0" class="lane-sidebar-error">
+      There is no lane available. Please make sure you selected a gate or create a new lane
+    </span>
+  </div>
+</ng-template>
+
+<ng-container *ngIf="viewMode === ViewMode.ListView">
+  <div class="carparkitem-selector" *ngIf="viewMode === ViewMode.ListView">
+    <div class="row">
+      <ng-container *ngTemplateOutlet="zoneSelector; context:{viewMode: ViewMode.ListView}"></ng-container>
+      <ng-container *ngTemplateOutlet="terminalSelector; context:{viewMode: ViewMode.ListView}"></ng-container>
+      <ng-container *ngTemplateOutlet="parkSelector; context:{viewMode: ViewMode.ListView}"></ng-container>
+      <ng-container *ngTemplateOutlet="levelSelector; context:{viewMode: ViewMode.ListView}"></ng-container>
+    </div>
+      <div class="row">
+        <ng-container *ngTemplateOutlet="parkZoneSelector; context:{viewMode: ViewMode.ListView}"></ng-container>
+        <ng-container *ngTemplateOutlet="gateSelector; context:{viewMode: ViewMode.ListView}"></ng-container>
+      </div>
+    </div>
+  <div class="lane">
+    <app-listview-new
+      [tblStyle]="'gate-tbl'"
+      [filter]="filter"
+      [projectId]="projectId"
+      [options]="mapOptions"
+      [mapdata]="tabMapDataJSON"
+      [mapdrawdata]="tabMapDrawDataJSON"
+      [listType]="CarparkItemType.Lane"
+      [listData]="lanes"
+      (selectedRowItem)="onLaneSelection($event)"
+    ></app-listview-new>
+  </div>
+</ng-container>
+<ng-container *ngIf="viewMode === ViewMode.MapView">
+  <div class="lane">
+    <div class="lane-sidebar">
+      <div class="lane-sidebar-title">
+        <ng-container *ngIf="formMode === FormMode.CREATING">Add lanes</ng-container>
+        <ng-container *ngIf="formMode !== FormMode.CREATING">Lane selection</ng-container>
+      </div>
+
+      <ng-container *ngTemplateOutlet="zoneSelector; context:{viewMode: ViewMode.MapView}"></ng-container>
+      <ng-container *ngTemplateOutlet="terminalSelector; context:{viewMode: ViewMode.MapView}"></ng-container>
+      <ng-container *ngTemplateOutlet="parkSelector; context:{viewMode: ViewMode.MapView}"></ng-container>
+      <ng-container *ngTemplateOutlet="levelSelector; context:{viewMode: ViewMode.MapView}"></ng-container>
+      <ng-container *ngTemplateOutlet="parkZoneSelector; context:{viewMode: ViewMode.MapView}"></ng-container>
+      <ng-container *ngTemplateOutlet="gateSelector; context:{viewMode: ViewMode.MapView}"></ng-container>
+      <ng-container *ngTemplateOutlet="laneSelector"></ng-container>
+
+      <hr>
+
+      <div *ngIf="formMode !== FormMode.CREATING && formMode !== FormMode.UPDATING">
+        <div *ngFor="let lane of lanes">
+          <hr>
+          <div class="form-field" (click)="onLaneSelection(lane)">
+            <span class="element_name"> {{lane.name_en}}  <mat-icon (click)="onDeleteCurrentLane($event, lane)">delete</mat-icon></span>
+          </div>
+          <div class="form-field">
+            <span>Latitude & Longitude</span>
+            <mat-form-field class="place_LL border-right-0">
+              <input matInput type="text" [value]="lane.latitude">
+            </mat-form-field>
+            <mat-form-field class="place_LL border-left-0">
+              <input matInput type="text" [value]="lane.longitude">
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <form *ngIf="form && (formMode === FormMode.UPDATING || formMode === FormMode.CREATING)"
+            [formGroup]="form"
+            (ngSubmit)="onSubmit()"
+            autocomplete="off"
+            novalidate>
+        <div class="form-field">
+          <span>Name</span>
+          <mat-form-field>
+            <input matInput type="text" formControlName="name_en">
+            <mat-error>Name is required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-field">
+          <span>Name (Ar)</span>
+          <mat-form-field>
+            <input matInput type="text" formControlName="name_ar">
+            <mat-error>Name(Ar) is required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-field">
+          <span>Latitude & Longitude <b class="span-bold">(auto-fill by draw tool)</b></span>
+          <mat-form-field class="place_LL border-right-0">
+            <input matInput type="text" formControlName="latitude" readonly>
+            <mat-error>Latitude is required</mat-error>
+          </mat-form-field>
+          <mat-form-field class="place_LL border-left-0">
+            <input matInput type="text" formControlName="longitude" readonly>
+            <mat-error>Longitude is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="buttons-wrapper">
+          <button mat-stroked-button type="button" class="mr-2 ml-2" (click)="onCancel()">CANCEL</button>
+          <button class="add" mat-flat-button type="submit" color="primary">
+            <ng-container *ngIf="formMode === FormMode.CREATING">CREATE</ng-container>
+            <ng-container *ngIf="formMode === FormMode.UPDATING">UPDATE</ng-container>
+          </button>
+        </div>
+      </form>
+
+      <div class="notification-box" *ngIf="formMode === FormMode.JUST_CREATED || formMode === FormMode.JUST_UPDATED || formMode === FormMode.JUST_DELETED">
+        <span *ngIf="formMode === FormMode.JUST_CREATED">New lane added!</span>
+        <span *ngIf="formMode === FormMode.JUST_UPDATED">The lane updated!</span>
+        <span *ngIf="formMode === FormMode.JUST_DELETED">The lane deleted!</span>
+        <div>
+          <button mat-flat-button type="button" class="mt-3" color="primary" (click)="returnToSelection()">OK</button>
+        </div>
+      </div>
+    </div>
+    <div class="lane-map-wrapper">
+      <app-mapview-new
+        [mapCenter]="mapCenter"
+        [options]="mapOptions"
+        [mapDataJSON]="tabMapDataJSON"
+        [mapDrawDataJSON]="tabMapDrawDataJSON"
+        [mapImgOverlayJSON]="tabMapImgOverlayDataJSON"
+        [isForceCenter]="true"
+        [zoomValue]="mapZoomValue"
+        (mapDataChangedEmitter)="onSiteMapDataChanged($event)"
+        (mapDataEditEmitter)="onLaneSelection($event)"
+      >
+      </app-mapview-new>
+    </div>
+  </div>
+</ng-container>

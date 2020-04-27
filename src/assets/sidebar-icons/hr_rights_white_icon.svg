@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24.801 24.8">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="login" transform="translate(0 -0.001)">
+    <g id="Group_13938" data-name="Group 13938" transform="translate(0 0.001)">
+      <g id="Group_13937" data-name="Group 13937" transform="translate(0 0)">
+        <circle id="Ellipse_143" data-name="Ellipse 143" class="cls-1" cx="0.969" cy="0.969" r="0.969" transform="translate(15.403 15.791)"/>
+        <path id="Path_16401" data-name="Path 16401" class="cls-1" d="M11.528,22.864H3.875a1.94,1.94,0,0,1-1.938-1.937V12.982a1.94,1.94,0,0,1,1.938-1.938h13.95a1.94,1.94,0,0,1,1.938,1.938V14.92a.969.969,0,1,0,1.938,0V12.982a3.879,3.879,0,0,0-3.875-3.875H16.661V5.691A5.759,5.759,0,0,0,10.848,0a5.759,5.759,0,0,0-5.813,5.69V9.107H3.875A3.879,3.879,0,0,0,0,12.982v7.944A3.879,3.879,0,0,0,3.875,24.8h7.653a.969.969,0,1,0,0-1.937ZM6.973,5.691a3.819,3.819,0,0,1,3.875-3.752,3.819,3.819,0,0,1,3.875,3.752V9.107H6.973V5.691Z" transform="translate(0 -0.001)"/>
+        <path id="Path_16402" data-name="Path 16402" class="cls-1" d="M274.694,322.18a.969.969,0,0,0-1.352.224l-4.775,6.67a.553.553,0,0,1-.8.041l-3.086-3.011a.969.969,0,1,0-1.353,1.387l3.091,3.017.009.008a2.5,2.5,0,0,0,1.718.687q.082,0,.164-.005a2.5,2.5,0,0,0,1.776-.925l.033-.043,4.794-6.7A.969.969,0,0,0,274.694,322.18Z" transform="translate(-250.299 -306.402)"/>
+        <circle id="Ellipse_144" data-name="Ellipse 144" class="cls-1" cx="0.969" cy="0.969" r="0.969" transform="translate(11.722 15.791)"/>
+        <circle id="Ellipse_145" data-name="Ellipse 145" class="cls-1" cx="0.969" cy="0.969" r="0.969" transform="translate(4.456 15.791)"/>
+        <circle id="Ellipse_146" data-name="Ellipse 146" class="cls-1" cx="0.969" cy="0.969" r="0.969" transform="translate(8.089 15.791)"/>
+      </g>
+    </g>
+  </g>
+</svg>

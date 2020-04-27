@@ -1,0 +1,121 @@
+:host {
+  ::ng-deep {
+    .projects {
+      margin: 0 10px;
+    }
+  }
+
+  ::ng-deep {
+    .filters {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      margin: 0 10px 20px 10px;
+
+      div {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+
+        &:last-child {
+          justify-content: flex-end;
+        }
+
+        .mat-checkbox, .mat-form-field {
+          margin-right: 20px;
+        }
+
+        .mat-button-toggle-group {
+          margin-right: 20px;
+
+          .mat-button-toggle-label-content {
+            line-height: 34px;
+          }
+        }
+      }
+    }
+  }
+
+  ::ng-deep {
+    .statistic {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: flex-start;
+
+      margin: 10px;
+      background-color: #edeef0;
+
+      .item {
+        display: flex;
+        text-align: center;
+        flex-direction: column;
+        margin: 10px;
+
+        .header {
+          font-size: smaller;
+        }
+
+        .content {
+          font-weight: bold;
+          font-size: 2rem;
+
+          .smaller-content {
+            font-size: small;
+            font-weight: normal;
+          }
+        }
+      }
+    }
+  }
+
+  .map-grid-tile {
+    width: 100%;
+    height: 100%;
+
+    margin-left: 10px;
+    margin-right: 10px;
+
+    .map-menu {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+
+      margin-bottom: 10px;
+      border: none;
+      border-radius: 0;
+
+      .mat-button-toggle {
+        flex: 1 0;
+
+        border: none;
+
+        ::ng-deep {
+          .mat-button-toggle-button {
+            text-transform: uppercase;
+
+            .mat-button-toggle-label-content {
+              line-height: 42px;
+            }
+          }
+        }
+      }
+
+      .mat-button-toggle-checked {
+        background-color: unset;
+        border-bottom: 4px solid #14a39f;
+        border-radius: 0;
+      }
+
+      ::ng-deep {
+        .mat-button-toggle-label-content {
+          text-transform: none;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+<ngx-ui-loader></ngx-ui-loader>
+<div ngxUiLoaderBlurred>
+  <!-- Navbar -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <app-navbar *ngIf="showNavbar$ | async"></app-navbar>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div [ngClass]="contentStatus ? 'sidebar-active' : 'sidebar-inactive'">
+    <div>
+      <app-sidebar *ngIf="showSidebar$ | async"></app-sidebar>
+    </div>
+    <!-- vv style="width: 100%" vv -->
+    <div class="app-size">
+      <flash-messages></flash-messages>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

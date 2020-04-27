@@ -1,0 +1,29 @@
+<div class="chart-outer-wrapper">
+  <div class="chart-inner-wrapper">
+    <div>
+      <div>{{title}}</div>
+      <div>
+        <button mat-icon-button type="button">
+          <mat-icon>keyboard_arrow_up</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="chart-content">
+      <canvas
+        *ngIf="chartData.length > 0; else noData"
+        baseChart
+        [data]="chartData"
+        [labels]="chartLabels"
+        [chartType]="'pie'"
+        [options]="chartOptions"
+        [colors]="chartColors"
+      >
+      </canvas>
+      <ng-template #noData>
+        <p>
+          No Data
+        </p>
+      </ng-template>
+    </div>
+  </div>
+</div>

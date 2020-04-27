@@ -1,0 +1,155 @@
+<!-- Sidebar Holder -->
+<nav id="sidebar" [class]="sidebarStatus">
+  <div>
+    <ul class="list-unstyled components" *ngIf="authService.authStatusSub | async">
+      <li [routerLinkActive]="['active']">
+        <a class="cat-link" [routerLink]="['map']">
+          <img src="assets/sidebar-icons/maps_white_icon.svg"><span>M.A.P.S.</span>
+        </a>
+      </li>
+      <li *ngIf="sidebarConfig.projects.enabled"
+        [routerLinkActive]="['active']"
+        [ngClass]="{active: projectNewActive.isActive || projectListActive.isActive}">
+        <a class="cat-link" routerLinkActive #projectListActive="routerLinkActive" [routerLink]="['project/list']">
+          <img src="assets/sidebar-icons/projects_white_icon.svg"> <span>Projects</span>
+        </a>
+        <a routerLink="/project/new" routerLinkActive #projectNewActive="routerLinkActive" style="display: none"></a>
+      </li>
+      <li *ngIf="sidebarConfig.analytics.enabled" [routerLinkActive]="['active']">
+        <a class="cat-link" [routerLink]="['analytics']">
+          <img src="assets/sidebar-icons/analytics_white_icon.svg"> <span>Analytics</span>
+        </a>
+      </li>
+      <li *ngIf="sidebarConfig.crmJobs.enabled || sidebarConfig.crmContraventions.enabled">
+        <a class="cat-link" href="javascript:;" data-target="#crmMenu" data-toggle="collapse" aria-expanded="false">
+          <img src="assets/sidebar-icons/administration.svg"> <span>CRM</span>
+        </a>
+        <ul class="collapse list-unstyled" id="crmMenu">
+          <li *ngIf="sidebarConfig.crmJobs.enabled" [routerLinkActive]="['active']">
+            <a class="subcat-link" [routerLink]="['crm/job']">
+              <img src="assets/sidebar-icons/administration_jobs.svg"> <span class="jobs">Jobs</span>
+            </a>
+          </li>
+          <li *ngIf="sidebarConfig.crmContraventions.enabled" [routerLinkActive]="['active']">
+            <a class="subcat-link" [routerLink]="['crm/contravention']">
+              <img src="assets/sidebar-icons/crm_white_icon.svg"> <span>Contraventions</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li *ngIf="sidebarConfig.hrEmployee.enabled || sidebarConfig.hrWorkplan.enabled || sidebarConfig.hrAssignment.enabled">
+        <a class="cat-link" data-target="#humanResourcesMenu" data-toggle="collapse" aria-expanded="false">
+          <img src="assets/sidebar-icons/hr_white_icon.svg"> <span>HR</span>
+        </a>
+        <ul class="collapse list-unstyled" id="humanResourcesMenu">
+          <li *ngIf="sidebarConfig.hrEmployee.enabled" [routerLinkActive]="['active']">
+            <a class="subcat-link" [routerLink]="['employees']">
+              <img src="assets/sidebar-icons/hr_employee_white_icon.svg"> <span>Employee</span>
+            </a>
+          </li>
+          <li *ngIf="sidebarConfig.hrWorkplan.enabled" [routerLinkActive]="['active']">
+            <a class="subcat-link" [routerLink]="['workplans']">
+              <img src="assets/sidebar-icons/administration_contraventions.svg"> <span>Workplan</span>
+            </a>
+          </li>
+
+          <li *ngIf="sidebarConfig.hrAssignment.enabled" [routerLinkActive]="['active']">
+            <a class="subcat-link" [routerLink]="['assignments']">
+              <img src="assets/sidebar-icons/assignment_icon.svg"> <span>Assignment</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li *ngIf="sidebarConfig.adminUsersRights.enabled || sidebarConfig.adminRightsTemplates.enabled || sidebarConfig.adminCredentials.enabled">
+        <a href="javascript:;" class="cat-link" data-target="#adminMenu" data-toggle="collapse" aria-expanded="false">
+          <img src="assets/sidebar-icons/admin.svg" /> <span>Admin</span>
+        </a>
+        <ul class="collapse list-unstyled" id="adminMenu">
+          <li *ngIf="sidebarConfig.adminUsersRights.enabled" [routerLinkActive]="['active']">
+            <a class="subcat-link" [routerLink]="['admin/employee-rights']">
+              <img src="assets/sidebar-icons/admin_templates.svg"> <span>User Rights</span>
+            </a>
+          </li>
+          <li *ngIf="sidebarConfig.adminRightsTemplates.enabled" [routerLinkActive]="['active']">
+            <a class="subcat-link" [routerLink]="['admin/permission-templates']">
+              <img src="assets/sidebar-icons/admin_user_rights.svg"> <span>Templates</span>
+            </a>
+          </li>
+          <li [routerLinkActive]="['active']">
+            <a class="subcat-link credentials" [routerLink]="['admin/credentials']">
+              <img src="assets/sidebar-icons/admin_user_credentials.svg"> <span>User Credentials</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li *ngIf="sidebarConfig.assets.enabled" [routerLinkActive]="['active']">
+        <a class="cat-link" [routerLink]="['assets']">
+          <img src="assets/sidebar-icons/assets_white_icon.svg"> <span>Assets</span>
+        </a>
+      </li>
+      <li *ngIf="sidebarConfig.tariffEnforcement.enabled || sidebarConfig.tariffValueAdded.enabled">
+        <a class="cat-link" href="javascript:;" data-target="#tariffMenu" data-toggle="collapse" aria-expanded="false">
+          <img src="assets/sidebar-icons/tariff_white_icon.svg"> <span>Tariff</span>
+        </a>
+        <ul class="collapse list-unstyled" id="tariffMenu">
+          <li [routerLinkActive]="['active']">
+            <a class="subcat-link" [routerLink]="['tariff/parking']">
+              <img src="assets/sidebar-icons/parking_icon.svg"> <span>Parking</span>
+            </a>
+          </li>
+          <li *ngIf="sidebarConfig.tariffEnforcement.enabled" [routerLinkActive]="['active']">
+            <a class="subcat-link" [routerLink]="['enforcement']">
+              <img src="assets/sidebar-icons/enforcement_icon.svg"> <span>Enforcement</span>
+            </a>
+          </li>
+          <li *ngIf="sidebarConfig.tariffValueAdded.enabled" [routerLinkActive]="['active']">
+            <a class="subcat-link" [routerLink]="['tariff/value-added']">
+              <img src="assets/sidebar-icons/value added_icon.svg"> <span>Value Added</span>
+            </a>
+          </li>
+          <li *ngIf="sidebarConfig.tariffPromotion.enabled" [routerLinkActive]="['active']">
+            <a class="subcat-link" [routerLink]="['tariff/promotions']">
+              <img src="assets/sidebar-icons/tariff_promotion.svg"> <span>Promotion</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li *ngIf="sidebarConfig.settingDefaultValue.enabled">
+        <a class="cat-link" href="javascript:;" data-target="#settingMenu" data-toggle="collapse" aria-expanded="false">
+          <img src="assets/sidebar-icons/asset_barrier.svg"> <span>Setting</span>
+        </a>
+        <ul class="collapse list-unstyled" id="settingMenu">
+            <li *ngIf="sidebarConfig.settingDefaultValue.enabled" [routerLinkActive]="['active']">
+                <a class="subcat-link" [routerLink]="['default-values']">
+                  <img src="assets/sidebar-icons/hr-default-settings.svg"> <span>Default Values</span>
+                </a>
+            </li>
+        </ul>
+      </li>
+      <li *ngIf="sidebarConfig.operationCnReview.enabled || sidebarConfig.operationCnChallenge.enabled">
+        <a class="cat-link" href="javascript:;" data-target="#operationMenu" data-toggle="collapse" aria-expanded="false">
+          <img src="assets/sidebar-icons/asset_barrier.svg"> <span>Operation</span>
+        </a>
+        <ul class="collapse list-unstyled" id="operationMenu">
+            <li *ngIf="sidebarConfig.operationCnReview.enabled" [routerLinkActive]="['active']">
+                <a class="subcat-link" [routerLink]="['operation/cn-review']">
+                  <img src="assets/sidebar-icons/hr-default-settings.svg"> <span>CN Review</span>
+                </a>
+            </li>
+            <li *ngIf="sidebarConfig.operationCnChallenge.enabled" [routerLinkActive]="['active']">
+                <a class="subcat-link" [routerLink]="['operation/cn-challenge']">
+                  <img src="assets/sidebar-icons/hr-default-settings.svg"> <span>CN Challenge</span>
+                </a>
+            </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div>
+    <footer class="list-unstyled CTAs text-center">
+      <small>© Copyright M.A.P.S. Mawgif 2019</small>
+      <div>{{ environment.env }} env</div>
+      <div>Version {{ environment.version }}</div>
+    </footer>
+  </div>
+</nav>

@@ -1,0 +1,25 @@
+@import "../../../../styles/color";
+
+:host {
+  .selection-weekday {
+    display: inline-flex;
+    .weekday {
+      min-width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color:$c-grey;
+      color: $c-white;
+      border-radius: 4px;
+      margin: 0 8px;
+      cursor: pointer;
+      padding: 0 9px;
+
+      &.checked {
+        background-color: rgb(45, 64, 75);;
+      }
+    }
+  }
+
+}

@@ -1,0 +1,24 @@
+:host {
+  .mat-dialog-title {
+    margin: 0 !important;
+  }
+
+  ::ng-deep .mat-dialog-content {
+    padding: 0;
+    margin: 0 !important;
+  }
+
+  ::ng-deep app-enforcement-violations {
+    .page-title-header {
+      width: 79% !important;
+      left: auto;
+      right: auto;
+      margin-top: -30px;
+    }
+
+    .ngx-datatable.material {
+      height: calc(65vh - 150px) !important;
+      margin-top: -30px;
+    }
+  }
+}

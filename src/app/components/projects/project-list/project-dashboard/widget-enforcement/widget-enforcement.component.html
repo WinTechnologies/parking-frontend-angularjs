@@ -1,0 +1,105 @@
+<ng-container *ngIf="data">
+  <div class="d-flex column align-items-center">
+    <app-widget-element-universal
+      color="orange"
+      *ngIf="options.eo"
+      label="ENFORCERS"
+      [value]="data?.eoChart"
+      icon="enforcement_icon.svg"
+      elemWidth="99%">
+    </app-widget-element-universal>
+    <app-widget-element-universal
+      color="red"
+      *ngIf="options.trucks"
+      [value]="data?.towTruckChart"
+      icon="tow trucks_icon.svg"
+      elemWidth="100%"
+      label="TOW TRUCKS ">
+    </app-widget-element-universal>
+  </div>
+
+  <div class="d-flex column align-items-center">
+    <app-widget-element-universal
+      color="orange"
+      *ngIf="options.clamp"
+      [value]="data?.clampVanChart"
+      icon="clamp_icon.svg"
+      elemWidth="99%"
+      label="CLAMPS">
+    </app-widget-element-universal>
+    <app-widget-element-universal
+      color="#023b41"
+      *ngIf="options.atv_clamped"
+      [value]="data?.atvClamped"
+      units_of_measurement="SAR"
+      icon="money_icon.svg"
+      elemWidth="100%"
+      label="ATV Clamp">
+    </app-widget-element-universal>
+  </div>
+
+  <app-widget-element-universal
+      color="#023b41"
+      *ngIf="options.atv_towed"
+      [value]="data?.atvTowed"
+      units_of_measurement="SAR"
+      icon="money_icon.svg"
+      elemWidth="100%"
+      label="ATV Tow">
+  </app-widget-element-universal>
+
+  <app-widget-element-scale
+      label="Issued CNs"
+      color="#023b41"
+      *ngIf="options.eo_info"
+      [value]="data?.eoInfo"
+      [scaleValue]="data?.eoInfo?.count"
+      elemWidth="100%">
+  </app-widget-element-scale>
+
+  <app-widget-element-scale
+      label="Towed"
+      color="#023b41"
+      *ngIf="options.tow_info"
+      [value]="data?.towInfo"
+      [scaleValue]="data?.towInfo?.count"
+      elemWidth="100%">
+  </app-widget-element-scale>
+
+  <app-widget-element-scale
+      label="Clamped"
+      color="#023b41"
+      *ngIf="options.clamp_info"
+      [value]="data?.clampInfo"
+      [scaleValue]="data?.clampInfo?.count"
+      elemWidth="100%">
+  </app-widget-element-scale>
+
+  <!--SKIPPED FOR THE MOMENT-->
+  <app-widget-element-table
+      color="#023b41"
+      *ngIf="false"
+      elemWidth="100%">
+  </app-widget-element-table>
+  
+  <!--SKIPPED FOR THE MOMENT-->
+  <app-widget-element-universal-advanced
+      color="red"
+      label="GAP"
+      *ngIf="false"
+      icon="tow trucks_icon.svg"
+      icon_right="clamp_icon.svg"
+      [value_current]="' : ' + data?.eoGapChart"
+      elemWidth="100%">
+  </app-widget-element-universal-advanced>
+
+  <!--SKIPPED FOR THE MOMENT-->
+  <app-widget-element-universal-advanced
+      color="orange"
+      label="GAP"
+      *ngIf="false"
+      [value_current]="' : ' + data?.eoGapChart"
+      icon="officer_icon.svg"
+      elemWidth="100%">
+  </app-widget-element-universal-advanced>
+</ng-container>

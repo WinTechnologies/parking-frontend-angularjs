@@ -1,0 +1,122 @@
+<div>
+  <h1 matDialogTitle>{{data.incentive_category}}</h1>
+  <div matDialogContent>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="field">
+          <div class="row">
+            <div class="col-lg-10" style="margin-top: 20px;">
+              <div class="row">
+                <mat-form-field class="field_input">
+                  <input matInput [formControl]="selected_name" placeholder="Incentive Name" id="name" required>
+                  <mat-error *ngIf="!selected_name.value">Name is required</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="row">
+                <mat-form-field>
+                  <mat-select [formControl]="selected_work_plan" placeholder="Select Workplan" class="field_input"
+                              (selectionChange)="onChangeFieldBand()">
+                    <mat-option *ngFor="let workplan of list_workplan" [value]="workplan">
+                      {{workplan}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="!selected_work_plan.value">Workplan is required</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="row">
+                <mat-form-field>
+                  <mat-select [formControl]="selected_incentive_type" placeholder="Incentive Type" class="field_input"
+                              (selectionChange)="onChangeFieldBand()">
+                    <mat-option *ngFor="let incentive_type of list_incentive_type" [value]="incentive_type">
+                      {{incentive_type}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="!selected_incentive_type.value">Incentive Type is required</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="row">
+                <mat-form-field>
+                  <mat-select [formControl]="selected_option" class="field_input" placeholder="Type"
+                              (selectionChange)="onChangeFieldBand()">
+                    <mat-option *ngFor="let type of list_type" [value]="type">
+                      {{type}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="!selected_option.value">Type is required</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="row">
+                <mat-form-field>
+                  <mat-select [formControl]="selected_incentive_unity" class="field_input" placeholder="Incentives"
+                              (selectionChange)="onChangeFieldBand()">
+                    <mat-option *ngFor="let incentives of list_incentives" [value]="incentives">
+                      {{incentives}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="!selected_incentive_unity.value">Incentives is required</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="row">
+                <mat-form-field>
+                  <mat-select [formControl]="selected_calculation_type" class="field_input">
+                    <mat-option *ngFor="let retrospective of list_retrospective" [value]="retrospective">
+                      {{retrospective}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="!selected_calculation_type.value">Calculation type is required</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="bands_div">
+          <h5>Bands:</h5>
+          <table class="wrapper">
+            <tr class="tr-head">
+              <th>{{selected_option.value}}</th>
+              <th>{{selected_incentive_unity.value}}</th>
+              <th>Incentive type</th>
+              <th>Forecast</th>
+            </tr>
+            <tr *ngFor="let incentive_band of temp_incentives_band; let i = index">
+              <td>
+              <span>
+                <input type="number" min="0" [value]="incentive_band.rank" [(ngModel)]="incentive_band.rank" class="table-input" (change)="onChangeIncentiveBand(i, incentive_band)">
+                <span *ngIf="incentive_band.calculate_type === 'Percentage'">%</span>
+              </span>
+              </td>
+              <td *ngIf="incentive_band.unity === 'Value'">
+                <input type="number" [(ngModel)]="incentive_band.value_on_currency" class="table-input" (change)="onChangeIncentiveBand(i, incentive_band)">
+              </td>
+              <td *ngIf="incentive_band.unity !== 'Value'">
+                <input type="number"  [(ngModel)]="incentive_band.value_per_unity" class="table-input" (change)="onChangeIncentiveBand(i, incentive_band)">
+              </td>
+              <!--<td> <label> {{ this.data.incentive.incentive_type }} </label>-->
+              <td> <label> {{ selected_incentive_type.value }} </label>
+              </td>
+              <td *ngIf="incentive_band.unity === 'Value'">
+                <input type="number" [(ngModel)]="incentive_band.forecast_on_currency" class="table-input" disabled>
+              </td>
+              <td *ngIf="incentive_band.unity !== 'Value'">
+                <input type="number" [(ngModel)]="incentive_band.forecast_per_unity" class="table-input" disabled>
+              </td>
+            </tr>
+          </table>
+
+          <button  type="button" class="button_blue_div" mat-button="" (click)="onAddBand()">
+            <mat-icon style="color:#13a7e2;" class="button_plus_blue">add_circle</mat-icon>
+            <span class="span_new_band">New Band</span>
+          </button>
+
+        </div>
+      </div>
+      <br><br>
+    </div>
+  </div>
+  <div matDialogActions align="end">
+    <button mat-stroked-button (click)="onNoClick()" class="mr-2">Cancel</button>
+    <button mat-flat-button color="primary" (click)="confirm()">{{data.functionality | titlecase}}</button>
+  </div>
+</div>

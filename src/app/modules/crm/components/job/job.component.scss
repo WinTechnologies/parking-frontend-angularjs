@@ -1,0 +1,126 @@
+@import "../../../../../styles/color";
+
+:host {
+  .page-top-header {
+    .inline {
+      display: flex !important;
+    }
+  }
+
+  .list-page-table-wrapper {
+    border-bottom: 1px solid #9a9caf;
+    .mat-table {
+        height: calc( 100vh - 260px);
+        overflow: initial;
+    }
+  }
+
+  /* On screens that are 992px wide or less, go from four columns to two columns */
+  @media screen and (max-width: 1200px) {
+    .page-top-header {
+      display: block;
+      height: auto;
+    }
+
+    .content-wrap {
+      margin-top: 110px;
+    }
+  }
+
+  @media screen and (max-width: 900px) {
+    .page-top-header {
+      display: block;
+      height: auto;
+    }
+
+    .content-wrap {
+      margin-top: 110px;
+    }
+
+    .mat-form-field-infix {
+      width: 150px;
+    }
+  }
+
+  /* On screens that are 600px wide or less, make the columns stack on top of each other instead of next to each other */
+  @media screen and (max-width: 600px) {
+    .page-top-header {
+      height: auto;
+      padding-bottom: 10px;
+
+      .inline {
+        display: block !important;
+      }
+    }
+
+    .content-wrap {
+      margin-top: 260px;
+    }
+  }
+
+  .title {
+    height: 50px;
+    line-height: 50px;
+    font-size: 1.5rem;
+  }
+
+  ::ng-deep .mat-form-field-infix {
+    padding: 4px 0 6px 0;
+    margin: .5rem 0 0 0;
+  }
+
+  .category {
+    width: 80%;
+    height: 30px;
+    display: block;
+    text-align: center;
+    padding-top: 5px;
+    color: $c-textdark;
+  }
+
+  .tow-requested,
+  .clamp-requested,
+  .declamp-requested {
+    background-color: $requested-background-color;
+    border: 2px solid $category-default-border-color;
+  }
+
+  .tow-in-route,
+  .clamp-in-progress,
+  .declamp-in-route {
+    background-color: $in-progress-background-color;
+    border: 2px solid $in-progress-border-color;
+  }
+
+  .in-route-to-car-pound,
+  .clamped {
+    background-color: $started-background-color;
+  }
+  .tow-job-released,
+  .clamp-released,
+  .declamp-released {
+      background-color: $released-background-color;
+  }
+
+  .tow-job-canceled,
+  .clamp-job-canceled,
+  .declamp-job-canceled {
+    background-color: $canceled-background-color;
+  }
+
+  .towed {
+    background-color: $completed-background-color;
+  }
+
+  .missed {
+      background-color: $missed-background-color;
+  }
+
+  .highlight{
+    background: #023b41;
+
+    .mat-cell {
+      color: white;
+    }
+  }
+}

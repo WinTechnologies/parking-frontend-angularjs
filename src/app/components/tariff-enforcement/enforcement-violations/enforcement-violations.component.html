@@ -1,0 +1,23 @@
+<div class="enforcement-violations">
+  <app-data-grid
+    [title]="'List of Employees'"
+    [tableName]="'violations'"
+    [useSearch]="true"
+    [useSelectConfirmation]="true"
+    (rowSelect)="onSelect($event)"
+  >
+    <div headerActions>
+      <button
+        class="mr-4"
+        *ngIf="permission.isCreate && !isPopup && !isAssignments"
+        mat-flat-button
+        color="basic"
+        (click)="onAdd()">
+        <mat-icon>
+          add_circle
+        </mat-icon>
+        Violation
+      </button>
+    </div>
+  </app-data-grid>
+</div>

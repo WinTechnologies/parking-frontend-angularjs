@@ -1,0 +1,25 @@
+<div class="header">
+  <span>{{label}}</span>
+  <i class="material-icons" (click)="close()">
+    keyboard_arrow_up
+  </i>
+</div>
+<div class="search">
+  <mat-form-field class="search-field">
+    <input matInput type="text" placeholder="{{searchPlaceholder}}" [formControl]="optionSearchCtrl">
+    <button mat-button *ngIf="optionSearchCtrl.value" matSuffix mat-icon-button aria-label="Clear" (click)="optionSearchCtrl.reset()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+<div class="content">
+  <div class="content_header">
+    <mat-checkbox [(ngModel)]="selectAll" (change)="selectAllOptions()">Select all</mat-checkbox>
+    <mat-checkbox [(ngModel)]="deselectAll" (change)="deselectAllOptions()">Deselect all</mat-checkbox>
+  </div>
+  <div class="content_options">
+    <div *ngFor="let option of filteredAvailableOptions | async">
+      <mat-checkbox (change)="changed(option)" [(ngModel)]="enabledOptions[option.value]">{{option.label}}</mat-checkbox>
+    </div>
+  </div>
+</div>

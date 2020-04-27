@@ -1,0 +1,26 @@
+<div mat-dialog-title>
+  <h4>Create an Dashboard</h4>
+</div>
+<form
+  *ngIf="reportNameForm"
+  [formGroup]="reportNameForm"
+  (ngSubmit)="onSubmit()"
+  autocomplete="off"
+  novalidate
+>
+  <div mat-dialog-content>
+    <div>
+      <span>Dashboard Name:</span>
+      <mat-form-field class="ml-2">
+        <input matInput formControlName="name" required/>
+        <input formControlName="project_id" type="hidden" [value]="projectId">
+        <mat-error *ngIf="reportNameForm.get('name').hasError('required')">Name is required</mat-error>
+        <mat-error *ngIf="reportNameForm.get('name').hasError('duplicatedName')">Duplicated name</mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-stroked-button type="button" color="primary" class="mr-2" (click)="onCancel()">Cancel</button>
+    <button mat-flat-button color="primary">Create</button>
+  </div>
+</form>

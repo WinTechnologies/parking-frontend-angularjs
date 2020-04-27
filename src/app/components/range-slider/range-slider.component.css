@@ -1,0 +1,135 @@
+.ruler, .ruler li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: inline-block;
+}
+
+/* IE6-7 */
+.ruler, .ruler li {
+    *display: inline;
+}
+
+.ruler {
+    background: #a8a9ad;
+    border-radius: 2px;
+    color: #d8e0f3;
+    margin: 0;
+    height: 4px;
+    padding-right: 1cm;
+    white-space: nowrap;
+}
+
+.ruler li {
+    padding-left: 1cm;
+    margin: .64em -1em -.64em;
+    text-align: center;
+    position: relative;
+    width: 5.09em;
+    cursor:pointer;
+}
+
+.ruler li:before {
+    content: '';
+    position: absolute;
+    top: -0.9em;
+    right: 1em;
+    border-radius: 100%;
+    width: 12px;
+    height: 12px;
+    background: #a8a9ad;
+    z-index: 10;
+    cursor:pointer;
+}
+
+.ruler li:hover {
+    color: #0db9f0;
+    cursor:pointer;
+}
+
+.ruler li:hover > span.outer-ruler-span {
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    background: #0db9f0;
+    top: -16px;
+}
+
+.ruler li:hover > span.inner-ruler-span {
+    top: -40px;
+    cursor: pointer;
+}
+
+.ruler li:hover:before {
+    top: -0.9em;
+}
+
+.inner-ruler-span {
+    position: relative;
+    top: -40px;
+    right: 6px;
+    font-size: 11px;
+    color:#a8a9ad
+}
+
+.outer-ruler-span {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    top: -16px;
+    right: 10px;
+    position: absolute;
+    z-index: 0;
+}
+
+.outer-ruler-span:hover {
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    background: #0db9f0;
+    cursor:pointer;
+}
+
+.ruler li:hover > span.ruler-inactive {
+    background: #0db9f0;
+    height: 4px;
+    /*width: 2.81em;*/
+    margin-top: -32px;
+    position: absolute;
+    cursor:pointer;
+}
+
+.tick-active {
+    background: #0db9f0;
+}
+
+.range-slider {
+    margin-top:4%;
+    margin-left: 0.2%;
+}
+
+.ruler-active {
+    background: #0db9f0;
+    height: 4px;
+    width: 3.2em;
+    margin-top: -9px;
+    position: absolute;
+    cursor: pointer;
+    margin-left: -18px;
+}
+
+li.hour-selected > span.outer-ruler-span, li.hour-selected + li > span.outer-ruler-span {
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    background: #0db9f0;
+    cursor:pointer;
+}
+
+li.hour-selected > span.inner-ruler-span, li.hour-selected + li > span.inner-ruler-span{
+    color: #0db9f0;
+}
+
+li.hour-selected:before, li.hour-selected + li:before{
+    background: #e5e5e5 !important;
+}

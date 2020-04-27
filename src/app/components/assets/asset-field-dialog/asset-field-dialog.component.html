@@ -1,0 +1,45 @@
+<h1 mat-dialog-title>ADD INPUT FIELD</h1>
+<form [formGroup]="form" *ngIf="form" autocomplete="off" novalidate>
+<div mat-dialog-content>
+    <div class="form-field">
+      <span>Field Name :</span>
+      <mat-form-field>
+        <input matInput type="text" formControlName="name">
+        <mat-error>Field Name is required</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="form-field">
+      <span>Field Type :</span>
+      <mat-form-field>
+        <mat-select formControlName="type" (selectionChange)="changeType($event.value)">
+          <mat-option *ngFor="let type of types" [value]="type.type">
+            {{type.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error>Field Type is required</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="list-options-wrapper" *ngIf="isShowOptions">
+        <div class="list-options" formArrayName="options">
+          <div class="form-field" *ngFor="let detail of options.controls; let index = index;" [formGroupName]="index">
+            <span>{{index + 1}}# Option :</span>
+            <mat-form-field>
+              <input
+              matInput
+              [formControlName]="'option'">
+            </mat-form-field>
+            <button *ngIf="index > 1" type="button" mat-icon-button color="base" (click)="onDelete(index)">
+            <mat-icon>cancel</mat-icon>
+          </button>
+          </div>
+        </div>
+        <button type="button" mat-icon-button class="add-options" (click)="onAddOption()" matTooltip="Add option">
+          <mat-icon>add_box</mat-icon>
+        </button>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button type="button" mat-stroked-button color="basic" (click)="onCancel()">Cancel</button>
+    <button mat-flat-button class="add" (click)="onAdd()">Add</button>
+  </div>
+</form>

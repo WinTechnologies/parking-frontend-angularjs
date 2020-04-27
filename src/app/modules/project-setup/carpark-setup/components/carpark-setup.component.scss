@@ -1,0 +1,182 @@
+@import "../../../../../styles/color";
+
+:host {
+  .carpark-setup-map-wrapper {
+    height: 75vh;
+  }
+
+  .carpark-setup-page {
+    &-header {
+
+      .mat-icon-button {
+        outline: none;
+      }
+    }
+
+    &-content {
+      margin-top: 130px;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      // margin: 5px 20px;
+      // background-color: $c-greylight1;
+      // min-height: calc(100vh - 100px);
+
+      &-header {
+        display: flex;
+        align-items: center;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        position: fixed;
+        top: 110px;
+        right: 0;
+        left: 15rem;
+        z-index: 35;
+        background: white;
+
+        // Check on the app.component.css for the style
+        .filter {
+          // padding: 0 20px 0 44px;
+          mat-icon {
+            position: absolute;
+            // left: -24px;
+          }
+        }
+
+        .divider {
+          flex-grow: 1;
+        }
+
+        button {
+          color: $c-blue1;
+          outline: none;
+          background: transparent;
+
+          .mat-icon {
+            vertical-align: middle;
+            margin-right: 5px;
+          }
+        }
+
+        &-type-wrapper {
+          margin-top: 10px;
+          display: flex;
+        }
+
+        &-type-item {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          margin: 0 10px;
+          border-bottom: 2px solid transparent;
+          @media screen and (min-width:1010px) and (max-width:1190px){
+            margin: 0 !important;
+          }
+
+          &.active {
+            cursor: pointer;
+          }
+          &.selected {
+            cursor: pointer;
+            border-bottom: 2px solid $c-blue1;
+          }
+
+          img {
+            width: 40px;
+            height: 40px;
+          }
+          .name {
+            width: 60px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            text-align: center;
+          }
+        }
+      }
+
+      &-content {
+        background-color: $c-greylight1;
+
+      }
+    }
+  }
+
+  .page-top-header {
+    justify-content: initial;
+  }
+
+  ::ng-deep app-listview-new {
+    width: 100%;
+  }
+  .carparkitem-selector {
+    margin-top: 20px;
+    span {
+      display: block;
+      font-size: 17px;
+      b.span-bold {
+        color: #bcbcbc;
+        font-size: 15px;
+      }
+    }
+
+    .mat-form-field {
+      width: 300px;
+      &.place_LL {
+        width: 150px;
+      }
+      &.units {
+        width: 120px;
+      }
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      color: #bcbcbc;
+    }
+    ::ng-deep .mat-form-field-infix {
+      background: white;
+      border: 1px solid rgba(0, 0, 0, 0.42);
+      border-radius: 5px;
+      padding: 8px 8px 8px 8px;
+      color: #0073AE;
+      font-size: 17px;
+      .mat-select-arrow {
+        color: #0073AE;
+      }
+      span {
+        color: #0073AE;
+      }
+    }
+    .border-right-0 {
+      ::ng-deep .mat-form-field-infix {
+        border-right: 0 !important;
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+        input {
+          border-right: 1px solid rgba(0, 0, 0, 0.42);
+        }
+      }
+    }
+    .border-left-0 {
+      ::ng-deep .mat-form-field-infix {
+        border-left: 0 !important;
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+      }
+    }
+    ::ng-deep .mat-form-field-invalid .mat-form-field-infix {
+      border: 1px solid #f44336;
+    }
+    ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline {
+      height: 0 !important;
+    }
+    ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-ripple {
+      height: 0 !important;
+    }
+  }
+}

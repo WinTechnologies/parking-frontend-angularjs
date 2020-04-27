@@ -1,0 +1,39 @@
+<div class="violation-wrapper">
+  <h4>{{violation.violation_name_en}}</h4>
+  <hr>
+  <div class="d-flex justify-content-md-between">
+    <div class='col-md-10'>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="parameter">
+              <label>English: </label>
+              <span>{{violation.violation_name_en}}</span>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="parameter">
+              <label>Code: </label>
+              <span>{{violation.violation_code}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="parameter">
+              <label>Arabic: </label>
+              <span>{{violation.violation_name_ar}}</span>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="parameter">
+              <label>Non-payment: </label>
+              <mat-checkbox  [checked]="violation.is_nonpayment"  disabled ></mat-checkbox>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+      <img *ngIf="violation && violation.icon_url" class="mr-5" [src]="baseUrl + violation.icon_url" />
+    </div>
+  </div>
+</div>

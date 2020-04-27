@@ -1,0 +1,60 @@
+.element {
+  color: white;
+  margin: 2px;
+  padding: 5px;
+}
+
+.label {
+  font-size: 14px;
+  font-family: "Roboto Condensed", sans-serif;
+}
+
+.value, .value-100, .value-1000{
+  margin: 10px 0;
+  font-weight: 400;
+  font-size: 30px;
+  font-family: "Roboto Condensed", sans-serif;
+}
+
+.value span, .value-100 span, .value-1000 span  {
+  font-size: 16px;
+}
+
+.image img {
+  height: 80px;
+}
+
+.icon img {
+  margin-right: 5px;
+}
+
+@media screen and (max-width: 1024px) {
+  .label {
+    padding: .2em 0 .3em .5em;
+    font-size: 12px;
+  }
+
+  .value {
+    font-size: 20px !important;
+  }
+
+  .element {
+    padding: 5px 0;
+  }
+}
+
+@media screen and (max-height: 800px) {
+  .value-100 {
+    margin: 10px 0;
+    font-weight: 400;
+    font-size: 24px;
+    font-family: "Roboto Condensed", sans-serif;
+  }
+
+  .value-1000 {
+    margin: 10px 0;
+    font-weight: 400;
+    font-size: 20px;
+    font-family: "Roboto Condensed", sans-serif;
+  }
+}

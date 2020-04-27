@@ -1,0 +1,84 @@
+<div mat-dialog-title *ngIf="list">
+  <h4 class="font-weight-bold text-capitalize">{{list?.title}}</h4>
+  <button mat-icon-button (click)="onCancel()"><mat-icon>close</mat-icon></button>
+</div>
+<form
+  *ngIf="form && list"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+  autocomplete="off"
+  novalidate
+>
+  <div mat-dialog-content>
+    <div class="row">
+      <div *ngFor="let column of fields" class="col-6">
+        <div *ngIf="column.type !== 'job_type'">
+          <span *ngIf="column.type === 'file'">
+            <span class="file-upload-label">{{column.label}}</span>
+            <ng2-file-input
+              [drop-text]="' '"
+              accept="['image/jpeg', 'image/jpg', 'image/png', 'xml']"
+              (onAdded)="onImageAdded($event)"
+              (onRemoved)="onPictureRemoved($event)"
+            >
+            </ng2-file-input>
+              <img *ngIf="isImagePreviewShown(column)"
+                [src]="defineUrl(form.controls[column.name].value)" />
+              <div *ngIf="isImagePreviewShown(column, false)">{{form.controls[column.name].value}}</div>
+          </span>
+          <mat-form-field *ngIf="column.type !== 'file'">
+            <input *ngIf="column.type === 'text'"
+                   matInput type="text"
+                   [formControlName]="column.name"
+                   [placeholder]="column.label">
+            <textarea *ngIf="column.type === 'textarea'"
+                    matInput type="text"
+                    [formControlName]="column.name"
+                    [placeholder]="column.label"
+            ></textarea>
+            <input *ngIf="column.type === 'name'"
+                   matInput
+                   type="text"
+                   oninput="this.value = this.value.toUpperCase()"
+                   [formControlName]="column.name"
+                   [placeholder]="column.label">
+            <input *ngIf="column.type === 'codePin'"
+                   matInput
+                   type="text"
+                   [formControlName]="column.name"
+                   [placeholder]="column.label">
+            <input *ngIf="column.type === 'number'"
+                   matInput type="number"
+                   [formControlName]="column.name"
+                   [placeholder]="column.label">
+            <mat-select *ngIf="column.type === 'job_type_id'"
+                        [formControlName]="column.name"
+                        [(value)]="selected_job"
+                        placeholder="Job Type">
+              <mat-option *ngFor="let job_type of availableJobTypes" [value]="job_type.id">
+                <span>{{ job_type.name }}</span>
+              </mat-option>
+            </mat-select>
+            <mat-select *ngIf="column.type === 'country'"
+                        [formControlName]="column.name"
+                        [ngClass]="getCurrencySelectClass(column.name)"
+                        [placeholder]="column.label">
+              <mat-option *ngFor="let country of availableCountries" [value]="country.ccode">
+                <span  class="flag-icon flag-icon-{{country.ccode.toLowerCase()}} mr-1"></span>
+                <span>{{ country.cname }}</span>
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get(column.name)?.hasError('required')">{{column.label}} is required</mat-error>
+            <mat-error *ngIf="form.get(column.name)?.hasError('max')">{{column.label}} should be smaller than {{column.max}}</mat-error>
+            <mat-error *ngIf="form.get(column.name)?.hasError('min')">{{column.label}} should be greater than {{column.min}}</mat-error>
+            <mat-error *ngIf="column.type === 'codePin' && !form.get(column.name)?.hasError('required')">Invalid Code pin</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-stroked-button type="button" color="primary" class="mr-2" (click)="onCancel()">Cancel</button>
+    <button mat-flat-button color="primary" [disabled]="!form.valid">{{ matDialogData.isCreate ? 'Add' : 'Update' }}</button>
+  </div>
+</form>

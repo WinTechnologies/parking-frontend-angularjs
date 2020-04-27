@@ -1,0 +1,18 @@
+<div class="element" [ngStyle]="{'background-color': color, 'width': elemWidth}">
+<table>
+  <tr>
+    <th></th>
+    <th>OFF</th>
+    <th>%</th>
+    <th>SAR</th>
+    <th>%</th>
+  </tr>
+  <tr *ngFor="let item of dataTable" [ngStyle]="{'background-color': item.percent ? 'red' : color}" >
+    <td>{{item.name}}</td>
+    <td>{{item.off}}</td>
+    <td>{{item.percent ? item.percent + '%' : ' '}}</td>
+    <td>{{item.sar}} K</td>
+    <td>{{item.percent ? item.percent + '%' : ' '}}</td>
+  </tr>
+</table>
+</div>

@@ -1,0 +1,436 @@
+@import "../../../../styles/color";
+
+:host {
+  .project-new-page {
+    &-header {
+      .mat-icon-button {
+        outline: none;
+      }
+    }
+
+    &-title {
+      h1 {
+        height: 50px;
+        line-height: 50px;
+        font-size: 1.5rem;
+      }
+    }
+
+    &-form {
+      margin-top: 80px;
+    }
+
+    &-content {
+      &-title {
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .project-new-page-project-info {
+        display: flex;
+
+        .divider {
+          flex-grow: 1;
+        }
+
+        &-notes {
+          .form-field {
+            text-align: left;
+            span {
+              font-weight: bold;
+            }
+            .mat-form-field {
+              width: 90%;
+            }
+          }
+        }
+      }
+
+      .project-image-wrapper {
+        width: 100% !important;
+        max-width: 250px;
+        position: relative;
+
+        .text {
+          position: absolute;
+          top: 5px;
+          left: 5px;
+          line-height: 14px;
+          font-size: 11px;
+          background: rgba(255, 255, 255, 0.6);
+          white-space: nowrap;
+          z-index: 5;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+
+        .imgfield {
+          width: 100% !important;
+          max-width: 200px;
+        }
+
+        .remove {
+          overflow: hidden;
+          position: absolute;
+          bottom: 0;
+          z-index: 3;
+          vertical-align: bottom;
+          width: 100%;
+          max-width: 200px;
+          font-size: 14px;
+          line-height: 20px;
+          top: 0;
+          left: 0;
+          right: 0;
+          opacity: 0;
+          padding: 0;
+
+          &:hover {
+            opacity: 1;
+            cursor: pointer;
+            background: rgba(169, 68, 66, 0.85);
+          }
+
+          p {
+            position: absolute;
+            bottom: 5px;
+            width: 100%;
+            color: #fff;
+            text-align: center;
+          }
+        }
+      }
+    }
+
+    .documents-wrapper {
+      margin: 0 24px;
+      border: 1px dashed darkgrey;
+      padding: 16px 8px 4px 8px;
+      display: inline-block;
+
+      .document-item {
+        position: relative;
+        align-items: center;
+        margin: 0 15px;
+        cursor: pointer;
+        width: 80px;
+        float: left;
+
+        button {
+          position: absolute;
+          right: -5px;
+          top: -5px;
+
+          .mat-icon {
+            color: red;
+          }
+        }
+
+        .type {
+          width: 80px;
+          height: 80px;
+          align-items: center;
+          justify-content: center;
+          display: flex;
+          border: 1px solid;
+          border-radius: 10px;
+
+          span {
+            width: 100%;
+            text-align: center;
+            background-color: $c-blue;
+            color: $c-white;
+            padding: 3px;
+          }
+        }
+
+        .name {
+          text-overflow: ellipsis;
+          white-space: pre;
+          overflow: hidden;
+          width: 80px;
+        }
+      }
+    }
+
+    .project-new-page-selection-activities {
+      &-title-wrapper {
+        display: flex;
+        justify-content: space-between;
+
+        h1 {
+          height: 50px;
+          line-height: 50px;
+          font-weight: 700;
+          font-size: 16px;
+          background-color: $c-white;
+        }
+
+        button {
+          color: $c-lightblue;
+          outline: none;
+
+          .mat-icon {
+            vertical-align: middle;
+            margin-right: 10px;
+          }
+        }
+      }
+
+      &-wrapper {
+        margin-bottom: 20px;
+        .activities-wrapper {
+          margin: 0 10px;
+          background: none;
+          border: none;
+          outline: none;
+
+          .icon-wrapper {
+            width: 100%;
+            height: auto;
+            padding: 20px;
+            background-color: $c-greylight;
+            border-radius: 10px;
+            cursor: pointer;
+
+            img {
+              object-fit: contain;
+              width: 80px;
+              height: 80px;
+            }
+
+            &:hover {
+              background-color: $c-blue;
+
+              img {
+                filter: brightness(0) invert(1);
+              }
+            }
+          }
+
+          &.selected {
+            .icon-wrapper {
+              background-color: $c-blue;
+
+              img {
+                filter: brightness(0) invert(1);
+              }
+            }
+          }
+        }
+        &-no-data {
+          color: #a5a9b4;
+          height: 200px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+        }
+      }
+    }
+
+    .project-new-page-buttons-wrapper {
+      display: flex;
+      justify-content: flex-end;
+      padding-bottom: 40px;
+    }
+  }
+
+  ::ng-deep .page-top-header {
+    justify-content: normal;
+  }
+}
+
+// TODO : Clean SCSS code later (Jérémy)
+.longlat {
+  text-align: center;
+  input {
+    color: $c-blue;
+    text-align: center;
+    width: auto;
+  }
+  .mat-form-field {
+    width: 95px !important;
+  }
+  .mat-form-field-infix {
+    border: 1px solid $c-blue;
+    border-radius: 5px;
+  }
+  span {
+    width: auto !important;
+  }
+}
+
+.notes {
+  width: 100%;
+  .form-field {
+    width: 100%;
+  }
+
+  .notebar {
+    width: 100% !important;
+    padding-left: 15px;
+    display: inline-flex;
+    .mat-form-field {
+      width: 100%;
+    }
+    .project-new-page-buttons-wrapper {
+      display: flex;
+      justify-content: flex-end;
+      padding-bottom: 20px;
+      padding-top: 20px;
+      margin-left: 5%;
+    }
+  }
+
+  ::ng-deep {
+    textarea {
+      padding: .5rem;
+      border:1px solid grey;
+    }
+    .mat-form-field-appearance-legacy .mat-form-field-underline {
+      height: 0 !important;
+    }
+    .mat-form-field-appearance-legacy .mat-form-field-ripple {
+      height: 0 !important;
+    }
+  }
+}
+
+.map-wrapper {
+  ::ng-deep .map-view {
+    height: 350px;
+    .leaflet-bottom {
+      display: none;
+    }
+  }
+}
+
+.location {
+  width: 100% !important;
+  mat-form-field {
+    width: 80% !important;
+  }
+}
+
+.c_picture, .formdocument {
+  ::ng-deep .ng2-file-input .ng2-file-input-drop-container {
+    border: none !important;
+  }
+}
+
+.form-field {
+  span {
+    width: 100px;
+    font-weight: bold;
+    span.required {
+      color: rgb(255, 53, 53);
+      width: 15px !important;
+    }
+  }
+  .mat-form-field {
+    width: 180px;
+  }
+}
+
+.altered {
+  border: 1px solid teal;
+  background-color: rgb(45, 64, 75);
+  color: whitesmoke;
+}
+
+.pop-btn {
+  color: teal;
+}
+
+::ng-deep  {
+  .ng2-file-input .ng2-file-input-drop-container button {
+    background-color: #2d404a;
+    min-width: 88px;
+    line-height: 36px;
+    padding: 0 16px;
+    border-radius: 2px;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    border-color: #2d404a;
+  }
+
+  .logo-uploader .ng2-file-input {
+    .ng2-file-input-drop-container button {
+      background-color: #afafaf !important;
+      border-color: #afafaf !important;
+      width: 130px;
+      height: 130px;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      border-radius: 8px;
+      margin: 0;
+
+      &::before {
+        // Enable google icon
+        // 1. <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        // 2. yarn add material-design-icons
+        // angular.json {
+        //  styles: [
+        //    "./assets/fonts/material-icons/material-icons.css"
+        //  ]
+        // }
+        // add_a_photo icon codepoint: e439
+        // https://github.com/google/material-design-icons/blob/master/iconfont/codepoints
+        font-family: "Material Icons";
+        content: "\e439";
+        font-size: 2.5rem;
+      }
+    }
+  }
+
+  .ng2-file-input .ng2-file-input-drop-container button:active {
+    box-shadow: none !important;
+    background-color: #2d404a !important;;
+    border-color: #2d404a !important;;
+  }
+}
+.logo-preview {
+  overflow: hidden;
+  display: inline-block;
+  margin-right: 5px;
+  margin-left: 5px;
+  vertical-align: middle;
+  text-align: center;
+  position: relative;
+  img {
+    width: 120px;
+    height: 120px;
+  }
+  span.hover-label {
+    overflow: hidden;
+    position: absolute;
+    bottom: 0;
+    z-index: 3;
+    vertical-align: bottom;
+    max-width: 120px;
+    font-size: 14px;
+    line-height: 20px;
+    top: 0;
+    left: 0;
+    right: 0;
+    opacity: 0;
+    padding: 0;
+    width: auto;
+
+    &:hover {
+      opacity: 1;
+      cursor: pointer;
+      background: rgba(169, 68, 66, 0.85);
+      p {
+        position: absolute;
+        bottom: 5px;
+        width: 100%;
+        color: #fff;
+      }
+    }
+  }
+}

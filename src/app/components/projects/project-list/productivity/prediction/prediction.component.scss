@@ -1,0 +1,127 @@
+.forecast_div_1 {
+  margin-top: 3em;
+  margin-left: 4em;
+  font-weight: 500;
+  color: #023b41;
+
+  .forecast_span{
+    font-size: 22px;
+    font-weight: 600;
+    padding-left: 4px;
+    color: #b9b9b9;
+  }
+}
+
+.forecast_div_2{
+  margin-top: 3em;
+  margin-left: 4em;
+
+  .issuance_rate_input{
+    text-align: right;
+    padding-right: 5px;
+    font-weight: bold;
+    font-size: 20px;
+    color: #023b41;
+    border-radius: 5px;
+    border: 0.5px solid #83a6aa;
+  }
+}
+
+.forecast_table {
+  margin-top: 1em;
+  margin-left: 6em;
+
+  .wrapper {
+    text-align: center;
+    width: 40%;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+
+    .wp_row{
+      border-top-left-radius: 10px;
+      border-bottom: 0.5px solid #ccc;
+    }
+
+    .wp_th{
+      border-top-left-radius: 10px;
+    }
+
+    .qt_row {
+      border-bottom-left-radius: 10px;
+      color: rgb(185, 185, 185);
+    }
+
+    .qt_th{
+      border-bottom-left-radius: 10px;
+    }
+
+    th{
+      background-color: #023b41;
+      color: white;
+      padding: 6px;
+    }
+
+    td{
+      font-weight: bold;
+      font-size: 20px;
+      border: solid 0.5px #ccc;
+      padding: 12px;
+    }
+  }
+}
+
+.container-empty{
+  padding-left: 67px;
+  padding-right: 67px;
+  padding-top: 5px;
+
+  .row{
+    background-color: #dedddd;
+    height: 2px;
+    margin-top: 15px;
+  }
+}
+
+.team{
+  margin-top: 3em;
+  margin-left: 4em;
+
+  .h5{
+    font-size: 15px;
+  }
+
+  .team_p1, .team_p2 {
+    font-weight: 500;
+    margin-left: 2em;
+    color: #023b41;
+  }
+
+  .team_p1{
+    display: inline-block;
+
+    .nb_space_input{
+      text-align: center;
+      margin: 0 3px;
+      font-weight: bold;
+      font-size: 20px;
+      color: #023b41;
+      border-radius: 5px;
+      border: 0.5px solid #83a6aa;
+    }
+  }
+
+  .forecast_span{
+    font-size: 22px;
+    font-weight: 600;
+    padding-left: 4px;
+    color:  rgb(185, 185, 185);
+  }
+}
+
+.validation_button{
+  margin-left: 75%;
+
+  .cancel_button, .add_button{
+    margin: 3px;
+  }
+}

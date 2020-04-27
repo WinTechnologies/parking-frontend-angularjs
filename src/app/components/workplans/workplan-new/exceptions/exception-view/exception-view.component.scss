@@ -1,0 +1,44 @@
+@import "../../../../../../styles/_color.scss";
+
+:host {
+  .exception-new {
+    .exception-new-content {
+      margin: 10px 0;
+      padding: 20px;
+      border: 1px solid $c-greylight;
+      border-radius: 10px;
+
+      &-name {
+        display: flex;
+        align-items: center;
+
+        .mat-form-field {
+          width: 360px;
+        }
+
+        .divider {
+          flex-grow: 1;
+        }
+      }
+
+      span {
+        width: 130px;
+      }
+
+      sup {
+        color: red;
+      }
+
+      &-settings {
+        display: flex;
+        align-items: center;
+      }
+
+      &-applydate-wrapper {
+        .mat-checkbox {
+          margin-left: 50px;
+        }
+      }
+    }
+  }
+}

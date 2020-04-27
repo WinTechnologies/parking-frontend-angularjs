@@ -1,0 +1,28 @@
+<h1 mat-dialog-title>Chart details</h1>
+
+<div mat-dialog-content id="printSection">
+
+  <!-- Print chart -->
+  <app-analytics-chart [settings]="widget.settings" [dataSets]="widget.dataSets"></app-analytics-chart>
+
+  <div class="table-wrapper">
+    <mat-table [dataSource]="matTableDataSource" matSort>
+      <ng-container *ngFor="let column of matTableColumns; let i=index">
+        <ng-container [matColumnDef]="column">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>{{matTableHeaders[i]}}</mat-header-cell>
+          <mat-cell *matCellDef="let item">{{item[column]}}</mat-cell>
+        </ng-container>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="matTableColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: matTableColumns;"></mat-row>
+    </mat-table>
+
+    <mat-paginator [pageSizeOptions]="[5]"></mat-paginator>
+  </div>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-stroked-button color="primary" class="mr-2" (click)="close()">Close</button>
+  <button mat-flat-button color="primary" (click)="print()">OK</button>
+</div>

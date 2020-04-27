@@ -1,0 +1,46 @@
+<div class="route-list">
+  <div class="route-list-header-wrapper">
+    <h1 class="route-list-header">Route List</h1>
+    <div class="route-list-header-filter">
+      <mat-form-field class="filter">
+        <mat-icon>search</mat-icon>
+        <input matInput  (keyup)="applyFilterRoute($event.target.value)" placeholder="Search route">
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="route-list-content">
+    <div class="route-list-item-wrapper" *ngFor="let route of filteredRoutes" (click)="onViewRoute(route)">
+      <div class="route-list-item-title">
+        <span>{{route.route_name}}</span>
+      </div>
+      <button mat-icon-button color="warn" class="remove-btn" (click)="onDeleteRoute($event, route);">
+        <mat-icon>remove_circle</mat-icon>
+      </button>
+      <div class="route-list-item-content">
+        <div class="route-list-item-row">
+          <div class="route-list-item-distance">
+            <span class="label-text">Length:&nbsp;</span>{{route.distance_meters}} meters
+          </div>
+          <div class="route-list-item-time">
+            <mat-icon>directions_walk</mat-icon><span>{{route.distance_mins}} mins</span>
+          </div>
+        </div>
+        <div class="route-list-item-row">
+          <div class="route-list-item-street">
+            <span class="label-text">Streets</span>
+            <ul class="street-list" *ngIf="route.waypoints.length">
+              <ng-container *ngFor="let point of route.waypoints; let i = index">
+                <li *ngIf="i < 3">{{point['name']}}</li>
+              </ng-container>
+            </ul>
+          </div>
+          <div class="route-list-item-staff">
+            <span class="count">{{route.staffs.length || 0}}</span>
+            <span>STAFF</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<div class="timeline-view">
+  <div class="time-ruler">
+    <ul class="ruler">
+      <li *ngFor="let hour of hours; let i = index;">
+        <span class="ruler-label">{{hour}}</span>
+      </li>
+    </ul>
+  </div>
+  <div class="time-slots">
+    <div *ngFor='let slot of slots; let i = index' [ngStyle]="calculateStyles(slot)">
+      {{slot.label}}
+    </div>
+  </div>
+</div>

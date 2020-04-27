@@ -1,0 +1,171 @@
+<div class="profile-page">
+  <div class="profile-page-header">
+    <div class="local-time">Local Date/Time: <span>{{ today | date:'dd/MM/yyyy hh:mm a'}}</span></div>
+  </div>
+  <div class="profile-page-content">
+    <div class="profile-page-content-title">
+      <h1>Update the profile</h1>
+    </div>
+    <form *ngIf="form" [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="off" novalidate>
+      <div class="row">
+        <div class="col-sm-2">
+          <div class="employee-avatar">
+            <div
+              *ngIf="!employee.img_url"
+              class="attach-photo"
+              (click)="onOpenAvatarDialog()"
+            >
+              <mat-icon role="img" aria-hidden="true">photo_camera</mat-icon>
+              <span>
+                Upload<br />
+                picture
+                </span>
+            </div>
+            <img
+              *ngIf="employee.img_url"
+              [src]="baseUrl + employee.img_url"
+              (click)="onOpenAvatarDialog()"
+            />
+          </div>
+        </div>
+        <div class="col-sm-10">
+          <div class="row">
+            <div class="col-sm-3">
+              <mat-form-field >
+                <input matInput type="text" formControlName="employee_id" placeholder="Employee ID" required>
+                <mat-error>Employee ID required</mat-error>
+              </mat-form-field>
+              <mat-form-field >
+                <input matInput type="text" formControlName="firstname" placeholder="First name" required>
+                <mat-error>Firstname is required</mat-error>
+              </mat-form-field>
+              <mat-form-field >
+                <input matInput type="text" formControlName="lastname" placeholder="Last name" required>
+                <mat-error>Last is required</mat-error>
+              </mat-form-field>
+              <mat-form-field >
+                <input matInput type="text" formControlName="username" placeholder="Username" required>
+                <mat-error>Username is required</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-3">
+              <mat-form-field >
+                <mat-select formControlName="sex" placeholder="Gender" required>
+                  <mat-option value="1"> Male</mat-option>
+                  <mat-option value="0"> Female</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <div class="intl-tel-input-wrapper" [class.has-error]="invalidPhoneNumber()">
+                <label class="field-label">Phone number</label>
+                <input type="text"
+                       required
+                       ng2TelInput
+                       [ng2TelInputOptions]="{initialCountry: 'SA', preferredCountries: ['SA', 'AE', 'BH', 'KW', 'QA, OM']}"
+                       (hasError)="hasPhoneNumberError($event)"
+                       (ng2TelOutput)="getPhoneNumber($event)"
+                       (intlTelInputObject)="telInputObject($event)"/>
+                <label class="error" *ngIf="phoneNumberValid !== undefined && !phoneNumberValid"> Invalid phone number</label>
+                <label class="error" *ngIf="form.get('phone_number').hasError('required')"> Phone number is required </label>
+              </div>
+              <mat-form-field>
+                <input matInput formControlName="day_of_birth" [matDatepicker]="day_of_birth" placeholder="Birthday" [max]="tomorrow" required>
+                <mat-datepicker-toggle matSuffix [for]="day_of_birth"></mat-datepicker-toggle>
+                <mat-datepicker #day_of_birth></mat-datepicker>
+                <mat-error>Birthday is required</mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <input
+                  matInput type="text"
+                  placeholder="Department"
+                  [formControlName]="'department'"
+                  (keyup)="applyFilterDepartment($event.target.value)"
+                  (click)="applyFilterDepartment($event.target.value)"
+                  [matAutocomplete]="auto"
+                />
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option
+                    *ngFor="let department of filteredDepartments"
+                    [value]="department.department_name">
+                    {{department.department_name }}
+                  </mat-option>
+                </mat-autocomplete>
+                <mat-error>Department is required</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-3">
+              <mat-form-field>
+                <input
+                  matInput type="text"
+                  placeholder="Position"
+                  [formControlName]="'job_position'"
+                  (keyup)="applyFilterPosition($event.target.value)"
+                  (click)="applyFilterPosition($event.target.value)"
+                  [matAutocomplete]="autoPos"
+                />
+                <mat-autocomplete #autoPos="matAutocomplete">
+                  <mat-option
+                    *ngFor="let position of filtredPositions"
+                    [value]="position.name"
+                  >
+                    {{position.name }}
+                  </mat-option>
+                </mat-autocomplete>
+                <mat-error>Position is required</mat-error>
+              </mat-form-field>
+
+              <mat-form-field>
+                <input matInput type="text" formControlName="landline" placeholder="Landline">
+              </mat-form-field>
+              <mat-form-field class="picker_date">
+                <input matInput
+                       formControlName="date_start"
+                       [matDatepicker]="datestart"
+                       [matDatepickerFilter]="startDateFilter.bind(this)"
+                       placeholder="Start date"
+                       required>
+                <mat-datepicker-toggle matSuffix [for]="datestart"></mat-datepicker-toggle>
+                <mat-datepicker #datestart></mat-datepicker>
+                <mat-error>Start date is required</mat-error>
+              </mat-form-field>
+              <mat-form-field class="picker_date">
+                <input matInput [formControlName]="'date_end'"
+                       [matDatepicker]="dateend"
+                       [matDatepickerFilter]="endDateFilter.bind(this)"
+                       placeholder="End date">
+                <mat-datepicker-toggle matSuffix [for]="dateend"></mat-datepicker-toggle>
+                <mat-datepicker #dateend></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-3">
+              <mat-form-field>
+                <input matInput type="password" formControlName="password" placeholder="New Password">
+                <mat-error *ngIf="form.get('password').hasError('minlength')"> Password must be at least 6 characters </mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput type="password" formControlName="confirm_password" placeholder="Confirm Password">
+                <mat-error *ngIf="form.get('confirm_password').hasError('mismatch')"> Passwords don't match </mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput type="text" formControlName="email" placeholder="Email" required>
+                <mat-error *ngIf="form.get('email').hasError('required')">Email is required</mat-error>
+                <mat-error *ngIf="form.get('email').hasError('email')">Email must be a valid email address</mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <input matInput type="text" formControlName="address" placeholder="Address" required>
+                <mat-error>Address is required</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="buttons-wrapper d-flex justify-content-end">
+            <button mat-stroked-button color="primary" type="button" class="mr-2" (click)="onCancel()">Cancel</button>
+            <button mat-flat-button color="primary" [disabled]="!profileChanged && !pictureChanged">Update</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

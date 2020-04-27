@@ -1,0 +1,19 @@
+<div class="wrapper">
+  <app-list-groups
+    *ngIf="(!groupId && !isCreate) || projectIdChanged"
+    [project_id]="projectId"
+    [permission]="permission"
+    (groupId)="setGroupId($event)"
+    [focusGroup] = "focusGroup"
+    (updateGroupStatus)="onUpdateStatus($event)">
+  </app-list-groups>
+  <app-group-details
+    *ngIf="(groupId || isCreate) && !projectIdChanged"
+    [isCreate]="isCreate"
+    [groupId]="groupId"
+    [projectId]="projectId"
+    [permission]="permission"
+    (updateStatus)="onUpdateStatus($event)"
+  >
+  </app-group-details>
+</div>

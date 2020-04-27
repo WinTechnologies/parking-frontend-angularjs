@@ -1,0 +1,118 @@
+<div *ngIf="currentUser" class="tabs-wrapper-project">
+  <mat-tab-group
+    class="workplan-tabs"
+    (selectedIndexChange)="onSelectProjectTab($event)"
+    [selectedIndex]="selectedTabIndex"
+  >
+    <mat-tab *ngFor="let project of activeProjects; let i = index">
+       <!-- ---------------- Projects bar ---------------------------- -->
+      <ng-template mat-tab-label>
+        {{ project.project_code }} : {{ project.project_name }}
+        <button class="button-remove" mat-button (click)="removeFromList(i)">
+          <i class="material-icons md-36">close</i>
+        </button>
+      </ng-template>
+      <!-- ---------------- Modules bar ---------------------------- -->
+      <div class="tabs-wrapper-tabs" *ngIf="i == selectedTabIndex">
+          <!--[(selectedIndex)]="index"-->
+        <mat-tab-group
+          (selectedIndexChange)="onSelectedInsideProjectTab($event)"
+          [selectedIndex]="selectedInsideTabIndex"
+          class="tabs-tab">
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <div class="d-flex align-items-center">
+                <mat-icon svgIcon="maps" class="mr-3px"></mat-icon>
+                M.A.P.S.
+              </div>
+            </ng-template>
+              <app-generalview
+                *ngIf="selectedInsideTabIndex === 0"
+                [project]="project">
+              </app-generalview>
+          </mat-tab>
+          <mat-tab *ngIf="canView(currentUser, 'project_dashboard')">
+            <ng-template mat-tab-label>
+              <div class="d-flex align-items-center">
+                <div class="mt-7px">
+                  <i class="material-icons md-36 mr-3px">dashboard</i>
+                </div>
+                Dashboard
+              </div>
+            </ng-template>
+              <app-project-dashboard
+                [projectId]="project.id"
+                *ngIf="selectedInsideTabIndex === projectTabFeatures.indexOf('project_dashboard')"
+              >
+              </app-project-dashboard>
+          </mat-tab>
+          <mat-tab *ngIf="canView(currentUser, 'project_analytics')">
+            <ng-template mat-tab-label>
+              <div class="d-flex align-items-center">
+                <mat-icon svgIcon="analytics" class="mr-3px"></mat-icon>
+                Analytics
+              </div>
+            </ng-template>
+            <app-analytics
+              [projectId]="project.id"
+              *ngIf="selectedInsideTabIndex === projectTabFeatures.indexOf('project_analytics')">
+            </app-analytics>
+          </mat-tab>
+          <mat-tab *ngIf="canView(currentUser, 'project_assets')">
+            <ng-template mat-tab-label>
+              <div class="d-flex align-items-center">
+                <mat-icon svgIcon="assets" class="mr-3px"></mat-icon>
+                Assets
+              </div>
+            </ng-template>
+            <app-assets
+              [project]="project" [singleProjectMode]="true">
+            </app-assets>
+          </mat-tab>
+          <mat-tab *ngIf="canView(currentUser, 'project_productivity')">
+            <ng-template mat-tab-label>
+              <div class="d-flex align-items-center">
+                <mat-icon svgIcon="productivity" class="mr-3px"></mat-icon>
+                Productivity
+              </div>
+            </ng-template>
+            <app-productivity
+              *ngIf="selectedInsideTabIndex === projectTabFeatures.indexOf('project_productivity')"
+              [project]="project">
+            </app-productivity>
+          </mat-tab>
+          <mat-tab *ngIf="canView(currentUser, 'project_info')">
+            <ng-template mat-tab-label>
+              <div class="d-flex align-items-center">
+                  <div class="mt-7px">
+                    <i class="material-icons md-36 mr-3px">info_outline</i>
+                  </div>
+                Project Info
+              </div>
+            </ng-template>
+            <div>
+              <app-project-new
+                *ngIf="selectedInsideTabIndex === projectTabFeatures.indexOf('project_info')"
+                [project]="project">
+              </app-project-new>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </mat-tab>
+    <!-- ---------------- Add New Project icon ---------------------------- -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <button *ngIf="activeProjects.length"
+        mat-button
+        class="button-add">
+          <i class="material-icons md-36">add</i>
+        </button>
+      </ng-template>
+      <div class="tabs-wrapper-tabs">
+        <app-project-all [permission]="permission" [tabIndex]="selectedTabIndex"></app-project-all>
+        <!--[projects]="allProjects"-->
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

@@ -1,0 +1,51 @@
+.map-view {
+  height: 75vh !important;
+  width: 100%;
+  z-index: 0;
+}
+
+:host ::ng-deep .leaflet-control-custom {
+  background-color: white;
+  width: 70px;
+  height: 30px;
+  line-height: 26px;
+  text-align: center;
+  font-weight: bold;
+}
+
+:host ::ng-deep a[class*='leaflet-draw-draw-']::before {
+  position: absolute;
+  left: 40px;
+  border-left-color: #0000007d;
+  border-top-color: #0000007d;
+  width: 30px;
+  height: 30px;
+  transform: rotate('45deg');
+}
+
+:host ::ng-deep a[class*='leaflet-draw-draw-']::after {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: 40px;
+  color: #ffffff;
+  background-color: #0000007d;
+  width: 102px;
+  height: 30px;
+  line-height: 26px;
+  font-weight: bold;
+  border-radius: 7px;
+}
+
+:host ::ng-deep a.leaflet-draw-draw-marker::after {
+  content: 'Draw a marker';
+}
+
+:host ::ng-deep a.leaflet-draw-draw-polygon::after {
+  content: 'Draw a polygon';
+}
+
+:host ::ng-deep a[class*='leaflet-draw-draw-'].leaflet-draw-toolbar-button-enabled::after {
+  display: none;
+}

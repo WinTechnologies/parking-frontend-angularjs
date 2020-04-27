@@ -1,0 +1,29 @@
+<main class="list-page">
+  <!-- ------------------- Grey bar ------------------------ -->
+  <header class="list-page-header page-top-header">
+    <div class="d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center justify-content-between">
+        <mat-icon>search</mat-icon>
+        <mat-form-field>
+          <input matInput placeholder="Search" />
+        </mat-form-field>
+      </div>
+    </div>
+  </header>
+  <!-- -------------------------------------------- -->
+  <h4 class="list-page-title font-weight-bold title-fixed">
+    Setting Default Values
+  </h4>
+  <div class="list-page-content mt-50px">
+    <div class="row mx-0 pt-50px">
+      <div *ngFor="let defaultValueType of defaultValueTypes" class="col-lg-4 p-2">
+        <div class="type-wrapper d-flex flex-column" [routerLink]="[defaultValueType.name]">
+          <div class="type-title">
+            {{ defaultValueType.title }}
+          </div>
+          <div class="d-flex justify-content-between p-4"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

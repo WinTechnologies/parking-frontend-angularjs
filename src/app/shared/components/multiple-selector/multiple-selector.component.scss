@@ -1,0 +1,35 @@
+:host {
+  display: block;
+  width: 250px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+
+  i {
+    cursor: pointer;
+  }
+}
+
+.search {
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.content {
+  &_header {
+    font-size: 12px;
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid gray;
+    margin: 0 22px;
+  }
+
+  &_options {
+    padding-top: 10px;
+  }
+}

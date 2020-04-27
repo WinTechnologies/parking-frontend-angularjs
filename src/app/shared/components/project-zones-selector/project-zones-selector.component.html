@@ -1,0 +1,30 @@
+<div class="parking-wrapper">
+  <div class="d-flex justify-align-between p-1 top-panel">
+    <img
+      [src]="isMapShow ? '/assets/Icons/Violations/tariff-section/List view_icon.svg': '/assets/Icons/Violations/tariff-section/Map view_icon.svg'"
+      (click)="toggleMap()">
+    <div class="d-flex align-items-center justify-content-left ml-3">
+      <mat-icon>search</mat-icon>
+      <mat-form-field class="violation-filter">
+        <input matInput placeholder="Search zone" [(ngModel)]="searchText" autocomplete="off" />
+      </mat-form-field>
+    </div>
+    <div class="ml-1">
+      <button type="button" mat-flat-button color="primary" class="mr-2" (click)="onSelectAll(true)">Select All</button>
+      <button type="button" mat-stroked-button color="secondary" (click)="onSelectAll(false)">Deselect All</button>
+    </div>
+  </div>
+
+  <div *ngIf="!isMapShow" class="m-1 p-1">
+    <div *ngFor="let zone of zones | filter: searchText">
+      <mat-checkbox [(ngModel)]="zone.isSelected"
+                    [disabled]="(!zone.list || !zone.list.length) && !assignment"
+                    (change)="onSelectZone($event, zone.zone_id)">
+        {{zone.zone_name}} <div *ngIf="!assignment">({{zone.list.length}} parkings)</div>
+      </mat-checkbox>
+    </div>
+  </div>
+
+  <app-parking-map [coordinates]="coordinates" *ngIf="isMapShow"
+    (selectParkingZoneOnMap)="selectParkingZoneOnMap($event)"></app-parking-map>
+</div>

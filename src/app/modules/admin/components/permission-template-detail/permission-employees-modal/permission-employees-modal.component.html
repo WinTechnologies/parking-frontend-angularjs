@@ -1,0 +1,69 @@
+<div mat-dialog-title>
+  <div class="d-flex justify-content-between align-items-center">
+    <h4 class="mb-0">Assign users</h4>
+    <button mat-icon-button (click)="onCancel()"><mat-icon>close</mat-icon></button>
+  </div>
+</div>
+<div mat-dialog-content>
+  <div class="d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center">
+      <mat-form-field class="table-filter">
+        <mat-icon>search</mat-icon>
+        <input matInput  (keyup)="applyFilterEmployee($event.target.value)" placeholder="Search employee">
+      </mat-form-field>
+      <div class="ml-2">
+        <span>Template:</span>
+        <mat-form-field>
+          <input matInput [ngModel]="matDialogData.template.template_name" [disabled]="true"/>
+        </mat-form-field>
+      </div>
+    </div>
+    <button class="mr-4 btn-primary mat-raised-button" (click)="editColumns()">Customize Columns</button>
+  </div>
+  <ngx-datatable class="material bg-white"
+                 style="height: calc(65vh - 60px)"
+                 [columnMode]="'force'"
+                 [headerHeight]="50"
+                 [footerHeight]="50"
+                 [rowHeight]="50"
+                 [limit]="10"
+                 scrollbarV="true"
+                 (reorder)="reorderColumns($event)"
+                 [rows]="allEmployeesWithChecked"
+                 (activate)="onSelect($event)">
+    <ngx-datatable-column *ngFor="let field of tableFields" name="{{field.label}}" prop="{{field.name}}">
+      <ng-template let-column="column" ngx-datatable-header-template>
+        <ng-container *ngIf="field.name === 'checkbox'">
+          <mat-checkbox (change)="checkAll()" [(ngModel)]="allChecked"></mat-checkbox>
+        </ng-container>
+        <ng-container *ngIf="field.name !== 'checkbox'">
+          {{field.label}}
+        </ng-container>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+            <span [matTooltip]="row[field.name]" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+              <ng-container [ngSwitch]="field.name">
+                <ng-container *ngSwitchCase="'checkbox'">
+                  <mat-checkbox (change)="changeCheckItem()" (click)="$event.stopPropagation();" [(ngModel)]="row.checked"></mat-checkbox>
+                </ng-container>
+                <ng-container *ngSwitchCase="'avatar'">
+                  <img *ngIf="row.img_url" [src]="baseUrl + row.img_url" alt="">
+                  <img *ngIf="!row.img_url" src="assets/noavatar.png" alt="">
+                </ng-container>
+                <ng-container *ngSwitchCase="'status'">
+                  {{ row[field.name] }} Active
+                </ng-container>
+                <ng-container *ngSwitchDefault>{{ row[field.name] }}</ng-container>
+              </ng-container>
+            </span>
+      </ng-template>
+    </ngx-datatable-column>
+  </ngx-datatable>
+</div>
+<div mat-dialog-actions class="d-flex justify-content-between align-items-center">
+  <span>Selected: {{selectedCount}}</span>
+  <div class="buttons-wrapper">
+    <button mat-stroked-button color="primary" (click)="onCancel()" class="mr-2">Cancel</button>
+    <button mat-flat-button color="primary" (click)="onAdd()" [disabled]="selectedCount === 0">Add</button>
+  </div>
+</div>

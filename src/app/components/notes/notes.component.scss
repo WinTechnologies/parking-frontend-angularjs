@@ -1,0 +1,130 @@
+@import "../../../styles/_color.scss";
+
+:host {
+  .add-note {
+    margin-top: 15px;
+    width: auto;
+  }
+
+  .row {
+    margin-right: 0px;
+    margin-left: 0px;
+  }
+
+  form {
+    width: auto;
+  }
+
+  .mat-form-field {
+    margin-top: 30px;;
+  }
+
+  .mat-flat-button {
+    border-radius: 2px;
+  }
+
+  .text{
+    border-radius: 2px;
+  }
+
+  .buttons-wrapper {
+    margin-top: 35px;
+
+    button {
+      color: $c-blue1;
+      background-color: transparent;
+      outline: none;
+    }
+  }
+
+  .note-list-page {
+    &-header {
+      display: flex;
+      align-items: center;
+      background-color: $c-greylight;
+      height: 50px;
+      box-shadow: 0 3px 1px -2px rgba(0, 0, 0, .2), 0 2px 2px 0 rgba(0, 0, 0, .14), 0 1px 5px 0 rgba(0, 0, 0, .12);
+
+      .add-form-wrapper {
+        form {
+          background: #ffffff;
+          padding: 25px;
+          display: flex;
+          flex-wrap: wrap;
+          .input-box-wrapper {
+            /deep/ .mat-form-field-wrapper {
+              width: 180px;
+            }
+            color: #faad4e;
+            .mat-form-field {
+              margin-right: 25px;
+            }
+          }
+
+          .description-wrapper {
+            flex: auto;
+            padding-right: 25px;
+            textarea {
+              color: #faad4e;
+              height: 100%;
+            }
+          }
+        }
+      }
+
+      &-filter {
+        padding: 0px;
+
+        mat-icon {
+          position: absolute;
+          position: absolute;
+          left: -24px;
+        }
+      }
+    }
+
+    &-content {
+      margin: 5px 20px;
+      background-color: $c-greylight1;
+
+      button.mat-icon-button {
+        color: $c-greylight;
+        outline: none;
+      }
+      .mat-table {
+        height: auto;
+        max-height: 35vh;
+        overflow: overlay;
+
+        .mat-header-cell {
+          color: white;
+        }
+
+        .mat-header-row {
+          background-color: $c-blue;
+
+          /deep/ .mat-sort-header-button {
+            color: $c-white !important;
+          }
+
+          /deep/ .mat-sort-header-arrow {
+            color: #32a8cd;
+          }
+        }
+
+        .mat-row {
+          padding: 0 5px;
+
+        }
+      }
+
+      .mat-column-action {
+        flex: 0 0 85px;
+      }
+
+      .btns{
+        width: 50px!important;
+      }
+    }
+  }
+}

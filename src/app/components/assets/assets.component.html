@@ -1,0 +1,414 @@
+<main class="assets-page">
+  <!-- ------------------- Greybar ------------------------ -->
+  <header class="page-top-header">
+    <div class="d-flex align-items-center justify-content-between">
+      <mat-icon>search</mat-icon>
+      <mat-form-field class="assets-filter mr-3 h-50px">
+        <input
+          matInput
+          (keyup)="applyFilterAssets($event.target.value)"
+          placeholder="Search assets"
+        />
+      </mat-form-field>
+      <mat-form-field *ngIf="!project" class="h-50px">
+        <mat-select value="" (selectionChange)="changeSelectProject($event)">
+          <mat-option value="">All Projects</mat-option>
+          <mat-option *ngFor="let project of projects" [value]="project.id">
+            <strong>{{ project.project_code }}:</strong> {{ project.project_name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="assets-page-header-buttons" *ngIf="tableDisplayMode !== 'ASSET_INSTANCE'">
+      <button mat-icon-button matTooltip="Click on list view to modify the Asset information" *ngIf="(singleProjectMode && !isListView) || (!project && !isListView)" (click)="onSwitchView()">
+        <mat-icon>list</mat-icon>
+      </button>
+      <button mat-icon-button *ngIf="(singleProjectMode && isListView) || (!project && isListView)" (click)="onSwitchView()">
+          <img src="/assets/enforcementsetup/map_view_icon.svg">
+        </button>
+      <button
+        *ngIf="permission.isCreate"
+        color="basic"
+        mat-flat-button
+        (click)="onCreate()">
+        <mat-icon>
+          add_circle
+        </mat-icon>
+        Asset
+      </button>
+    </div>
+  </header>
+  <!-- --------------------------------------------->
+  <div class="mt-50px">
+    <div *ngIf="!isListView && !switchComponent" class="assets-page-content">
+      <h1 class="assets-page-content-title font-weight-bold title-fixed">Assets</h1>
+      <div class="assets-page-content-assets-wrapper d-flex flex-wrap">
+        <ng-container *ngFor="let asset of filteredAssets">
+          <div class="asset-container" *ngIf="asset.name">
+            <div class="asset-item-wrapper">
+              <span class="asset-item-title">
+                {{ asset.name }}
+              </span>
+              <div class="asset-item-content d-flex">
+                <div class="asset-item-content-total">
+                  <div class="icon" (click)="onSelectAsset(asset)">
+                    <img *ngIf="asset.icon_url" [src]="asset.icon_url.startsWith('uploads') ? apiEndpoint + '/' + asset.icon_url : asset.icon_url" />
+                    <img *ngIf="!asset.icon_url" [src]="'/assets/Icons/Projects_section/topbar/assets_icon.svg'" />
+                  </div>
+                  <div class="text">
+                    <span class="text-value">{{ asset.total || "--" }}</span>
+                    <span class="text-label">Total</span>
+                  </div>
+                </div>
+                <div class="asset-item-content-others">
+                  <div class="asset-item-content-value">
+                    <div class="text">
+                      <span class="text-label">Installed</span>
+                      <span class="text-value">{{ asset.installed || "--" }}</span>
+                    </div>
+                  </div>
+                  <div class="asset-item-content-value">
+                    <div class="text">
+                      <span class="text-label">Available</span>
+                      <span class="text-value">{{ asset.available || "--" }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <ng-container *ngIf="!isListView && switchComponent && isModelView">
+      <app-asset-select-model [params]="params" (goBackEvent)="onGoBackEvent($event)"></app-asset-select-model>
+    </ng-container>
+    <ng-container *ngIf="!isListView && switchComponent && isSelectView">
+      <app-asset-select [params]="selectParams" (goBackEvent)="onGoBackEvent($event)"></app-asset-select>
+    </ng-container>
+    <div *ngIf="isListView" class="assets-page-list-wrapper">
+      <ng-container *ngIf="tableDisplayMode === 'ASSET_TYPE'">
+        <h1 class="assets-page-content-title font-weight-bold title-fixed" [ngClass]="{'mt-3': !singleProjectMode}">Assets Types</h1>
+        <div [ngClass]="{'list-header': !project, 'projects-list-header': singleProjectMode}">
+          <span class="pr-2 m--icon-font-size-sm3 font-weight-bold" [ngClass]="{'pl-3': !project}">Asset Type: </span>
+          <mat-form-field>
+            <mat-select value="">
+              <mat-option value="">All</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button class="mr-2 mt-3 btn-primary mat-raised-button float-right" (click)="editColumns('type')">Customize Columns</button>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="tableDisplayMode === 'ASSET_MODEL'">
+        <h1 class="assets-page-content-title font-weight-bold title-fixed" [ngClass]="{'mt-3': !singleProjectMode}">Assets Models</h1>
+        <div [ngClass]="{'list-header': !project, 'projects-list-header': singleProjectMode}">
+          <button mat-icon-button (click)="onSwitchTableView('ASSET_TYPE'); $event.stopPropagation()">
+            <mat-icon>arrow_backward_ios</mat-icon>
+          </button>
+          <span class="pr-2 m--icon-font-size-sm3 font-weight-bold">Asset Type: </span>
+          <mat-form-field>
+            <mat-select [value]="selectedTypeCode" (selectionChange)="changeSelectAssetType($event)">
+              <mat-option value="">All</mat-option>
+              <mat-option *ngFor="let asset of assetTypes" [value]="asset.code">
+                {{ asset.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button class="mr-2 mt-3 btn-primary mat-raised-button float-right" (click)="editColumns('model')">Customize Columns</button>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="tableDisplayMode === 'ASSET_INSTANCE'">
+        <h1 class="assets-page-content-title font-weight-bold title-fixed" [ngClass]="{'mt-3': !singleProjectMode}">Assets</h1>
+        <div [ngClass]="{'list-header': !project, 'projects-list-header': singleProjectMode}">
+          <button mat-icon-button (click)="onSwitchTableView('ASSET_MODEL'); $event.stopPropagation()">
+            <mat-icon>arrow_backward_ios</mat-icon>
+          </button>
+          <span class="pl-2 pr-2 m--icon-font-size-sm1 font-weight-bold">Asset Type: </span>
+          <mat-form-field>
+            <mat-select [value]="selectedTypeCode" (selectionChange)="changeSelectAssetType($event)">
+              <mat-option value="">All</mat-option>
+              <mat-option *ngFor="let asset of assetTypes" [value]="asset.code">
+                {{ asset.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <span class="pl-4 pr-2 m--icon-font-size-sm1 font-weight-bold">Asset Model: </span>
+          <mat-form-field>
+            <mat-select [value]="selectedModelCode" (selectionChange)="changeSelectAssetModel($event)">
+              <mat-option value="">All</mat-option>
+              <mat-option *ngFor="let model of selectedType.models" [value]="model.code">
+                {{ model.name }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <button class="mr-2 mt-3 btn-primary mat-raised-button float-right" (click)="editColumns('instance')">Customize Columns</button>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="(loading$ | async); else tableSection">
+        <div class="spinner-container d-flex justify-content-center p-5">
+          <mat-spinner></mat-spinner>
+        </div>
+      </ng-container>
+      <ng-template #tableSection>
+        <div class="row table-section-height">
+          <div [ngClass]="determineClass()">
+            <ng-container *ngIf="tableDisplayMode === 'ASSET_TYPE'">
+              <ngx-datatable class="material bg-white"
+                   style="height: 70vh"
+                   [columnMode]="'force'"
+                   [loadingIndicator]="isLoading"
+                   [headerHeight]="50"
+                   [footerHeight]="50"
+                   [rowHeight]="70"
+                   [limit]="10"
+                   [rows]="typeDataSource"
+                   scrollbarV="true"
+                   (activate)="onSelectRow($event, 'type')"
+                   (reorder)="reorderColumns($event, 'type')">
+                <ngx-datatable-column *ngFor="let field of typeColumns" name="{{field.label}}" prop="{{field.name}}"
+                  [headerClass]="field.name === 'action' && 'action-header-cell-w'"
+                  [cellClass]="field.name === 'action' && 'action-cell-w'">
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span [matTooltip]="row[field.name]" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+                      <ng-container [ngSwitch]="field.name">
+                        <ng-container *ngSwitchCase="'icon_url'">
+                          <img
+                            [src]="row?.icon_url.startsWith('uploads') ? apiEndpoint + '/' + row?.icon_url : row?.icon_url"
+                            height="50"
+                            onError="this.src='/assets/nophoto.jpg';"
+                            [style.margin]="'0'"/>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'action'">
+                          <button
+                            mat-icon-button
+                            matTooltip="View models"
+                            (click)="goIntoTypeDetail(row.code); $event.stopPropagation()">
+                            <mat-icon>arrow_forward</mat-icon>
+                          </button>
+                          <button
+                            mat-icon-button
+                            matTooltip="Edit this type"
+                            (click)="onEdit(row, 'type'); $event.stopPropagation()">
+                            <mat-icon>edit</mat-icon>
+                          </button>
+                          <button
+                            mat-icon-button
+                            *ngIf="!(row.model_count > 0)"
+                            matTooltip="Delete this type"
+                            (click)="onDelete(row, 'type'); $event.stopPropagation()">
+                            <mat-icon>delete</mat-icon>
+                          </button>
+                        </ng-container>
+                        <ng-container *ngSwitchDefault>{{ row[field.name]? row[field.name] : '' }}</ng-container>
+                      </ng-container>
+                    </span>
+                  </ng-template>
+                </ngx-datatable-column>
+              </ngx-datatable>
+            </ng-container>
+            <ng-container *ngIf="tableDisplayMode === 'ASSET_MODEL'">
+              <ngx-datatable class="material bg-white"
+                             style="height: 70vh"
+                             [columnMode]="'force'"
+                             [loadingIndicator]="isLoading"
+                             [headerHeight]="50"
+                             [footerHeight]="50"
+                             [rowHeight]="70"
+                             [limit]="10"
+                             [rows]="modelDataSource"
+                             scrollbarV="true"
+                             (activate)="onSelectRow($event, 'model')"
+                             (reorder)="reorderColumns($event, 'model')">
+                <ngx-datatable-column *ngFor="let field of modelColumns" name="{{field.label}}" prop="{{field.name}}"
+                  [headerClass]="field.name === 'action' && 'action-header-cell-w'"
+                  [cellClass]="field.name === 'action' && 'action-cell-w'">
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span [matTooltip]="row[field.name]" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+                      <ng-container [ngSwitch]="field.name">
+                        <ng-container *ngSwitchCase="'img_url'">
+                          <img
+                            [src]="row?.img_url?.startsWith('uploads') ? apiEndpoint + '/' + row?.img_url : row?.img_url"
+                            height="50"
+                            onError="this.src='/assets/nophoto.jpg';"
+                            [style.margin]="'0'"/>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'fullspecs_link'">
+                          <a
+                            [href]="validateSpecLink(row?.fullspecs_link)"
+                            target="_blank"
+                            [style.text-decoration]="'underline'"
+                            class="text-info">View Spec</a>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'action'">
+                          <button
+                            mat-icon-button
+                            matTooltip="View assets"
+                            (click)="goIntoModelDetail(row.code); $event.stopPropagation()">
+                            <mat-icon>arrow_forward</mat-icon>
+                          </button>
+                          <button
+                            mat-icon-button
+                            matTooltip="Edit this model"
+                            (click)="onEdit(row, 'model'); $event.stopPropagation()">
+                            <mat-icon>edit</mat-icon>
+                          </button>
+                          <button
+                            mat-icon-button
+                            matTooltip="Delete this model"
+                            *ngIf="!(row.instance_count > 0)"
+                            (click)="onDelete(row, 'model'); $event.stopPropagation()">
+                            <mat-icon>delete</mat-icon>
+                          </button>
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'product_warranty'">
+                          {{ row[field.name]? row[field.name] : '' | date }}
+                        </ng-container>
+                        <ng-container *ngSwitchDefault>{{ row[field.name] || row[field.name] === 0 ? row[field.name] : '' }}</ng-container>
+                      </ng-container>
+                    </span>
+                  </ng-template>
+                </ngx-datatable-column>
+              </ngx-datatable>
+            </ng-container>
+            <ng-container *ngIf="tableDisplayMode === 'ASSET_INSTANCE'">
+              <ngx-datatable class="material bg-white"
+                             style="height: 70vh"
+                             [columnMode]="'force'"
+                             [loadingIndicator]="isLoading"
+                             [headerHeight]="50"
+                             [footerHeight]="50"
+                             [rowHeight]="50"
+                             [limit]="10"
+                             [rows]="instanceDataSource"
+                             scrollbarV="true"
+                             (activate)="onSelectRow($event, 'instance')"
+                             (reorder)="reorderColumns($event, 'instance')">
+                <ngx-datatable-column *ngFor="let field of instanceColumns" name="{{field.label}}" prop="{{field.name}}"
+                  [headerClass]="field.name === 'action' && 'action-header-cell-w'"
+                  [cellClass]="field.name === 'action' && 'action-cell-w'">
+                  <ng-template let-row="row" ngx-datatable-cell-template>
+                    <span [matTooltip]="row[field.name]" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+                      <ng-container [ngSwitch]="field.name">
+                        <ng-container *ngSwitchCase="'date_deployed'">
+                          {{row?.date_deployed | date:'dd/MM/yyyy'}}
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'date_end_of_life'">
+                          {{row?.date_end_of_life | date:'dd/MM/yyyy'}}
+                        </ng-container>
+                        <ng-container *ngSwitchCase="'action'">
+                          <button
+                            *ngIf="row.status == 'Available'"
+                            matTooltip="Delete this asset"
+                            mat-icon-button (click)="onDelete(row, 'instance'); $event.stopPropagation()">
+                            <mat-icon>delete</mat-icon>
+                          </button>
+                        </ng-container>
+                        <ng-container *ngSwitchDefault>{{ row[field.name]? row[field.name] : '' }}</ng-container>
+                      </ng-container>
+                    </span>
+                  </ng-template>
+                </ngx-datatable-column>
+              </ngx-datatable>
+            </ng-container>
+          </div>
+          <div *ngIf="selectedInstance && tableDisplayMode === 'ASSET_INSTANCE'"
+               class="detail-section-wrapper col-sm-12 col-md-4 col-lg-4">
+            <div class="detail-section">
+              <h5 class="detail-section-header">{{selectedInstance.status}}</h5>
+              <div *ngIf="selectedInstance.latitude && selectedInstance.longitude" class="map-asset">
+                <app-mapview-new
+                  [options]="mapOptions"
+                  [mapDataJSON]="mapdata"
+                  [mapCenter]="mapCenter"
+                  [isForceCenter]="false"
+                >
+                </app-mapview-new>
+              </div>
+              <div *ngIf="!selectedInstance.latitude && !selectedInstance.longitude" class="uninstalled-asset-wrapper">
+                <span>Can't find this asset's location</span>
+              </div>
+              <div class="asset-info">
+                <h5>Asset Information</h5>
+                <div class="item-wrapper">
+                  <span class="text">Condification</span>
+                  <span class="text-info">{{selectedInstance.codification_id}}</span>
+                </div>
+                <div class="item-wrapper">
+                  <span class="text">Asset Type</span>
+                  <span class="text-info">{{selectedInstance.type_asset}}</span>
+                </div>
+                <div class="item-wrapper">
+                  <span class="text">Model</span>
+                  <span class="text-info">{{selectedInstance.model_txt}}</span>
+                </div>
+                <div class="item-wrapper">
+                  <span class="text">City</span>
+                  <span class="text-info">{{selectedInstance.city_txt}}</span>
+                </div>
+                <div class="item-wrapper">
+                  <span class="text">Project</span>
+                  <span class="text-info">{{selectedInstance.project_name}}</span>
+                </div>
+                <div class="item-wrapper">
+                  <span class="text">Zone</span>
+                  <span class="text-info">{{selectedInstance.zone_txt}}</span>
+                </div>
+                <div class="item-wrapper">
+                  <span class="text">Date deployed</span>
+                  <span class="text-info">{{selectedInstance.date_deployed | date:'MMM d, y, h:mm:ss a'}}</span>
+                </div>
+                <div class="item-wrapper">
+                  <span class="text">IP Address</span>
+                  <span class="text-info">{{selectedInstance.ip_address}}</span>
+                </div>
+                <div class="item-wrapper">
+                  <span class="text">License Plate</span>
+                  <span class="text-info">{{selectedInstance.vehicle_plate}}</span>
+                </div>
+                <div class="item-wrapper">
+                  <span class="text">Vehicle Brand</span>
+                  <span class="text-info">{{selectedInstance.vehicle_brand}}</span>
+                </div>
+                <div class="item-wrapper">
+                  <span class="text">Vehicle Country</span>
+                  <span class="text-info">{{selectedInstance.city_txt}}</span>
+                </div>
+              </div>
+              <div class="tech-info">
+                <h5>Technical Information</h5>
+                <div class="item-wrapper">
+                  <span class="text">Description</span>
+                  <span class="text-info">{{selectedInstance.asset_notes}}</span>
+                </div>
+                <div class="item-wrapper">
+                  <span class="text">Created At</span>
+                  <span class="text-info">{{selectedInstance.date_created | date:'MMM d, y, h:mm:ss a'}}</span>
+                </div>
+                <div class="item-wrapper">
+                  <span class="text">Status</span>
+                  <span class="text-info">{{selectedInstance.status}}</span>
+                </div>
+                <div class="item-wrapper">
+                  <span class="text">Manufacturer</span>
+                  <span class="text-info">{{selectedInstance.manufacturer}}</span>
+                </div>
+                <div class="item-wrapper">
+                  <span class="text">Firmware version</span>
+                  <span class="text-info">{{selectedInstance.firmware_version}}</span>
+                </div>
+                <div class="item-wrapper">
+                  <span class="text">Product warranty</span>
+                  <span class="text-info">{{selectedInstance.warranty_until | date:'MMM d, y, h:mm:ss a'}}</span>
+                </div>
+                <div class="item-wrapper">
+                  <span class="text">End of life</span>
+                  <span class="text-info">{{selectedInstance.date_end_of_life | date:'MMM d, y, h:mm:ss a'}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,174 @@
+<div class="tariff-parking-overview">
+  <header class="page-top-header">
+    <div class="tariff-parking-header-buttons">
+      <button mat-icon-button color="base" (click)="location.back()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <span> Tariff / Parking - Overview </span>
+    </div>
+    <div>{{ today | date:'dd/MM/yyyy hh:mm a'}}</div>
+  </header>
+
+  <h4 class="font-weight-bold title-fixed title">
+    Tariff Parking Overview
+  </h4>
+
+  <div class="tariff-parking-overview-content">
+    <div class="content-header">
+      <div class="select-wrapper">
+        <div>
+          <mat-form-field>
+            <mat-select placeholder="Client type" [(value)]="segment.type_client" (selectionChange)="onChangeBasicData('default')">
+              <mat-option *ngFor="let type of clientTypes" [value]="type">
+                {{type}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-radio-group [(ngModel)]="streetType" (change)="onChangeStreetType($event)">
+            <mat-radio-button class="mr-2" [value]="ParkingStreetType.OnStreet">On street</mat-radio-button>
+            <mat-radio-button [value]="ParkingStreetType.Carpark">Carpark</mat-radio-button>
+          </mat-radio-group>
+<!--          <mat-checkbox [(ngModel)]="segment.is_onstreet" (change)="onChangeBasicData('zone')">On street / Off street</mat-checkbox>-->
+        </div>
+
+        <div>
+          <mat-form-field>
+            <mat-select placeholder="Project" [(value)]="selectedProject" (selectionChange)="onChangeBasicData('project')">
+              <mat-option *ngFor="let project of basicData.projects" [value]="project">
+                {{project.project_code}}:{{project.project_name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-select placeholder="Zone" [(value)]="segment.zone_id" (selectionChange)="onChangeBasicData('zone')">
+              <mat-option *ngFor="let zone of basicData.zones" [value]="zone.id">
+                {{zone.zone_code}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="segment.is_onstreet">
+            <mat-select placeholder="Parking" [(value)]="segment.parking_id" (selectionChange)="onChangeBasicData('default')">
+              <mat-option *ngFor="let parking of basicData.parkings" [value]="parking.id">
+                {{parking.parking_code}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="!segment.is_onstreet">
+            <mat-select placeholder="CarPark" [(value)]="segment.carpark_id" (selectionChange)="onChangeBasicData('carpark')">
+              <mat-option *ngFor="let carpark of basicData.carparks" [value]="carpark.id">
+                {{carpark.carpark_name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="!segment.is_onstreet">
+            <mat-select placeholder="CarPark Zone" [(value)]="segment.carpark_zone_id" (selectionChange)="onChangeBasicData('default')">
+              <mat-option *ngFor="let carparkZone of basicData.carparkZones" [value]="carparkZone.id">
+                {{carparkZone.name_en}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div>
+        <button mat-button color="primary" (click)="onShowCalculationPrice()" [disabled]="!checkPossibleData()">Calculate Price</button>
+        <button mat-button color="basic" class="create-btn" (click)="goToDetails()">
+          <mat-icon>add_circle</mat-icon>
+          <span class="ml-1">Segment</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="overview-table">
+      <div class="overview-week-days">
+        <div class="overview-week-day"></div>
+        <div class="overview-week-day">MON</div>
+        <div class="overview-week-day">TUE</div>
+        <div class="overview-week-day">WED</div>
+        <div class="overview-week-day">THU</div>
+        <div class="overview-week-day">FRI</div>
+        <div class="overview-week-day">SAT</div>
+        <div class="overview-week-day">SUN</div>
+      </div>
+      <div class="overview-week-values">
+        <div class="overview-week-item" *ngFor="let week of overviewTable">
+          <div class="overview-week-value header-value">
+            {{week.start | date: 'dd/MM/yy'}} - {{week.end | date: 'dd/MM/yy'}}
+          </div>
+          <ng-container *ngFor="let day of week.days; let i = index">
+            <div class="overview-week-value">
+              <div *ngIf="day.length == 0" class="overview-week-period single-period no-data-type" (click)="createSegment(week, i, '00:00', '00:00')">
+                No Data
+              </div>
+              <ng-container *ngIf="day.length == 1">
+                <div *ngIf="day[0].start !== '00:00'" class="overview-week-period single-period no-data-type" (click)="createSegment(week, i, '00:00', day[0].start)">
+                  No Data
+                </div>
+                <div class="overview-week-period single-period text-center" [ngClass]="getClass(day[0].type_tariff)" (click)="editSegment(day[0])">
+                  <span>{{day[0].start}}-{{day[0].end}}</span>
+                  <span *ngIf="day[0].type_tariff == 'Absolute'">
+                    ({{day[0].intervals[0].price_init}})
+                  </span>
+                  <span *ngIf="day[0].type_tariff == 'Fixed Rate'">
+                    ({{day[0].intervals[0].price_init}} + {{day[0].intervals[0].price}}/{{timeStepLabels[day[0].intervals[0].time_step]}})
+                  </span>
+                  <span *ngIf="day[0].type_tariff == 'Ladder'">
+                    ({{day[0].intervals[0].price_init}} + {{day[0].intervals[0].price}} x {{day[0].intervals[0].rate_growth}}/{{timeStepLabels[day[0].intervals[0].time_step]}})
+                  </span>
+                  <span *ngIf="day[0].type_tariff == 'Custom'">( -- )</span>
+                </div>
+                <div *ngIf="day[0].end !== '00:00'" class="overview-week-period single-period no-data-type" (click)="createSegment(week, i, day[0].end, '00:00')">
+                  No Data
+                </div>
+              </ng-container>
+              <ng-container *ngIf="day.length > 1">
+                <div *ngIf="day[0].start !== '00:00'" class="overview-week-period single-period no-data-type" (click)="createSegment(week, i, '00:00', day[0].start)">
+                  No Data
+                </div>
+                <ng-container *ngFor="let segment of day; index as i; first as isFirst">
+                  <div *ngIf="!isFirst && day[i-1].end !== day[i].start" class="overview-week-period single-period no-data-type" (click)="createSegment(week, i, day[i-1].end, day[i].start)">
+                    No Data
+                  </div>
+                  <div class="overview-week-period text-center" [ngClass]="getClass(segment.type_tariff)" (click)="editSegment(segment)">
+                    <span>{{segment.start}}-{{segment.end}}</span>
+                    <span *ngIf="segment.type_tariff == 'Absolute'">
+                      ({{segment.intervals[0].price_init}})
+                    </span>
+                    <span *ngIf="segment.type_tariff == 'Fixed Rate'">
+                      ({{ segment.intervals[0].price_init}} + {{segment.intervals[0].price}}/{{timeStepLabels[segment.intervals[0].time_step]}})
+                    </span>
+                    <span *ngIf="segment.type_tariff == 'Ladder'">
+                      ({{segment.intervals[0].price_init}} + {{segment.intervals[0].price}} x {{segment.intervals[0].rate_growth}}/{{timeStepLabels[segment.intervals[0].time_step]}})
+                    </span>
+                    <span *ngIf="segment.type_tariff == 'Custom'">( -- )</span>
+                  </div>
+                </ng-container>
+                <div *ngIf="day[day.length-1].end !== '00:00'" class="overview-week-period single-period no-data-type" (click)="createSegment(week, i, day[day.length-1].end, '00:00')">
+                  No Data
+                </div>
+              </ng-container>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div class="overview-types">
+      <div class="overview-type" *ngFor="let type of priceTypes">
+        <div class="type-box" [ngClass]="getClass(type)"></div><span>{{type}}</span>
+      </div>
+      <div *ngIf="selectedProject" class="currency">
+        <span>Currency:</span>
+        <span class="flag-icon flag-icon-{{selectedProject.country_code.toLowerCase()}} mr-1"></span>
+        <span>{{ selectedProject.currency_code }}</span>
+      </div>
+    </div>
+  </div>
+
+  <app-tariff-segments-table [segments]="segments"
+                             (selectSegment)="editSegment($event)"
+  ></app-tariff-segments-table>
+</div>
+

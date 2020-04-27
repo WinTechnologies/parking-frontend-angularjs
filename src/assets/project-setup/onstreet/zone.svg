@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 54.949 52.253">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-1 {
+        stroke: #fff;
+        stroke-width: 6px;
+      }
+
+      .cls-2 {
+        stroke: #1b75ab;
+        stroke-width: 3px;
+      }
+
+      .cls-3 {
+        fill: #1b75ab;
+      }
+    </style>
+  </defs>
+  <g id="Group_14805" data-name="Group 14805" transform="translate(3 2.999)">
+    <path id="Union_2" data-name="Union 2" class="cls-1" d="M36.778,40.167a6.137,6.137,0,0,1,.072-.941l-5.321-2.512a6.087,6.087,0,0,1-9.474-1.523l-.01,0-9.86,3.1-.014-.01q0,.03,0,.06a6.086,6.086,0,1,1-7.88-5.817L4.267,11.894a6.086,6.086,0,1,1,7.638-7.6l20.9-.076a6.087,6.087,0,1,1,9.048,7.008l.036.028,2.392,22.989a6.087,6.087,0,1,1-7.506,5.92Z" transform="translate(0 0.001)"/>
+    <g id="Group_14800" data-name="Group 14800" transform="translate(0.001 0)">
+      <path id="Path_16865" data-name="Path 16865" class="cls-2" d="M-7480,3154v32.256l19.884-6.289,17.1,8.115-3.531-34.082Z" transform="translate(7486.086 -3147.914)"/>
+      <ellipse id="Ellipse_244" data-name="Ellipse 244" class="cls-3" cx="6.086" cy="6.086" rx="6.086" ry="6.086"/>
+      <ellipse id="Ellipse_245" data-name="Ellipse 245" class="cls-3" cx="6.086" cy="6.086" rx="6.086" ry="6.086" transform="translate(0 32.256)"/>
+      <ellipse id="Ellipse_246" data-name="Ellipse 246" class="cls-3" cx="6.086" cy="6.086" rx="6.086" ry="6.086" transform="translate(21.301 26.17)"/>
+      <ellipse id="Ellipse_247" data-name="Ellipse 247" class="cls-3" cx="6.086" cy="6.086" rx="6.086" ry="6.086" transform="translate(36.777 34.081)"/>
+      <ellipse id="Ellipse_248" data-name="Ellipse 248" class="cls-3" cx="6.086" cy="6.086" rx="6.086" ry="6.086" transform="translate(32.517)"/>
+    </g>
+  </g>
+</svg>

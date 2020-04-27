@@ -1,0 +1,103 @@
+@import '../../../../../../styles/color';
+
+:host {
+  .client-list-page {
+    &-header {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+
+      h1 {
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      button {
+        color: $c-lightblue;
+        outline: none;
+
+        .mat-icon {
+          vertical-align: middle;
+          margin-right: 10px;
+        }
+      }
+    }
+
+    &-content {
+      drag-scroll {
+        height: 200px;
+        width: calc(100vw - 330px);
+        /deep/.drag-scroll-wrapper.drag-scroll-container {
+          height: 100% !important;
+        }
+      }
+
+      .client-title {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .client-info {
+        border: 1px solid $c-greylight;
+        margin-right: 20px;
+        border-radius: 6px;
+        width: 320px;
+        height: 164px;
+        cursor: pointer;
+
+        &:hover {
+          border: 1px solid $c-blue;
+          transition: 0.3s;
+        }
+
+        &-name {
+          padding: 10px;
+          min-width: 200px;
+          border-top-left-radius: 7px;
+          border-bottom-right-radius: 7px;
+          background-color: $c-blue;
+          color: $c-white;
+          display: inline-block;
+        }
+
+        &-item {
+          padding: 2px 10px;
+          display: flex;
+
+          .title {
+            color: $c-grey;
+            width: 80px;
+            text-align: right;
+            margin-right: 10px;
+          }
+          .value {
+            word-wrap: break-all;
+            width: 185px;
+            white-space: pre-wrap;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+
+      .buttons-wrapper {
+        padding: 10px;
+      }
+
+      &-no-data {
+        color: $c-grey;
+        height: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+}
+
+.scroll-container {
+  overflow: hidden;
+}
+
+.pop-btn {
+  color: teal;
+}

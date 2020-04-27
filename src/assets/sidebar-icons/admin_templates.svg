@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16.639 22.185">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="shopping-list" transform="translate(-64)">
+    <g id="Group_14275" data-name="Group 14275" transform="translate(66.774 8.32)">
+      <g id="Group_14274" data-name="Group 14274">
+        <path id="Path_16747" data-name="Path 16747" class="cls-1" d="M133.367,192.211a.7.7,0,0,0-.982,0l-2.282,2.284-.9-.9a.693.693,0,0,0-.98.98l1.387,1.387a.687.687,0,0,0,.489.2.7.7,0,0,0,.491-.2l2.773-2.773A.694.694,0,0,0,133.367,192.211Z" transform="translate(-128.024 -192.008)"/>
+      </g>
+    </g>
+    <g id="Group_14277" data-name="Group 14277" transform="translate(66.774 13.866)">
+      <g id="Group_14276" data-name="Group 14276">
+        <path id="Path_16748" data-name="Path 16748" class="cls-1" d="M133.367,320.211a.7.7,0,0,0-.982,0l-2.282,2.284-.9-.9a.693.693,0,1,0-.98.98l1.387,1.387a.695.695,0,0,0,.98,0l2.773-2.773A.694.694,0,0,0,133.367,320.211Z" transform="translate(-128.024 -320.008)"/>
+      </g>
+    </g>
+    <g id="Group_14279" data-name="Group 14279" transform="translate(73.706 9.706)">
+      <g id="Group_14278" data-name="Group 14278">
+        <path id="Path_16749" data-name="Path 16749" class="cls-1" d="M291.466,224h-2.773a.693.693,0,0,0,0,1.387h2.773a.693.693,0,1,0,0-1.387Z" transform="translate(-288 -224)"/>
+      </g>
+    </g>
+    <g id="Group_14281" data-name="Group 14281" transform="translate(73.706 15.252)">
+      <g id="Group_14280" data-name="Group 14280">
+        <path id="Path_16750" data-name="Path 16750" class="cls-1" d="M291.466,352h-2.773a.693.693,0,0,0,0,1.387h2.773a.693.693,0,1,0,0-1.387Z" transform="translate(-288 -352)"/>
+      </g>
+    </g>
+    <g id="Group_14283" data-name="Group 14283" transform="translate(64)">
+      <g id="Group_14282" data-name="Group 14282">
+        <path id="Path_16751" data-name="Path 16751" class="cls-1" d="M79.252,2.773H76.479V2.08a.694.694,0,0,0-.693-.693h-1.5a2.081,2.081,0,0,0-3.924,0h-1.5a.694.694,0,0,0-.693.693v.693H65.387A1.389,1.389,0,0,0,64,4.16V20.8a1.389,1.389,0,0,0,1.387,1.387H79.252A1.389,1.389,0,0,0,80.639,20.8V4.16A1.389,1.389,0,0,0,79.252,2.773Zm-9.706,0h1.387a.694.694,0,0,0,.693-.693.693.693,0,1,1,1.387,0,.694.694,0,0,0,.693.693h1.387V4.16H69.546ZM79.252,20.8H65.387V4.16H68.16v.693a.694.694,0,0,0,.693.693h6.933a.694.694,0,0,0,.693-.693V4.16h2.773Z" transform="translate(-64)"/>
+      </g>
+    </g>
+  </g>
+</svg>

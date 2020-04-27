@@ -1,0 +1,14 @@
+<div class="breadcrumb-bar" *ngIf="layout.layoutConf.useBreadcrumb && layout.layoutConf.breadcrumb === 'simple'">
+  <ul class="breadcrumb">
+    <li *ngFor="let part of routeParts"><a routerLink="/{{part.url}}">{{part.breadcrumb | translate}}</a></li>
+  </ul>
+  <div fxFlex="1 1 auto"></div>
+  <div class="local-time"><span class="text-muted">{{'common.local_datetime' | translate}}:&nbsp;</span>{{today| date:'dd/MM/yyyy hh:mm:a'}}</div>
+</div>
+
+<div class="breadcrumb-title" *ngIf="layout.layoutConf.useBreadcrumb && layout.layoutConf.breadcrumb === 'title'">
+  <h1 class="bc-title">{{routeParts[routeParts.length -1]?.breadcrumb | translate}}</h1>
+  <ul class="breadcrumb" *ngIf="routeParts.length > 1">
+    <li *ngFor="let part of routeParts"><a routerLink="/{{part.url}}" class="text-muted">{{part.breadcrumb | translate}}</a></li>
+  </ul>
+</div>

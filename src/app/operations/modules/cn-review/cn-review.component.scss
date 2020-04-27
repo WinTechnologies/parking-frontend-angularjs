@@ -1,0 +1,70 @@
+@import "../../../../styles/variables";
+
+:host {
+  .show-options-wrapper {
+    margin-left: 40px;
+  }
+
+  .filter-wrapper {
+    display: flex;
+    align-items: center;
+
+    mat-icon {
+      vertical-align: middle;
+    }
+  }
+
+  .form-field {
+    span {
+      margin-right: 10px;
+    }
+    mat-form-field {
+      width: 120px;
+    }
+  }
+
+  .buttons-wrapper {
+    .list-button {
+      margin-top: 6px;
+    }
+  }
+
+  ::ng-deep mat-selection-list {
+    display: flex;
+  }
+
+  ::ng-deep .mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-content {
+    padding: 0 5px;
+  }
+
+  ::ng-deep .mat-list-base .mat-list-option.mat-list-option .mat-list-item-content .mat-list-text {
+    padding-left: 5px;
+    font-size: $font-size-base;
+  }
+
+  ::ng-deep .datatable-body-row:hover {
+    cursor: pointer;
+  }
+
+  ::ng-deep .ngx-datatable {
+    .datatable-header-cell:first-child {
+      width: 70px !important;
+    }
+
+    // Car picture
+    .datatable-body-row .datatable-body-cell:first-child {
+      width: 70px !important;
+      padding: 5px;
+    }
+
+    // CN#, CN# Offline
+    .datatable-body-row .datatable-body-cell:nth-child(2),
+    .datatable-body-row .datatable-body-cell:nth-child(3) {
+      text-decoration: underline;
+    }
+  }
+
+  .cn-review {
+      margin-left: 20px;
+  }
+}

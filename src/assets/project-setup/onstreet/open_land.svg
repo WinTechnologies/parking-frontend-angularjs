@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52.239 52.239">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-1 {
+        stroke: #fff;
+        stroke-width: 6px;
+      }
+
+      .cls-3 {
+        fill: red;
+      }
+
+      .cls-4, .cls-6 {
+        fill: none;
+      }
+
+      .cls-4 {
+        stroke: #1b75ab;
+        stroke-width: 4px;
+      }
+
+      .cls-5 {
+        stroke: none;
+      }
+    </style>
+  </defs>
+  <g id="Group_14803" data-name="Group 14803" transform="translate(3 3)">
+    <rect id="Rectangle_3874" data-name="Rectangle 3874" class="cls-1" width="46.24" height="46.239" rx="7" transform="translate(0 0)"/>
+    <g id="Group_14802" data-name="Group 14802" transform="translate(0 0)">
+      <rect id="Rectangle_3874-2" data-name="Rectangle 3874" class="cls-2" width="46.24" height="46.239" rx="7"/>
+      <path id="Path_16867" data-name="Path 16867" class="cls-3" d="M-7323.4,3150.48v15.5s-7.207,1.5-11.016,6.256-11.56,8.567-13.464,8.567h-2.72V3149.8h27.2" transform="translate(7367.191 -3147.216)"/>
+      <g id="Group_14801" data-name="Group 14801">
+        <g id="Rectangle_3873" data-name="Rectangle 3873" class="cls-4">
+          <rect class="cls-5" width="46.24" height="46.239" rx="7"/>
+          <rect class="cls-6" x="2" y="2" width="42.24" height="42.239" rx="5"/>
+        </g>
+        <path id="Path_16866" data-name="Path 16866" class="cls-4" d="M-7371.873,3178.421c3.119,3.621,6,9.454,16.59,9.977s16.607-15.692,24.584-13.861" transform="translate(7374 -3155.086)"/>
+        <line id="Line_867" data-name="Line 867" class="cls-4" y2="42.16" transform="translate(16.66 2.38)"/>
+      </g>
+    </g>
+  </g>
+</svg>

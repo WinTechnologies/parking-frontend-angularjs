@@ -1,0 +1,165 @@
+<div class="cn-review-details">
+  <div class="cn-review-details-header" fxLayout="row wrap" fxLayoutAlign="space-between">
+    <button mat-flat-button class="bg-none mat-color-primary"
+    [disabled]="selectedIndex == 0 || isProcessing"
+    (click)="onPrev()">
+      <mat-icon>arrow_back_ios</mat-icon>{{'cn_review.previous'| translate}}
+    </button>
+    <h5 class="title-wrapper m-0" fxLayout="row wrap" fxLayoutAlign="center center">
+      <span class="pr-1">{{'cn_review.cn#'| translate}} {{ contravention?.cn_number }}</span>
+      <span class="pr-1">{{ contravention?.creation | date:'dd/MM/yyyy' }}</span>
+      <span class="pr-1">{{ contravention?.creation | date:'hh:mm:a' }}</span>
+      <span class="pr-1">{{ contravention?.creator_username }}</span>
+    </h5>
+    <button mat-flat-button class="bg-none mat-color-primary"
+    [disabled]="selectedIndex == contraventions.length - 1 || isProcessing"
+    (click)="onNext()">
+    {{'cn_review.next'| translate}}<mat-icon>arrow_forward_ios</mat-icon>
+  </button>
+  </div>
+  <div class="cn-review-details-content mat-elevation-z2" fxLayout="row wrap">
+    <div class="car-number-review p-333">
+      <div class="image-slider-wrapper">
+        <img *ngIf="contravention.plate_picture" [src]="baseUrl + contravention?.plate_picture" (error)="img.src = 'assets/images/no_image_available.jpg'" #img>
+        <img *ngIf="!contravention.plate_picture" src="assets/images/no_image_available.jpg">
+      </div>
+      <!-- <div fxLayout="row wrap" fxLayoutAlign="flex-end">
+        <button mat-raised-button [disabled]="!isChanged()" color="primary" (click)="onModifyCarPlateInfo()">{{'common.ok'| translate}}</button>
+      </div> -->
+    </div>
+    <div class="car-number-review">
+      <div class="image-slider-wrapper">
+        <img *ngIf="violation_picture" [src]="baseUrl + violation_picture[0]" (error)="img.src = 'assets/images/no_image_available.jpg'" #img>
+        <img *ngIf="!violation_picture" src="assets/images/no_image_available.jpg">
+      </div>
+      <!-- <div fxLayout="row wrap" fxLayoutAlign="flex-end">
+        <button mat-raised-button [disabled]="violation == contravention.violation" color="primary"(click)="onModifyViolation()">{{'common.ok'| translate}}</button>
+      </div> -->
+    </div>
+    <div class="challenge-detail">
+      <div fxLayout="row wrap" fxLayoutAlign="space-between">
+        <div class="form-field">
+          <span class="text-muted">{{'cn_review.issued'| translate}}:</span>
+          <mat-form-field>
+            <mat-select [(value)]="plate_country" [disabled]="!permission?.isUpdate">
+              <mat-option *ngFor="let issued of cnSearchValues.issuedCountries" [value]="issued">{{issued}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span class="text-muted">{{'cn_review.plate'| translate}}:</span>
+          <mat-form-field>
+            <input matInput [(ngModel)]="car_plate" [disabled]="!permission?.isUpdate">
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span class="text-muted">{{'cn_review.type'| translate}}:</span>
+          <mat-form-field>
+            <mat-select [(value)]="plate_type" [disabled]="!permission?.isUpdate">
+              <mat-option *ngFor="let type of cnSearchValues.plateTypes" [value]="type.type_name_en">{{type.type_name_en}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="form-field" fxLayout fxLayoutAlign="center center">
+          <span class="text-muted text-center">{{'cn_review.violation_code'| translate}}:</span>
+          <mat-form-field class="w-80">
+            <mat-select
+              [(value)]="violation_code"
+              [disabled]="!permission?.isUpdate"
+              (selectionChange)="updateViolationDesc($event)">
+              <mat-option *ngFor="let v of cnSearchValues.violations" [value]="v.violation_code">{{v?.violation_code}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="form-field" fxLayout fxLayoutAlign="center center">
+          <span class="text-muted text-center">{{'cn_review.violation_desc'| translate}}:</span>
+          <mat-form-field class="textarea">
+            <mat-select
+              [(value)]="violation_desc"
+              [disabled]="!permission?.isUpdate"
+              (selectionChange)="updateViolationCode($event)">
+              <mat-option *ngFor="let v of cnSearchValues.violations" [value]="v.violation_name_en">{{v?.violation_name_en}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span class="text-muted">{{'cn_review.error'| translate}}:</span>
+          <mat-form-field>
+            <mat-select [(value)]="selectedError" [disabled]="!permission?.isUpdate">
+              <mat-option value=""></mat-option>
+              <mat-option *ngFor="let error of errors " [value]="error">{{error}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div class="modified-detail mt-1"
+      *ngIf="(lastModifiedData && lastModifiedData.length
+       || contravention.cn_reviews && contravention.cn_reviews.length && contravention.cn_reviews[0].error )
+       else noModified">
+      <div fxLayout="row">
+        <p class="font-weight-bold text-17 w-300">{{'cn_review.modified_data_of_last_review' | translate}}: </p>
+        <p class="font-weight-bold text-17 w-150">{{'cn_review.info' | translate}}</p>
+        <p class="font-weight-bold text-17 w-150 text-center">{{'cn_review.initial_data' | translate}}</p>
+        <p class="font-weight-bold text-17 w-150 text-center">{{'cn_review.new_data' | translate}}</p>
+      </div>
+
+      <div *ngFor="let entry of lastModifiedData" fxLayout="row">
+        <p class="font-weight-bold text-17 w-300"></p>
+        <p class="font-weight-bold text-15 w-150">{{labels[entry[0]] | translate}}</p>
+        <p class="font-weight-bold text-15 w-150 text-red text-center">{{entry[1].original_data}}</p>
+        <p class="font-weight-bold text-15 w-150 text-green text-center">{{entry[1].new_data}}</p>
+      </div>
+      <div fxLayout="row" *ngIf="contravention.cn_reviews && contravention.cn_reviews.length">
+        <p class="font-weight-bold text-17 w-300"></p>
+        <p class="font-weight-bold text-15 w-150">{{labels.error | translate}}</p>
+        <p class="font-weight-bold text-15 w-300 text-red text-center">{{contravention.cn_reviews[0].error}}</p>
+      </div>
+    </div>
+
+    <ng-template #noModified>
+      <div class="modified-detail mt-1" *ngIf="contravention.status_review !== 'Unreviewed'">
+        <div fxLayout="row">
+          <p class="font-weight-bold text-17 mr-1">{{'cn_review.modified_data_of_last_review' | translate}}: </p>
+          <p class="font-weight-bold text-17 text-green">{{'cn_review.no_modification' | translate}}</p>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+  <div
+    *ngIf="permission.isUpdate && (!contravention.status_review || contravention.status_review === 'Unreviewed')"
+    class="cn-review-details-footer m-1"
+    fxLayout="row wrap"
+    fxLayoutAlign="space-between">
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="isProcessing || (!isChanged() && selectedError === '')"
+        (click)="onCreateChallenge()">
+          {{'cn_review.challenge'| translate}}
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="isProcessing"
+        (click)="onReviewed()">
+          {{'cn_review.finish'| translate}}
+      </button>
+  </div>
+  <ng-container *ngIf="contravention.status_review && contravention.status_review !== 'Unreviewed'">
+    <div
+      class="cn-review-details-footer m-1"
+      fxLayout="row wrap"
+      fxLayoutAlign="flex-end">
+        <h4 class="rounded secondary p-05">{{contravention.status_review}}</h4>
+    </div>
+    <div *ngIf="contravention.status_review !== 'Validated' && contravention.status_review !== 'Modified'
+      && contravention.cn_reviews && contravention.cn_reviews.length"
+      class="cn-review-details-footer m-1"
+      fxLayout="row wrap"
+      fxLayoutAlign="flex-end">
+      <span class="text-muted mr-05">{{'cn_review.reason'| translate}}:</span>
+      <span class="w-200">{{ contravention.cn_reviews[0].challenge_reason }}</span>
+    </div>
+  </ng-container>
+</div>

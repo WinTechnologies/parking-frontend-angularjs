@@ -1,0 +1,124 @@
+@import "../../../../styles/_color.scss";
+
+:host {
+  .workplan-details-page {
+    &-header {
+      &-buttons {
+        button {
+          outline: none;
+        }
+      }
+
+      .mat-icon-button {
+        outline: none;
+      }
+    }
+
+    &-content {
+      &-title {
+        height: 50px;
+        line-height: 50px;
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      &-wrapper {
+        padding-top: 0;
+
+        .tabs-wrapper {
+          width: 100%;
+          padding-top: 50px;
+
+          ::ng-deep .mat-tab-header {
+            border-bottom: none;
+          }
+
+          ::ng-deep .mat-tab-labels {
+            border-bottom: 2px solid;
+          }
+
+          ::ng-deep .mat-tab-label-active {
+            border-top: 2px solid;
+            border-right: 2px solid;
+            border-left: 2px solid;
+            border-top-right-radius: 4px;
+            border-top-left-radius: 4px;
+            border-bottom: 2px solid $c-white;
+            top: 2px;
+            background-color: $c-white;
+            opacity: 1;
+            z-index: 2;
+          }
+
+          ::ng-deep .mat-tab-label-content {
+            .mat-icon {
+              position: relative;
+              top: 5px;
+            }
+          }
+
+          ::ng-deep .mat-ink-bar {
+            background-color: transparent;
+          }
+
+          ::ng-deep .mat-tab-label {
+            height: 60px;
+          }
+
+          ::ng-deep .tab-reoccuring-new-wrapper {
+            margin: 20px;
+
+            .mat-flat-button.link_btn {
+              color: $c-blue1;
+              outline: none;
+              background: transparent;
+            }
+          }
+
+          ::ng-deep .tab-exceptions-wrapper {
+            margin: 20px;
+
+            .mat-flat-button.link_btn {
+              color: $c-blue1;
+              outline: none;
+              background: transparent;
+            }
+          }
+
+          ::ng-deep mat-icon {
+            margin-right: .5rem !important;
+          }
+
+          ::ng-deep .mat-button-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+        }
+      }
+    }
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .buttons-wrapper {
+    padding: 1rem 0 1rem 0;
+  }
+  .page-top-header {
+    justify-content: initial;
+  }
+
+  ::ng-deep .mat-tab-header {
+    position: fixed;
+    top: 160px;
+    z-index: 40;
+    background-color: white;
+    width: 100%;
+  }
+
+  ::ng-deep .mat-tab-body-wrapper {
+    padding-top:60px;
+  }
+}

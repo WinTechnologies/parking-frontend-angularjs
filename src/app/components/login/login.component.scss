@@ -1,0 +1,26 @@
+@import "../../../styles/_color.scss";
+
+.logo {
+  margin: 0 auto;
+  display: block;
+}
+
+.page-wrap {
+  background-color: $mawgif-primary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 1rem;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.auth-form-container {
+  width: 400px;
+  background-color: #fff;
+  border-radius: 3px;
+  padding: 1rem;
+}

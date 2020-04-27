@@ -1,0 +1,251 @@
+<div class="parking">
+  <ng-container *ngIf="isListViewOn">
+    <app-listview-new
+    [filter]="filter"
+    [projectId]="projectId"
+    [options]="mapOptions"
+    [mapdata]="mapdata"
+    [mapdrawdata]="mapdrawdata"
+    [listType]="'Parking'"
+    [listData]="parkingWithZones"
+    (updateMapData)="onUpdateMapData($event)"
+    (selectedRowItem)="onMapParkingEditedEvent($event)"
+    [ngClass]="{'width-calc': currentParking?.id}"
+    ></app-listview-new>
+  </ng-container>
+  <ng-container *ngIf="!isListViewOn || currentParking?.id">
+    <div class="parking-sidebar" [ngClass]="{'right-sidebar': isListViewOn}">
+        <ng-container *ngIf="isListViewOn && currentParking?.id">
+          <app-mapview-new
+            [mapCenter]="mapPositionCenter"
+            [options]="mapOptions"
+            [mapDataJSON]="mapdata"
+            [mapDrawDataJSON]="mapdrawdata"
+            [zoomValue]="14"
+            (mapDataChangedEmitter)="onSiteMapDataChanged($event)"
+            (mapDataEditEmitter)="onMapParkingEditedEvent($event)"
+          >
+          </app-mapview-new>
+          <div class="list-img-types">
+            <div class="list-types-row row mt-1 mb-1">
+              <div *ngFor="let imgUrl of parkingImages; let i = index"
+                   class="img-item col-4" [class.img-item-selected]="selectedImg && selectedImg.i === i">
+                <button mat-icon-button class="cancel-btn" (click)="zoomImage(-1)">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+                <img class="list-thumbnail" [src]="imgUrl" (click)="zoomImage(i)" />
+              </div>
+            </div>
+            <div class="list-emplified-img row" *ngIf="isImageZoomOn">
+              <div class="col-12">
+                <img class="list-image" [src]="selectedImg.url" />
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <div class="parking-sidebar-title">
+          {{currentParking?.id ? 'EDIT' : 'ADD'}} PARKING
+        </div>
+        <form
+        [formGroup]="form"
+        (ngSubmit)="onSubmit()"
+        *ngIf="form"
+        autocomplete="off"
+        novalidate>
+          <div class="form-field">
+            <span>Number :</span>
+            <mat-form-field>
+              <input matInput type="number" formControlName="number">
+              <mat-error>Number is required</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-field">
+            <span>Parking Code :</span>
+            <mat-form-field>
+              <input matInput type="text" formControlName="parking_code" (keypress)="inputCheck($event)" (paste)="inputCheck($event)">
+              <mat-error>Parking Code is required. This field accepts only alphabetical and numerical characters.</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-field">
+            <span>Name :</span>
+            <mat-form-field>
+              <input matInput type="text" formControlName="name">
+              <mat-error>Name is required</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-field">
+            <span>Name (ar):</span>
+            <mat-form-field>
+              <input matInput type="text" formControlName="name_ar">
+              <mat-error>Name (ar) is required</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-field">
+            <span>Zone:</span>
+            <mat-form-field>
+              <mat-select (selectionChange)="onChangeZone($event)" formControlName="zone_id">
+                <mat-option *ngFor="let item of zones" [value]="item.id"> {{item.zone_name}} </mat-option>
+              </mat-select>
+              <mat-error>Zone is required</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-field">
+            <span>Latitude & Longitude <b class="span-bold">(auto-fill by draw tool)</b></span>
+            <mat-form-field class="place_LL border-right-0">
+              <input matInput type="text" formControlName="latitude" readonly>
+              <mat-error>Latitude is required</mat-error>
+            </mat-form-field>
+            <mat-form-field class="place_LL border-left-0">
+              <input matInput type="text" formControlName="longitude" readonly>
+              <mat-error>Longitude is required</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-field">
+            <span>Angle of Parking :</span>
+            <mat-form-field>
+              <mat-select formControlName="parking_angle" (selectionChange)="onChangeDimension()">
+                <mat-option *ngFor="let item of parking_angles" [value]="item.value"> {{item.text}} </mat-option>
+              </mat-select>
+              <mat-error>Angle of Parking is required</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-field">
+            <span>Length :</span>
+            <mat-form-field>
+              <input matInput type="number" formControlName="parking_length">
+              <mat-error>Length is required</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-field">
+            <span>Dim :</span>
+            <mat-form-field>
+              <mat-select formControlName="parking_dimension" (selectionChange)="onChangeDimension()">
+                <mat-option *ngFor="let item of dims" [value]="item.text"> {{item.text}} </mat-option>
+              </mat-select>
+              <mat-error>Dim is required</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-field">
+            <span>Spaces :</span>
+            <mat-form-field>
+              <input matInput type="number" formControlName="parking_spaces">
+              <mat-error>Spaces is not valid</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-field">
+            <span>Space Nos : Fr</span>
+            <mat-form-field>
+              <input matInput type="number" formControlName="spaces_nbr_from" (keyup)="onChangeDimension()">
+              <mat-error>Fr is not valid</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-field">
+            <span>To</span>
+            <mat-form-field>
+              <input matInput type="number" formControlName="spaces_nbr_to" (keyup)="onChangeDimension()">
+              <mat-error>To is not valid</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-field">
+            <!--<span>Sensors :</span>-->
+            <mat-checkbox formControlName="is_sensors">Sensors</mat-checkbox>
+          </div>
+          <div class="form-field">
+            <span>Parking Type :</span>
+            <mat-form-field>
+              <mat-select formControlName="parking_type">
+                <mat-option *ngFor="let item of parking_types" [value]="item"> {{item}} </mat-option>
+              </mat-select>
+              <mat-error>Parking Type is required</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-field">
+            <span>Managed by :</span>
+            <mat-form-field>
+              <mat-select formControlName="managed_by">
+                <mat-option *ngFor="let item of managed_by_types" [value]="item"> {{item}} </mat-option>
+              </mat-select>
+              <mat-error>Managed by is required</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="parking-document-wrapper">
+            <div class="form-field">
+              <span>Picture :</span>
+              <ng2-file-input [drop-text]="'Drag files here or'" [id]="'document'" [show-previews]="false" [multiple]="true"
+              accept="['application/jpeg', 'application/png']" (onRemoved)="onDocumentRemoved($event)" (onAdded)="onDocumentAdded($event)"></ng2-file-input>
+            </div>
+            <div class="documents-wrapper">
+              <div *ngIf="imageUrls&&imageUrls.length" class="document-item">
+                <div class="type"> <img [src]="imageUrls[0].startsWith('uploads/') ? apiEndpoint + '/' + imageUrls[0] : imageUrls[0]"></div>
+                <a (click)="onViewAll()" class="btn-primary btn">View All</a>
+              </div>
+            </div>
+          </div>
+          <div class="form-field">
+            <span>Info :</span>
+            <mat-form-field>
+              <input matInput type="text" formControlName="info_notes">
+              <mat-error>Info is required</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-field">
+            <span>How it works :</span>
+            <mat-form-field>
+              <textarea matInput formControlName="functioning"></textarea>
+              <mat-error>How it works is required</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-field">
+            <span>Restrictions :</span>
+            <mat-form-field>
+              <textarea matInput formControlName="restriction"></textarea>
+              <mat-error>Restrictions is required</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-field">
+            <span>Payment methods :</span>
+            <div *ngFor="let payMethod of paymentMethodSelected">
+              <input class="payment-method"
+                      formControlName="payment_methods"
+                      type="checkbox"
+                      [checked]="payMethod.checked"
+                      (change)="payMethod.checked = !payMethod.checked"
+              >
+              <label class="ml-2">{{ payMethod.name}}</label>
+            </div>
+          </div>
+
+          <div class="buttons-wrapper mt-4">
+            <button mat-stroked-button type="button" class="mr-2 ml-2" (click)="onCancel()">CANCEL</button>
+            <button class="add" mat-flat-button type="submit" color="primary">{{currentParking?.id ? 'UPDATE' : 'CREATE'}}</button>
+          </div>
+          <div class="buttons-wrapper" *ngIf="currentParking?.id">
+            <span (click)="onDelete(currentParking)">DELETE  <mat-icon>delete</mat-icon></span>
+          </div>
+        </form>
+    </div>
+  </ng-container>
+  <ng-container  *ngIf="!isListViewOn">
+    <div class="parking-map-wrapper">
+      <!--      <app-map-cluster-view-->
+      <!--        [mapCenter]="mapCenter"-->
+      <!--        [options]="mapOptions"-->
+      <!--        [clusterMapData]="mapdata"-->
+      <!--        [mapDrawData]="mapdrawdata"-->
+      <!--        (mapDataChangedEmitter)="onSiteMapDataChanged($event)"-->
+      <!--        (mapDataEditEmitter)="onMapParkingEditedEvent($event)"-->
+      <!--      >-->
+      <!--      </app-map-cluster-view>-->
+      <app-mapview-new
+        [mapCenter]="mapCenter"
+        [options]="mapOptions"
+        [mapDataJSON]="mapdata"
+        [mapDrawDataJSON]="mapdrawdata"
+        (mapDataChangedEmitter)="onSiteMapDataChanged($event)"
+        (mapDataEditEmitter)="onMapParkingEditedEvent($event)"
+      >
+      </app-mapview-new>
+    </div>
+  </ng-container>
+</div>

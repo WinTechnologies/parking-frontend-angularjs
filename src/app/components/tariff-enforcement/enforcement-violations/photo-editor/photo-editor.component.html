@@ -1,0 +1,23 @@
+<form (submit)="saveImage()">
+  <h1 mat-dialog-title>Edit your icon</h1>
+  <mat-dialog-content>
+    <div class="col-lg-12">
+      <div class="row">
+        <div class="col-md-8">
+          <img-cropper [image]="dataImage" [settings]="cropperSettings"></img-cropper><br>
+        </div>
+        <div class="col-md-4">
+          <h5>Preview </h5>
+          <div>
+            <img *ngIf="!dataImage?.image && data.imageUrl" [src]="baseUrl + data.imageUrl" width="150">
+            <img *ngIf="dataImage?.image" [src]="dataImage.image" [width]="cropperSettings.croppedWidth" [height]="cropperSettings.croppedHeight">
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-stroked-button color="primary" type="button" class="mr-2" (click)="cancelDialog()">Cancel</button>
+    <button mat-flat-button color="primary" type="submit">Add</button>
+  </mat-dialog-actions>
+</form>

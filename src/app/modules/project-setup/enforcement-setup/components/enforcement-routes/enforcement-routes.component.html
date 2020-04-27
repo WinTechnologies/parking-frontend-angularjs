@@ -1,0 +1,125 @@
+<div class="enforcement-routes">
+  <div class="d-flex justify-content-between p-2 align-items-center">
+      <div class="mr-auto enforcement-routes-header-list" (click)="onOpenRouteList()">
+        <mat-icon *ngIf="!isShowRouteList || selectedRoute">list</mat-icon>
+        <img *ngIf="isShowRouteList && !selectedRoute" src="/assets/enforcementsetup/map_view_icon.svg">
+      </div>
+      <div *ngIf="!isShowRouteList" class="filter-menu">
+        <button mat-icon-button [matMenuTriggerFor]="filterMenu">
+          <mat-icon>tune</mat-icon>
+        </button>
+        <mat-menu #filterMenu="matMenu">
+          <div>
+            <mat-selection-list #filterList
+            [(ngModel)]="selectedOptions"
+            (selectionChange)="onSelection($event, filterList)">
+              <mat-list-option checkboxPosition='before' value="All">
+                View All
+                <mat-divider></mat-divider>
+              </mat-list-option>
+              <mat-list-option *ngFor="let filter of filterLists; let i = index;" [selected] = "filter.checked" checkboxPosition='before' [value]="filter.title">
+                {{filter.title}}
+              </mat-list-option>
+            </mat-selection-list>
+          </div>
+        </mat-menu>
+      </div>
+
+      <div *ngIf="isShowRouteList && selectedRoute; then updateRoute else addRoute"></div>
+      <ng-template #updateRoute>
+          <div class="add-staff" (click)="updateForm();">
+              <mat-icon>edit_circle</mat-icon>Update Route
+          </div>
+      </ng-template>
+      <ng-template #addRoute>
+          <div class="add-staff" (click)="resetForm();">
+              <mat-icon>add_circle</mat-icon>Route
+          </div>
+      </ng-template>
+  </div>
+  <div class="enforcement-routes-content">
+    <mat-drawer-container [hidden]="isShowRouteList" class="routes-container">
+      <mat-drawer #drawer mode="side" opened>
+        <div class="routes-sidebar">
+          <h1 class="routes-sidebar-title">
+            {{currentRoute?.id ? 'Edit' : 'Add'}} Route
+          </h1>
+          <form
+          [formGroup]="form"
+          (ngSubmit)="onSubmit()"
+          *ngIf="form"
+          autocomplete="off"
+          novalidate>
+            <div class="form-field">
+              <span>Code: </span>
+              <mat-form-field>
+                <input matInput type="text"
+                       formControlName="route_code"
+                       (keypress)="inputCheck($event)"
+                       (paste)="inputCheck($event)">
+                <mat-error>Code is required. This field accepts only alphabetical and numerical characters.</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="form-field">
+              <span>Name: </span>
+              <mat-form-field>
+                <input matInput type="text" formControlName="route_name">
+                <mat-error>Name is required</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="form-field">
+              <span>Length: </span>
+              <mat-form-field>
+                <input matInput type="text" formControlName="distance_meters" readonly>
+                <mat-error>Distance meter is required</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="form-field">
+              <span><mat-icon>directions_walk</mat-icon></span>
+              <mat-form-field>
+                <input matInput type="text" formControlName="distance_mins" readonly>
+                <mat-error>Distance min is required</mat-error>
+              </mat-form-field>
+            </div>
+            <div class="form-field">
+              <span>Staff: </span>
+              <mat-form-field class="staff-count" *ngIf="employees.length">
+                <input (click)="onAddStaff()" matInput type="number" formControlName="nbr_staff" readonly>
+              </mat-form-field>
+              <span *ngIf="employees.length == 0" class="add-staff" (click)="onAddStaff()"><mat-icon>add_circle</mat-icon>Staff</span>
+            </div>
+            <div class="form-field">
+              <span>Streets: </span>
+              <ul class="street-list" *ngIf="waypoints.length">
+                <li *ngFor="let point of waypoints">{{point['name']}}</li>
+              </ul>
+            </div>
+            <div class="d-flex justify-content-end">
+              <button mat-flat-button color="primary" class="mr-2" (click)="onDelete($event); " *ngIf="currentRoute?.id">Delete</button>
+              <button mat-stroked-button color="primary" type="button" (click)="onCancel()">Cancel</button>
+              <button mat-flat-button color="primary" class="ml-2">{{currentRoute?.id ? 'Update' : 'Create'}}</button>
+            </div>
+          </form>
+        </div>
+      </mat-drawer>
+      <mat-drawer-content>
+        <app-route-map
+          [mapCenter]="mapCenter"
+          [mapdata]="mapdata"
+          [waypoints]="routeWayPoints"
+          (mapRouteEditEmitter)="mapRouteEdited($event)"
+          (mapRoutesChangedEmitter)="mapRoutesDataChanged($event)">
+      </app-route-map>
+      </mat-drawer-content>
+    </mat-drawer-container>
+    <app-route-list
+      *ngIf="isShowRouteList && !selectedRoute"
+      [projectId]="projectId"
+      (changedRouteEmitter)="applyChangedRoute($event)"
+    ></app-route-list>
+    <app-route-details
+     *ngIf="isShowRouteList && selectedRoute"
+      [routeId]="selectedRoute.id"
+    ></app-route-details>
+  </div>
+</div>

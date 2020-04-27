@@ -1,0 +1,153 @@
+@import "../../../../../styles/_color.scss";
+
+:host {
+  .assigned-employee-new-page {
+    &-header {
+      &-buttons {
+        button {
+          outline: none;
+        }
+
+        .mat-flat-button.add {
+          background-color: $c-yellowgreen;
+          margin: 0 20px;
+        }
+      }
+    }
+
+    &-content {
+      padding-top: 50px;
+      margin: 5px 20px;
+      background-color: $c-greylight1;
+
+      &-title {
+        height: 50px;
+        line-height: 50px;
+        font-weight: 700;
+        font-size: 1.5rem;
+      }
+
+      &-name {
+        span {
+          font-weight: 500;
+        }
+      }
+
+      button.mat-icon-button {
+        color: $c-greylight;
+        outline: none;
+      }
+
+      .mat-table {
+        .mat-header-row {
+          background-color: $c-blue;
+
+          /deep/ .mat-sort-header-button {
+            color: $c-white !important;
+          }
+
+          /deep/ .mat-sort-header-arrow {
+            color: #32a8cd;
+          }
+        }
+
+        .mat-row {
+          &:hover {
+            cursor: pointer;
+            background-color: #2E626A;
+
+            .mat-cell {
+              color: $c-white;
+            }
+          }
+        }
+      }
+
+      .mat-column-avatar {
+        flex: 0 0 60px;
+        max-width: 60px !important;
+
+        img {
+          width: 50px;
+          height: 50px;
+        }
+      }
+
+      .mat-column-checkbox {
+        flex: 0 0 50px;
+        max-width: 50px !important;
+
+        .mat-checkbox {
+          color: $c-white;
+
+          ::ng-deep .mat-checkbox-frame {
+            background-color: $c-white;
+          }
+
+          ::ng-deep .mat-checkbox-label {
+            font-size: 12px;
+            font-weight: 500;
+          }
+        }
+      }
+
+      .mat-cell {
+        flex: 1;
+        width: 100px;
+        overflow: visible;
+        word-wrap: break-word;
+        text-align: center;
+        font-size: 11px;
+        font-weight: bold;
+        margin-left: 2px;
+        margin-right: 2px;
+      }
+
+      .mat-column-email {
+        flex: 0 0 150px;
+        min-width: 150px !important;
+      }
+
+      .mat-column-department {
+        flex: 0 0 200px;
+        min-width: 200px !important;
+      }
+
+      .mat-column-job_position {
+        flex: 0 0 200px;
+        min-width: 200px !important;
+      }
+    }
+
+    &-footer {
+      padding: 0 20px 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &-table-wrapper {
+      box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+        0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+      overflow: overlay;
+    }
+
+    @media (max-height: 850px) {
+      &-table-wrapper {
+        box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+        0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+        height: 66vh!important;
+        overflow: overlay;
+      }
+    }
+  }
+
+  .mat-header-row {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .page-top-header{
+    justify-content: initial;
+  }
+}

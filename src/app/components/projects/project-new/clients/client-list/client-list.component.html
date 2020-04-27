@@ -1,0 +1,51 @@
+<div class="client-list-page">
+  <div class="client-list-page-header">
+    <button *ngIf="canUpdate" mat-flat-button color="basic" (click)="onAdd()">
+      <span class="pop-btn"> <mat-icon>add_circle</mat-icon>Client</span>
+    </button>
+  </div>
+  <div class="client-list-page-content">
+    <div *ngIf="clients.length > 0" class="client-list-page-content-drag-wrapper">
+      <div class="d-flex scroll-container"
+        (mousedown)="onMouseDownDragScroll($event)"
+        (mousemove)="onMouseMoveDragScroll($event)"
+        (mouseleave)="onMouseLeaveDragScroll($event)"
+        (mouseup)="onMouseLeaveDragScroll($event)"
+        #widgetsContent>
+        <div *ngFor="let client of clients; let i = index" class="client-info" (click)="onEdit(client, i)">
+          <div class="client-title">
+            <div class="client-info-name">
+              {{ client.firstname }} {{ client.lastname }}
+            </div>
+            <button *ngIf="canUpdate" mat-icon-button color="warn" (click)="onRemove($event, client, i)">
+              <mat-icon>remove_circle</mat-icon>
+            </button>
+          </div>
+          <div class="client-info-item">
+            <span class="title">Designation</span>
+            <span class="value">{{ client.designation }}</span>
+          </div>
+          <div class="client-info-item">
+            <span class="title">Mobile</span>
+            <span class="value">{{ client.phone_number }}</span>
+          </div>
+          <div class="client-info-item">
+            <span class="title">Email</span>
+            <span class="value">{{ client.email }}</span>
+          </div>
+          <div class="client-info-item">
+            <span class="title">Address</span>
+            <span class="value">{{ client.address }}</span>
+          </div>
+        </div>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-around center" class="buttons-wrapper">
+        <button mat-raised-button color="basic" (click)="moveLeft()">left</button>
+        <button mat-raised-button color="basic" (click)="moveRight()">right</button>
+      </div>
+    </div>
+    <div *ngIf="!clients.length || clients.length == 0" class="client-list-page-content-no-data">
+      No data, please add new client
+    </div>
+  </div>
+</div>

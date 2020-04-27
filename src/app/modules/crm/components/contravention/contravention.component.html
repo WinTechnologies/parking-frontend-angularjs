@@ -1,0 +1,170 @@
+<main class="contravention">
+    <!-- ------------------- Greybar ------------------------ -->
+    <header class="page-top-header">
+        <div class="inline">
+            <mat-form-field class="search-field">
+                <mat-icon matPrefix>search</mat-icon>
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search" />
+            </mat-form-field>
+        </div>
+
+        <form *ngIf="crmForm" [formGroup]="crmForm" (ngSubmit)="onSubmit()" class="inline align-items-center">
+            <mat-form-field>
+                <mat-select placeholder="Select project" [formControlName]="'project'" (selectionChange)="onSubmit()">
+                    <mat-option value="all">All</mat-option>
+                    <ng-container *ngFor="let project of projects">
+                        <mat-option [value]="project.id">
+                            {{ project.project_code }}: {{ project.project_name }}
+                        </mat-option>
+                    </ng-container>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <input appInputDateFormat matInput [formControlName]="'from'" [matDatepicker]="pickerDateStart"
+                    [max]="crmForm.value.to" placeholder=" From :" />
+                <mat-datepicker-toggle matSuffix [for]="pickerDateStart"></mat-datepicker-toggle>
+                <mat-datepicker #pickerDateStart></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field>
+                <input appInputDateFormat matInput [formControlName]="'to'" [matDatepicker]="pickerDateEnd"
+                    [min]="crmForm.value.from" placeholder=" To :" />
+                <mat-datepicker-toggle matSuffix [for]="pickerDateEnd"></mat-datepicker-toggle>
+                <mat-datepicker #pickerDateEnd></mat-datepicker>
+            </mat-form-field>
+            <button mat-flat-button color="primary" type="submit">OK</button>
+        </form>
+    </header>
+    <!-- ------------------------------------------- -->
+    <h1 class="title font-weight-bold title-fixed">
+        List of Contraventions
+    </h1>
+    <div class="pt-50px mt-50px px-3 content-wrap">
+        <div class="row mat-elevation-z8 p-0">
+            <div class="col-sm-12" [class.col-lg-8]="isDetailOn" [class.col-md-8]="isDetailOn">
+                <div class="list-page-table-wrapper">
+                    <app-scroller>
+                        <mat-table [dataSource]="dataSource" class="material bg-white" cdkDropListGroup matSort>
+                            <ng-container *ngFor="let column of tableFields; let i = index" [matColumnDef]="column.name">
+                                <mat-header-cell *matHeaderCellDef cdkDropList cdkDropListLockAxis="x"
+                                                 cdkDropListOrientation="horizontal" (cdkDropListDropped)="dropListDropped($event, i)"
+                                                 cdkDrag (cdkDragStarted)="dragStarted($event, i)" (contextmenu)="onContextMenu($event)"
+                                                 [cdkDragData]="{name: column.label, columIndex: i}" mat-sort-header>
+                                    {{ column.label }}
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row">
+                                <span [matTooltip]="row[column.name]" matTooltipShowDelay="1000"
+                                      matTooltipHideDelay="1000"></span>
+                                    <ng-container [ngSwitch]="column.name">
+                                        <ng-container *ngSwitchCase="'evolved_into_cn_at'">
+                                            {{ (row[column.name] ? row[column.name] : formatTimeWithGmt(row['contravention_created_at'], row['gmt'])) }}
+                                        </ng-container>
+                                        <ng-container *ngSwitchCase="'status'">{{ statusCodes[row[column.name]] }}
+                                        </ng-container>
+                                        <ng-container *ngSwitchCase="'creation'">
+                                            {{ formatTimeWithGmt(row['creation'], row['gmt'])}}
+                                        </ng-container>
+                                        <ng-container *ngSwitchCase="'canceled_at'">
+                                            {{ formatTimeWithGmt(row['canceled_at'], row['gmt'])}}
+                                        </ng-container>
+                                        <ng-container *ngSwitchCase="'sent_at'">
+                                            {{ formatTimeWithGmt(row['sent_at'], row['gmt'])}}
+                                        </ng-container>
+                                        <ng-container *ngSwitchCase="'is_paid'">
+                                            {{row['is_paid'] ? 'Paid' : 'Unpaid'}}
+                                        </ng-container>
+                                        <ng-container *ngSwitchCase="'category'">
+                                            <span class="category {{setCategoryClass(row)}}">{{setStatusLabel(row)}}</span>
+                                        </ng-container>
+                                        <ng-container *ngSwitchDefault>{{ row[column.name] }}</ng-container>
+                                    </ng-container>
+                                </mat-cell>
+                            </ng-container>
+                            <mat-header-row *matHeaderRowDef="displayedColumns1"></mat-header-row>
+                            <ng-container [class.mat-cell]="true" *ngFor="let column of filter.filterColumns(tableFields); let i = index" [matColumnDef]="column.filter">
+                                <mat-header-cell *matHeaderCellDef>
+                                    <ng-container [ngSwitch]="column.name">
+                                        <ng-container *ngSwitchCase="'contravention_created_at'">
+                                            <mat-form-field class="m-2" appearance="standard">
+                                                <input matInput [matDatepicker]="picker" (click)="picker.open()"
+                                                       (dateInput)="filter.applyColumnFilter(column.name, 'date', $any($event).target.value)">
+                                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                <mat-datepicker #picker></mat-datepicker>
+                                            </mat-form-field>
+                                        </ng-container>
+                                        <ng-container *ngSwitchCase="'creation'">
+                                            <mat-form-field class="m-2" appearance="standard">
+                                                <input matInput [matDatepicker]="picker" (click)="picker.open()"
+                                                       (dateInput)="filter.applyColumnFilter(column.name, 'date', $any($event).target.value)">
+                                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                <mat-datepicker #picker></mat-datepicker>
+                                            </mat-form-field>
+                                        </ng-container>
+                                        <ng-container *ngSwitchCase="'canceled_at'">
+                                            <mat-form-field class="m-2" appearance="standard">
+                                                <input matInput [matDatepicker]="picker" (click)="picker.open()"
+                                                       (dateInput)="filter.applyColumnFilter(column.name, 'date', $any($event).target.value)">
+                                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                <mat-datepicker #picker></mat-datepicker>
+                                            </mat-form-field>
+                                        </ng-container>
+                                        <ng-container *ngSwitchCase="'sent_at'">
+                                            <mat-form-field class="m-2" appearance="standard">
+                                                <input matInput [matDatepicker]="picker" (click)="picker.open()"
+                                                       (dateInput)="filter.applyColumnFilter(column.name, 'date', $any($event).target.value)">
+                                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                <mat-datepicker #picker></mat-datepicker>
+                                            </mat-form-field>
+                                        </ng-container>
+                                        <ng-container *ngSwitchCase="'status'">
+                                            <mat-form-field class="m-2" appearance="standard">
+                                                <mat-select multiple (selectionChange)="filter.applyColumnFilter(column.name, 'multi-select', $event.value)">
+                                                    <mat-option *ngFor="let statusCode of statusCodes | keyvalue" [value]="statusCode.key">
+                                                        {{statusCode.value}}
+                                                    </mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </ng-container>
+                                        <ng-container *ngSwitchCase="'is_paid'">
+                                            <mat-form-field class="m-2" appearance="standard">
+                                                <mat-select (selectionChange)="filter.applyColumnFilter(column.name, 'select', $event.value)">
+                                                    <mat-option [value]="null"></mat-option>
+                                                    <mat-option [value]="true">Paid</mat-option>
+                                                    <mat-option [value]="false">Unpaid</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </ng-container>
+                                        <ng-container *ngSwitchCase="'category'">
+                                        </ng-container>
+                                        <ng-container *ngSwitchDefault>
+                                            <mat-form-field class="m-1" appearance="standard">
+                                                <input matInput class="bg-white text-dark" [placeholder]="column.label"
+                                                       (input)="filter.applyColumnFilter(column.name, 'input', $any($event).target.value)">
+                                            </mat-form-field>
+                                        </ng-container>
+                                    </ng-container>
+                                </mat-header-cell>
+                            </ng-container>
+                            <mat-header-row *matHeaderRowDef="filter.filterDisplayColumns(displayedColumns1)" class="mat-header-filter"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns1;"
+                                     [ngClass]="{'highlight': selectedRowIndex == row.cn_number}" (click)="onRowSelect(row)">
+                            </mat-row>
+                        </mat-table>
+                    </app-scroller>
+                    <div class="text-center py-3" *ngIf="!cnList"
+                        style="background: white; box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 8px 10px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12)">
+                        No record found</div>
+                    <mat-paginator style-paginator [pageSize]="pageSize" [pageSizeOptions]="[10,20,30]"
+                        showFirstLastButtons [listChanged]="refreshCount" (change)="handlePage($event)"
+                        (page)="refreshPage($event)"></mat-paginator>
+                </div>
+            </div>
+            <div class="list-details-container col-lg-4 col-md-4 col-sm-12 pr-0" *ngIf="isDetailOn">
+                <app-contravention-details [statusCodesList]="statusCodes"
+                    [selectedContravention]="selectedContravention">
+                </app-contravention-details>
+            </div>
+        </div>
+    </div>
+    <app-table-columns-edit-dropdown [showFields]="showFields" [originFields]="displayedColumns">
+    </app-table-columns-edit-dropdown>
+</main>

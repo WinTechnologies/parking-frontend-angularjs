@@ -1,0 +1,40 @@
+@import "../../../../../styles/_color.scss";
+
+:host {
+  .mat-dialog-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h1 {
+      font-weight: 700;
+      font-size: 24px;
+      color: #13a7e2;
+    }
+  }
+
+  .project-list-page {
+    &-header {
+      display: flex;
+      align-items: center;
+
+      &-filter {
+        padding-left: 24px;
+
+        mat-icon {
+          position: absolute;
+          left: -23px;
+        }
+      }
+    }
+
+    &-content {
+      background-color: $c-greylight1;
+      width: 100%;
+
+      button.mat-icon-button {
+        color: $c-greylight;
+      }
+    }
+  }
+}

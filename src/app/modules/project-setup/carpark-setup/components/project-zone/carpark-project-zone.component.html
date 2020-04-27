@@ -1,0 +1,119 @@
+<div class="zone">
+  <ng-container *ngIf="viewMode === ViewMode.ListView">
+      <app-listview-new
+      [filter]="filter" 
+      [projectId]="projectId"
+      [options]="mapOptions"
+      [mapdata]="tabMapDataJSON"
+      [mapdrawdata]="tabMapDrawDataJSON"
+      [listType]="CarparkItemType.Zone"
+      [listData]="allZones"
+      (selectedRowItem)="onZoneSelection($event)"
+      ></app-listview-new>
+  </ng-container>
+  <ng-container *ngIf="viewMode === ViewMode.MapView">
+    <div class="zone-sidebar">
+      <div class="zone-sidebar-title">
+        <ng-container *ngIf="formMode === FormMode.CREATING">Draw new zone</ng-container>
+        <ng-container *ngIf="formMode !== FormMode.CREATING">Zone selection</ng-container>
+      </div>
+
+      <div class="form-field" *ngIf="formMode !== FormMode.CREATING">
+        <span>Select zone <b class="span-bold">(or select on map)</b></span>
+        <mat-form-field class="select-zone">
+          <mat-select [(ngModel)]="selectedZone" (selectionChange)="onZoneSelection($event.value)">
+            <mat-option *ngFor="let zone of allZones" [value]="zone">{{zone.zone_code}}: {{zone.zone_name}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <span *ngIf="allZones && allZones.length === 0" class="zone-sidebar-error">
+          There is no zone available. Please create a new zone
+        </span>
+      </div>
+
+      <hr>
+
+      <form *ngIf="form && (formMode === FormMode.UPDATING || formMode === FormMode.CREATING)"
+            [formGroup]="form"
+            (ngSubmit)="onSubmit()"
+            autocomplete="off"
+            novalidate>
+        <div class="form-field">
+          <span>Name</span>
+          <mat-form-field>
+            <input matInput type="text" formControlName="zone_name">
+            <mat-error>Name is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span>Name (ar)</span>
+          <mat-form-field>
+            <input matInput type="text" formControlName="zone_name_ar">
+            <mat-error>Name (ar) is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span>Zone Code</span>
+          <mat-form-field>
+            <input matInput type="text" formControlName="zone_code" (keypress)="inputCheck($event)" (paste)="inputCheck($event)">
+            <mat-error>Zone Code is required. This field accepts only alphabetical and numerical characters.</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span>Perimeter <b class="span-bold">(auto-fill by draw tool)</b></span>
+          <mat-form-field class="place_LL border-right-0">
+            <input matInput type="text" formControlName="perimeter" readonly>
+            <mat-error>Perimeter is required</mat-error>
+          </mat-form-field>
+          <mat-form-field class="units line-height-15 place_LL border-left-0">
+            <mat-select formControlName="measurement_unit" (selectionChange)="onChangeUnit($event.value)">
+              <mat-option [value]="LengthUnit.Meters"> {{LengthUnit.Meters}} </mat-option>
+              <mat-option [value]="LengthUnit.Kilometers"> {{LengthUnit.Kilometers}} </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span>Area <b class="span-bold">(auto-fill by draw tool)</b></span>
+          <mat-form-field class="place_LL border-right-0">
+            <input matInput type="text" formControlName="area" readonly>
+            <mat-error>Area is required</mat-error>
+          </mat-form-field>
+          <mat-form-field class="units place_LL border-left-0">
+            <input matInput type="text" formControlName="area_units" readonly>
+          </mat-form-field>
+        </div>
+        <div class="buttons-wrapper">
+          <button mat-stroked-button type="button" class="mr-2 ml-2" (click)="onCancel()">CANCEL</button>
+          <button class="add" mat-flat-button type="submit" color="primary">
+            <ng-container *ngIf="formMode === FormMode.CREATING">CREATE</ng-container>
+            <ng-container *ngIf="formMode === FormMode.UPDATING">UPDATE</ng-container>
+          </button>
+        </div>
+        <div class="buttons-wrapper" *ngIf="formMode === FormMode.UPDATING">
+          <span (click)="onDeleteCurrentZone()">DELETE<mat-icon>delete</mat-icon></span>
+        </div>
+      </form>
+
+      <div class="notification-box" *ngIf="formMode === FormMode.JUST_CREATED || formMode === FormMode.JUST_UPDATED || formMode === FormMode.JUST_DELETED">
+        <span *ngIf="formMode === FormMode.JUST_CREATED">New zone created!</span>
+        <span *ngIf="formMode === FormMode.JUST_UPDATED">The zone updated!</span>
+        <span *ngIf="formMode === FormMode.JUST_DELETED">The zone deleted!</span>
+        <div>
+          <button mat-flat-button type="button" class="mt-3" color="primary" (click)="returnToSelection()">OK</button>
+        </div>
+      </div>
+    </div>
+    <div class="zone-map-wrapper">
+      <app-mapview-new
+        [mapCenter]="mapCenter"
+        [options]="mapOptions"
+        [mapDataJSON]="tabMapDataJSON"
+        [mapDrawDataJSON]="tabMapDrawDataJSON"
+        [isForceCenter]="true"
+        [zoomValue]="mapZoomValue"
+        (mapDataChangedEmitter)="onSiteMapDataChanged($event)"
+        (mapDataEditEmitter)="onZoneSelection($event)"
+      >
+      </app-mapview-new>
+    </div>
+  </ng-container>
+</div>

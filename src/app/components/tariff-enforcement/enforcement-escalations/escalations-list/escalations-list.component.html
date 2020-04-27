@@ -1,0 +1,148 @@
+<div class="escalation-page">
+    <div class="escalation-page-content-title ml-3 mr-3">
+      <div class="page-title-header bg-white selections-wrapper border-bottom">
+        <div class="d-flex align-items-center justify-content-left">
+          <mat-icon>search</mat-icon>
+          <mat-form-field class="filter">
+            <input
+              matInput
+              (keyup)="applyFilterEscalations($event.target.value)"
+              placeholder="Search Escalation">
+          </mat-form-field>
+        </div>
+        <div class="buttons-wrapper">
+          <button
+            *ngIf="permission.isCreate"
+            mat-flat-button
+            color="basic"
+            (click)="onAddEscalation()">
+              <mat-icon>
+                add_circle
+              </mat-icon>
+            Escalation
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="escalation-page-content">
+      <div class="escalation-page-content-wrapper">
+          <div *ngFor="let escalation of filteredEscalations" class="service-info" (click)="onEdit(escalation)">
+            <div class="service-title">
+              <div class="service-info-name">
+                {{escalation.escalation_name}}
+              </div>
+              <button
+              *ngIf="permission.isDelete"
+              mat-icon-button color="warn"
+              (click)="onRemove(escalation); $event.stopPropagation();">
+                <mat-icon>remove_circle</mat-icon>
+              </button>
+            </div>
+            <div class="service-info-item">
+              <div class="service-info-item-row d-flex">
+                <div *ngIf="escalation.outstanding_violation_nbr" class="outstanding-violations-wrapper">
+                  <div class="outstanding-violations-label">
+                    Outstanding Violations
+                  </div>
+                  <div class="outstanding-violations-items-wrapper d-flex">
+                    <div class="outstanding-violations-value">
+                      <span>{{escalation.outstanding_violation_nbr}}</span>
+                    </div>
+                    <div *ngIf="escalation.outstanding_violation_clamp" class="outstanding-violations-items">
+                      <div class="image-wrapper">
+                        <img src="assets/assets-section/clamp_white.svg">
+                      </div>
+                    </div>
+                    <div *ngIf="escalation.outstanding_violation_tow" class="outstanding-violations-items">
+                      <div class="image-wrapper">
+                        <img src="assets/assets-section/tow_truck_white.svg">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="!escalation.outstanding_violation_nbr && escalation.outstanding_days_nbr" class="outstanding-violations-wrapper">
+                  <div *ngIf="escalation.outstanding_days_nbr" class="outstanding-violations-label">
+                    Outstanding Days
+                  </div>
+                  <div *ngIf="escalation.outstanding_days_nbr" class="outstanding-violations-items-wrapper d-flex">
+                    <div class="outstanding-violations-value">
+                      <span>{{escalation.outstanding_days_nbr}}</span>
+                    </div>
+                    <div *ngIf="escalation.outstanding_days_clamp" class="outstanding-violations-items">
+                      <div class="image-wrapper">
+                        <img src="assets/assets-section/clamp_white.svg">
+                      </div>
+                    </div>
+                    <div *ngIf="escalation.outstanding_days_tow" class="outstanding-violations-items">
+                      <div class="image-wrapper">
+                        <img src="assets/assets-section/tow_truck_white.svg">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="escalation.fee_tow || escalation.fee_clamp" class="outstanding-violations-fee-wrapper">
+                  <div class="outstanding-violations-label">
+                    Fees
+                  </div>
+                  <div *ngIf="escalation.fee_tow" class="outstanding-violations-items-wrapper">
+                    <span class="item-label">Tow Fee:</span>
+                    <span class="item-value">{{escalation.fee_tow}}</span>
+                  </div>
+                  <div *ngIf="escalation.fee_clamp" class="outstanding-violations-items-wrapper">
+                    <span class="item-label">Clamp Fee:</span>
+                    <span class="item-value">{{escalation.fee_clamp}}</span>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="escalation.outstanding_violation_nbr && escalation.outstanding_days_nbr" class="logical-rule">
+                {{escalation.logical_rule}}
+              </div>
+              <div class="service-info-item-row  d-flex">
+                <div class="outstanding-violations-wrapper">
+                  <div *ngIf="escalation.outstanding_violation_nbr && escalation.outstanding_days_nbr" class="outstanding-violations-label">
+                    Outstanding Days
+                  </div>
+                  <div *ngIf="escalation.outstanding_violation_nbr && escalation.outstanding_days_nbr" class="outstanding-violations-items-wrapper d-flex">
+                    <div class="outstanding-violations-value">
+                      <span>{{escalation.outstanding_days_nbr}}</span>
+                    </div>
+                    <div *ngIf="escalation.outstanding_days_clamp" class="outstanding-violations-items">
+                      <div class="image-wrapper">
+                        <img src="assets/assets-section/clamp_white.svg">
+                      </div>
+                    </div>
+                    <div *ngIf="escalation.outstanding_days_tow" class="outstanding-violations-items">
+                      <div class="image-wrapper">
+                        <img src="assets/assets-section/tow_truck_white.svg">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="outstanding-violations-fee-wrapper">
+                    <div *ngIf="escalation.storage_fee || escalation.storage_max || escalation.applied_after" class="outstanding-violations-label">
+                      Storage
+                    </div>
+                    <div *ngIf="escalation.storage_fee" class="outstanding-violations-items-wrapper">
+                      <span class="item-label">Fee:</span>
+                      <span class="item-value">{{escalation.storage_fee}} per {{escalation.storage_fee_unit}}</span>
+                    </div>
+                    <div *ngIf="escalation.storage_max" class="outstanding-violations-items-wrapper">
+                      <span class="item-label">Max:</span>
+                      <span class="item-value">{{escalation.storage_max}} {{escalation.storage_max_unit}}</span>
+                    </div>
+                    <div *ngIf="escalation.applied_after" class="outstanding-violations-items-wrapper">
+                      <span class="item-label">Applied:</span>
+                      <span *ngIf="escalation.applied_immediately" class="item-value">Immediately</span>
+                      <span *ngIf="!escalation.applied_immediately" class="item-value">{{escalation.applied_after}} Hours</span>
+                    </div>
+                </div>
+              </div>
+              <div *ngIf="escalation.created_at" class="date-wrapper">
+                <span class="item-label">Created:</span>
+                <span>{{escalation.created_at | date: 'dd/MM/yyyy'}}</span>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+</div>

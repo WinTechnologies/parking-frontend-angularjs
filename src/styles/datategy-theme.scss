@@ -1,0 +1,57 @@
+@import '../../node_modules/@angular/material/theming';
+
+$mat-mawgif: (
+  50 : #e6e8e9,
+  100 : #c0c6c9,
+  200 : #96a0a5,
+  300 : #6c7980,
+  400 : #4d5d65,
+  500 : #2d404a,
+  600 : #283a43,
+  700 : #22323a,
+  800 : #1c2a32,
+  900 : #111c22,
+  A100 : #64c8ff,
+  A200 : #31b6ff,
+  A400 : #00a3fd,
+  A700 : #0092e4,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #ffffff,
+    400 : #ffffff,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #ffffff,
+    A700 : #ffffff,
+  )
+);
+
+$custom-typography: mat-typography-config(
+  $font-family: 'Roboto Condensed'
+);
+
+.main-content-wrap {
+    &.ps > .ps__rail-y {
+      z-index: 9999;
+    }
+
+    .ps__rail-y {
+        position: fixed;
+    }
+}
+
+@include mat-core($custom-typography);
+
+$datategy-app-primary: mat-palette($mat-mawgif);
+$datategy-app-accent:  mat-palette($mat-amber, A200, A100, A400);
+$datategy-app-warn:    mat-palette($mat-red);
+$datategy-app-theme: mat-light-theme($datategy-app-primary, $datategy-app-accent, $datategy-app-warn);
+
+@include angular-material-theme($datategy-app-theme);

@@ -1,0 +1,42 @@
+@import "../../../../styles/_color.scss";
+
+:host {
+  .mat-dialog-title {
+    color: $c-white;
+    background-color: $c-blue;
+    margin: -24px -24px 20px;
+    padding: 10px 24px;
+  }
+
+  .form-field {
+    span {
+      width: 90px;
+    }
+  }
+
+  button {
+    outline: none;
+  }
+
+  .add {
+    background-color:  $c-blue;
+    color: $c-white;
+  }
+
+  .mat-dialog-content {
+    min-height: 400px;
+  }
+
+  .mat-dialog-actions {
+    justify-content: space-between;
+  }
+
+  .add-options {
+    .material-icons {
+      height: 36px;
+      width: 36px;
+      font-size: 36px;
+      color: $c-yellowgreen;
+    }
+  }
+}

@@ -1,0 +1,240 @@
+<ng-template #zoneSelector let-v="viewMode">
+  <div class="form-field">
+    <h4 *ngIf="v === ViewMode.ListView" class="list-table-header">Zone</h4>
+    <span *ngIf="v === ViewMode.MapView">Select zone</span>
+    <mat-form-field class="select-zone">
+      <mat-select [(ngModel)]="selectedZone" (selectionChange)="onZoneSelection($event.value)">
+        <mat-option *ngIf="v === ViewMode.ListView" [value]="EmptyPrZone">All</mat-option>
+        <mat-option *ngFor="let zone of allZones" [value]="zone">{{zone.zone_code}}: {{zone.zone_name}} </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</ng-template>
+<ng-template #terminalSelector let-v="viewMode">
+  <div class="form-field">
+    <h4 *ngIf="v === ViewMode.ListView" class="list-table-header">Terminal</h4>
+    <span *ngIf="v === ViewMode.MapView">Select terminal</span>
+    <mat-form-field class="select-terminal">
+      <mat-select [(ngModel)]="selectedTerminal" (selectionChange)="onTerminalSelection($event.value)">
+        <mat-option *ngIf="v === ViewMode.ListView" [value]="EmptyTerminal">All</mat-option>
+        <mat-option *ngFor="let terminal of terminals" [value]="terminal">{{terminal.terminal_code}}: {{terminal.terminal_name}} </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</ng-template>
+<ng-template #parkSelector let-v="viewMode">
+  <div class="form-field">
+    <h4 *ngIf="v === ViewMode.ListView" class="list-table-header">Parking</h4>
+    <span *ngIf="v === ViewMode.MapView">Select parking</span>
+    <mat-form-field class="select-parking">
+      <mat-select [(ngModel)]="selectedParking" (selectionChange)="onParkingSelection($event.value)">
+        <mat-option *ngIf="v === ViewMode.ListView" [value]="EmptyParking">All</mat-option>
+        <mat-option *ngFor="let parking of parkings" [value]="parking">{{parking.code}}: {{parking.carpark_name}} </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</ng-template>
+<ng-template #levelSelector let-v="viewMode">
+  <div class="form-field">
+    <h4 *ngIf="v === ViewMode.ListView" class="list-table-header">Level</h4>
+    <span *ngIf="v === ViewMode.MapView">Select level</span>
+    <mat-form-field class="select-level">
+      <mat-select [(ngModel)]="selectedParkLevel" (selectionChange)="onLevelSelection($event.value)">
+        <mat-option *ngIf="v === ViewMode.ListView" [value]="EmptyParkLevel">All</mat-option>
+        <mat-option *ngFor="let level of parkLevels" [value]="level">{{level.code}}: {{level.name}} </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</ng-template>
+<ng-template #parkZoneSelector let-v="viewMode">
+  <div class="form-field">
+    <h4 *ngIf="v === ViewMode.ListView" class="list-table-header">ParkZone</h4>
+    <span *ngIf="v === ViewMode.MapView">Select parkzone</span>
+    <mat-form-field class="select-park-zone">
+      <mat-select [(ngModel)]="selectedParkZone" (selectionChange)="onParkZoneSelection($event.value)">
+        <mat-option *ngIf="v === ViewMode.ListView" [value]="EmptyParkZone">All</mat-option>
+        <mat-option *ngFor="let zone of parkZones" [value]="zone">{{zone.name_en}} </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</ng-template>
+<ng-template #parkSpaceSelector>
+  <div class="form-field" *ngIf="formMode !== FormMode.CREATING">
+    <span>Select park space <b class="span-bold">(or select on map)</b></span>
+    <mat-form-field class="select-park-space">
+      <mat-select [(ngModel)]="selectedParkSpace" (selectionChange)="onParkSpaceSelection($event.value)">
+        <mat-option *ngFor="let parkSpace of parkSpaces" [value]="parkSpace">{{parkSpace.code}}: {{parkSpace.name}} </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <span *ngIf="parkSpaces && parkSpaces.length === 0" class="parkspace-sidebar-error">
+      There is no space available. Please make sure you selected a park zone or create a new space
+    </span>
+  </div>
+</ng-template>
+
+<ng-container *ngIf="viewMode === ViewMode.ListView">
+  <div class="carparkitem-selector" *ngIf="viewMode === ViewMode.ListView">
+    <div class="row">
+      <ng-container *ngTemplateOutlet="zoneSelector; context:{viewMode: ViewMode.ListView}"></ng-container>
+      <ng-container *ngTemplateOutlet="terminalSelector; context:{viewMode: ViewMode.ListView}"></ng-container>
+      <ng-container *ngTemplateOutlet="parkSelector; context:{viewMode: ViewMode.ListView}"></ng-container>
+      <ng-container *ngTemplateOutlet="levelSelector; context:{viewMode: ViewMode.ListView}"></ng-container>
+    </div>
+    <div class="row">
+      <ng-container *ngTemplateOutlet="parkZoneSelector; context:{viewMode: ViewMode.ListView}"></ng-container>
+    </div>
+    </div>
+  <div class="parkspace">
+    <app-listview-new
+      [tblStyle]="'gate-tbl'"
+      [filter]="filter"
+      [projectId]="projectId"
+      [options]="mapOptions"
+      [mapdata]="tabMapDataJSON"
+      [mapdrawdata]="tabMapDrawDataJSON"
+      [listType]="CarparkItemType.ParkSpace"
+      [listData]="parkSpaces"
+      (selectedRowItem)="onParkSpaceSelection($event)"
+    ></app-listview-new>
+  </div>
+</ng-container>
+<ng-container *ngIf="viewMode === ViewMode.MapView">
+  <div class="parkspace">
+    <div class="parkspace-sidebar">
+      <div class="parkspace-sidebar-title">
+        <ng-container *ngIf="formMode === FormMode.CREATING">Add park space</ng-container>
+        <ng-container *ngIf="formMode !== FormMode.CREATING">Park space selection</ng-container>
+      </div>
+
+      <ng-container *ngTemplateOutlet="zoneSelector; context:{viewMode: ViewMode.MapView}"></ng-container>
+      <ng-container *ngTemplateOutlet="terminalSelector; context:{viewMode: ViewMode.MapView}"></ng-container>
+      <ng-container *ngTemplateOutlet="parkSelector; context:{viewMode: ViewMode.MapView}"></ng-container>
+      <ng-container *ngTemplateOutlet="levelSelector; context:{viewMode: ViewMode.MapView}"></ng-container>
+      <ng-container *ngTemplateOutlet="parkZoneSelector; context:{viewMode: ViewMode.MapView}"></ng-container>
+      <ng-container *ngTemplateOutlet="parkSpaceSelector"></ng-container>
+
+      <hr>
+      <form *ngIf="form && (formMode === FormMode.UPDATING || formMode === FormMode.CREATING)"
+            [formGroup]="form"
+            (ngSubmit)="onSubmit()"
+            autocomplete="off"
+            novalidate>
+        <div class="form-field">
+          <span>Name</span>
+          <mat-form-field>
+            <input matInput type="text" formControlName="name">
+            <mat-error>Name is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span>Park space Code</span>
+          <mat-form-field>
+            <input matInput type="text" formControlName="code" (keypress)="inputCheck($event)" (paste)="inputCheck($event)">
+            <mat-error>Park space Code is required. This field accepts only alphabetical and numerical characters.</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span>Latitude & Longitude <b class="span-bold">(auto-fill by draw tool)</b></span>
+          <mat-form-field class="place_LL border-right-0">
+            <input matInput type="text" formControlName="latitude" readonly>
+            <mat-error>Latitude is required</mat-error>
+          </mat-form-field>
+          <mat-form-field class="place_LL border-left-0">
+            <input matInput type="text" formControlName="longitude" readonly>
+            <mat-error>Longitude is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span>Vehicle Type</span>
+          <mat-form-field>
+            <mat-select formControlName="vehicle_type_id" [(ngModel)]="selectedParkSpace.vehicle_type_id">
+              <mat-option *ngFor="let vehicle_type of vehicleTypes" [value]="vehicle_type.id"> {{vehicle_type.type_en}} </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span>Handicap</span>
+          <mat-form-field>
+            <mat-select formControlName="for_handicap" [(ngModel)]="selectedParkSpace.for_handicap">
+              <mat-option [value]="true">TRUE </mat-option>
+              <mat-option [value]="false">FALSE </mat-option>
+            </mat-select>
+            <mat-error>Handicap is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span>Sensor</span>
+          <mat-form-field>
+            <mat-select formControlName="is_sensor" [(ngModel)]="selectedParkSpace.is_sensor">
+              <mat-option [value]="true">TRUE </mat-option>
+              <mat-option [value]="false">FALSE </mat-option>
+            </mat-select>
+            <mat-error>Sensor is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span>Notes</span>
+          <textarea formControlName="notes" rows="3"></textarea>
+        </div>
+        <div class="document-wrapper">
+          <div class="form-field">
+            <span>Image upload</span>
+            <ng2-file-input
+              *ngIf="!selectedParkSpace.project_id || !selectedParkSpace.img_url"
+              [drop-text]="'Drag files here or'"
+              accept="['image/jpeg']"
+              (onAdded)="onImageAdded($event)"
+            ></ng2-file-input>
+          </div>
+
+          <ng-container *ngIf="selectedParkSpace.img_url && selectedParkSpace">
+            <div class="parkspace-image-wrapper">
+              <span class="text">{{ selectedParkSpace.img_url?selectedParkSpace.img_url:'' }}</span>
+              <img class="imgfield" [src]="selectedParkSpace.img_url.startsWith('uploads') ?  this.apiEndpoint + '/' + selectedParkSpace.img_url: selectedParkSpace.img_url" />
+              <span
+                *ngIf = "selectedParkSpace && selectedParkSpace.img_url"
+                class="remove"
+                (click)="onRemoveImage()"
+              >
+                <p>Remove</p>
+              </span>
+            </div>
+          </ng-container>
+        </div>
+        <div class="buttons-wrapper">
+          <button mat-stroked-button type="button" class="mr-2 ml-2" (click)="onCancel()">CANCEL</button>
+          <button class="add" mat-flat-button type="submit" color="primary">
+            <ng-container *ngIf="formMode === FormMode.CREATING">CREATE</ng-container>
+            <ng-container *ngIf="formMode === FormMode.UPDATING">UPDATE</ng-container>
+          </button>
+        </div>
+        <div class="buttons-wrapper" *ngIf="formMode === FormMode.UPDATING">
+          <span (click)="onDeleteCurrentParkSpace()">DELETE<mat-icon>delete</mat-icon></span>
+        </div>
+      </form>
+
+      <div class="notification-box" *ngIf="formMode === FormMode.JUST_CREATED || formMode === FormMode.JUST_UPDATED || formMode === FormMode.JUST_DELETED">
+        <span *ngIf="formMode === FormMode.JUST_CREATED">New park space added!</span>
+        <span *ngIf="formMode === FormMode.JUST_UPDATED">The park space updated!</span>
+        <span *ngIf="formMode === FormMode.JUST_DELETED">The park space deleted!</span>
+        <div>
+          <button mat-flat-button type="button" class="mt-3" color="primary" (click)="returnToSelection()">OK</button>
+        </div>
+      </div>
+    </div>
+    <div class="parkspace-map-wrapper">
+      <app-mapview-new
+        [mapCenter]="mapCenter"
+        [options]="mapOptions"
+        [mapDataJSON]="tabMapDataJSON"
+        [mapDrawDataJSON]="tabMapDrawDataJSON"
+        [mapImgOverlayJSON]="tabMapImgOverlayDataJSON"
+        [isForceCenter]="true"
+        [zoomValue]="mapZoomValue"
+        (mapDataChangedEmitter)="onSiteMapDataChanged($event)"
+        (mapDataEditEmitter)="onParkSpaceSelection($event)"
+      >
+      </app-mapview-new>
+    </div>
+  </div>
+</ng-container>

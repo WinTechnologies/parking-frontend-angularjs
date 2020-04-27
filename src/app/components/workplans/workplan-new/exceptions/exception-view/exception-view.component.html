@@ -1,0 +1,38 @@
+<div class="exception-new">
+  <div class="exception-new-content">
+    <div class="exception-new-content-name">
+      <span>Name <sup>*</sup> :</span>
+      <mat-form-field>
+        <input matInput type="text" [ngModel]="exception.exception_name" readonly required>
+      </mat-form-field>
+      <div class="divider"></div>
+    </div>
+    <div class="exception-new-content-settings">
+      <div class="exception-new-content-add-wrapper pr-2">
+        <span>Exception: </span>
+        <mat-form-field>
+          <input type="time" atp-time-picker matInput placeholder="Start time" [(ngModel)]="start_time" readonly>
+        </mat-form-field>
+        <mat-form-field>
+          <input type="time" atp-time-picker matInput placeholder="End time" [(ngModel)]="end_time" readonly>
+        </mat-form-field>
+      </div>
+      <div class="exception-new-content-applydate-wrapper">
+        Apply to <sup>*</sup> :
+        <p-calendar
+          [ngModel]="appliedDates"
+          selectionMode="multiple"
+          showIcon="true"
+          readonly
+        >
+        </p-calendar>
+        <mat-checkbox [(ngModel)]="exception.is_holiday" [disabled]="!canUpdate">
+          Holidays
+        </mat-checkbox>
+      </div>
+    </div>
+    <div class="exception-new-content-timeline-wrapper">
+      <app-timeline-view [timeslots]="slots" [color]="color"></app-timeline-view>
+    </div>
+  </div>
+</div>

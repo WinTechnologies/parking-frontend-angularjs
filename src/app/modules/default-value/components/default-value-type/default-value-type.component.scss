@@ -1,0 +1,40 @@
+:host {
+  .detail-page {
+    .detail-page-content{
+      margin-top:50px;
+      padding: 1rem;
+    }
+  }
+
+  .page-content-title {
+    line-height: 50px;
+    font-weight: bold;
+    font-size: 1.5rem;
+  }
+
+  .page-top-header {
+    justify-content: initial;
+  }
+
+  .table-filter {
+    padding: 0 20px 0 1rem;
+
+    mat-icon {
+      position: absolute;
+      left: -24px;
+    }
+  }
+
+  .create-btn {
+    /deep/ .mat-button-wrapper {
+      display: flex;
+      align-items: center;
+      color: #1C75BC;
+    }
+  }
+
+  .incedent-image {
+    width: 100%;
+    padding: 1px 0px;
+  }
+}

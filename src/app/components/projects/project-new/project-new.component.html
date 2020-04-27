@@ -1,0 +1,388 @@
+<main  *ngIf="currentUser" class="project-new-page">
+  <!-- ------------------- Greybar ------------------------ -->
+  <div *ngIf="!project?.id" class="page-top-header">
+    <div class="project-new-page-header-buttons">
+      <button mat-icon-button color="base" (click)="onBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+    <span>Projects / Create New Project</span>
+  </div>
+  <!-- ------------------------------------------- -->
+  <div class="container-fluid">
+    <div class="project-new-page-title">
+      <h1 class="font-weight-bold title-fixed">
+        {{ project?.id ? "Project Info" : "New Project" }}
+      </h1>
+    </div>
+    <div class="project-new-page-form">
+      <form
+        id="ngForm"
+        #documentEditForm="ngForm"
+        [formGroup]="form"
+        (ngSubmit)="onSubmit()"
+        *ngIf="form"
+        autocomplete="off"
+        novalidate
+      >
+        <div class="row">
+          <div class="col-7">
+            <div class="row">
+              <div class="col">
+                <div class="form-field">
+                  <span>Name <span class="required">* </span>:</span>
+                  <mat-form-field>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="project_name"
+                    />
+                    <mat-error>Name is required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="form-field">
+                  <span>Project Code <span class="required">* </span>:</span>
+                  <mat-form-field >
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="project_code"
+                      (keypress)="inputCheck($event)"
+                      (paste)="inputCheck($event)"
+                      [readonly]="project?.id"
+                    />
+                    <mat-error>Project Code is required. This field accepts only alphabetical and numerical characters.</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="form-field">
+                  <span>Type <span class="required">* </span>:</span>
+                  <mat-form-field>
+                    <mat-select formControlName="type_establishment">
+                      <mat-option
+                        *ngFor="let option of establishment_types"
+                        [value]="option"
+                      >
+                        {{ option }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error>Type is required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="form-field">
+                  <span>Start date <span class="required">* </span>:</span>
+                  <mat-form-field>
+                    <input
+                      appInputDateFormat
+                      matInput
+                      [matDatepicker]="begin_date"
+                      [matDatepickerFilter]="startDateFilter.bind(this)"
+                      formControlName="start_date"
+                      required
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="begin_date"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #begin_date></mat-datepicker>
+                    <mat-error>Start date is required</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-field">
+                  <span>City <span class="required">* </span>:</span>
+                  <mat-form-field>
+                    <mat-select formControlName="city_name">
+                      <mat-option
+                        *ngFor="let city of list_city"
+                        [value]="city.city_name"
+                      >
+                      {{city.city_name}}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error>City is required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="form-field">
+                  <span>Tax/VAT ID <span class="required">* </span>:</span>
+                  <mat-form-field>
+                    <mat-select formControlName="vat_id">
+                      <mat-option
+                        *ngFor="let vat of list_vat"
+                        [value]="vat.id"
+                      >
+                        {{vat.vat_code}} - {{vat.vat_country}} - {{vat.vat_percentage}}%
+                      </mat-option>
+                    </mat-select>
+                    <mat-error>Tax/VAT ID is required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="form-field">
+                  <span>Currency <span class="required">* </span>:</span>
+                  <mat-form-field>
+                    <mat-select
+                      formControlName="currency_code"
+                      [ngClass]="getCurrencySelectClass()"
+                    >
+                      <mat-option
+                        *ngFor="let country of availableCurrencies"
+                        [value]="country.currencyCode"
+                      >
+                        <span
+                          class="flag-icon flag-icon-{{
+                            country.code.toLowerCase()
+                          }} mr-1"
+                        ></span
+                        ><span>{{ country.currencyCode }}</span>
+                      </mat-option>
+                    </mat-select>
+                    <mat-error>Currency is required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="form-field">
+                  <span>End date :</span>
+                  <mat-form-field>
+                    <input
+                      appInputDateFormat
+                      matInput
+                      [matDatepicker]="end_date"
+                      [matDatepickerFilter]="endDateFilter.bind(this)"
+                      placeholder="End date"
+                      formControlName="end_date"
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="end_date"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #end_date></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="project-new-page-document-wrapper col">
+                <div class="form-field formdocument d-flex align-items-center">
+                  <span class="d-flex align-items-center">Documents : </span>
+                  <ng2-file-input
+                    *ngIf="canUpdate"
+                    [id]="docFilesUploadIdentifier"
+                    [drop-text]="' '"
+                    [show-previews]="false"
+                    [multiple]="true"
+                    accept="['application/pdf']"
+                    (onRemoved)="onDocumentRemoved($event)"
+                    (onAdded)="onDocumentAdded($event)"
+                  >
+                  </ng2-file-input>
+                </div>
+                <div class="documents-wrapper" >
+                    <div *ngIf="docFiles.length">
+                        <div *ngFor="let doc of docFiles; let i = index" class="document-item">
+                            <button mat-icon-button (click)="onRemoveDoc(i)">
+                            <mat-icon>cancel</mat-icon>
+                            </button>
+                            <div class="type">
+                            <span>{{ doc.type }}</span>
+                            </div>
+                            <span class="name">{{ doc.name }}</span>
+                        </div>
+                    </div>
+                    <div *ngFor="let doc of documents; let i = index"
+                        class="document-item"
+                        (click)="showDocument(doc)">
+                        <button *ngIf="canUpdate"
+                                mat-icon-button
+                                (click)="$event.stopPropagation();onRemoveDocFromUrl(i)">
+                        <mat-icon>cancel</mat-icon>
+                        </button>
+                        <div class="type">
+                        <span>type: {{ doc.split(".")[1] }}</span>
+                        </div>
+                        <span class="name">{{ doc }}</span>
+                    </div>
+                </div>
+              </div>
+              <div class="project-new-page-image-wrapper col">
+                <div class="form-field c_picture d-flex align-items-center">
+                  <span class="d-flex align-items-center">Logo <span class="required mr-1">* </span>: </span>
+                  <ng2-file-input
+                    *ngIf="canUpdate && !base64Logo && !project.img_url"
+                    class="logo-uploader"
+                    [id]="logoUploaderIdentifier"
+                    [drop-text]="' '"
+                    [browse-text]="'Upload logo image'"
+                    [show-previews]="false"
+                    [multiple]="false"
+                    accept="['image/jpeg']"
+                    (onAdded)="onImageAdded($event)"
+                    (onRemoved)="onImageRemoved($event)">
+                  </ng2-file-input>
+                  <div class="logo-preview" (click)="onChangeLogo()">
+                    <img *ngIf="base64Logo else originalLogo" [src]="base64Logo" alt=""/>
+                    <ng-template #originalLogo>
+                      <img *ngIf="project?.img_url" [src]="baseURL + project.img_url" alt=""/>
+                    </ng-template>
+                    <span class="hover-label"><p>Change</p></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br />
+            <div class="row notes">
+              <div class="form-field">
+                <span class="notebar">
+                  <span style="padding-top:14px;">Notes : </span>
+                  <mat-form-field class="notes">
+                    <textarea rows="10" matInput type="text" formControlName="notes"></textarea>
+                  </mat-form-field>
+                </span>
+              </div>
+            </div>
+        </div>
+          <div class="col-5">
+            <div class="form-field">
+              <span class="location">Location <span class="required">* </span>:</span>
+              <mat-form-field style="width: 100%;">
+                <input
+                  matInput
+                  type="text"
+                  formControlName="project_location"
+                />
+                <mat-error>Location is required</mat-error>
+              </mat-form-field>
+            </div>
+            <br />
+            <div class="map-wrapper">
+              <app-mapview-new
+                [mapCenter]="mapCenter"
+                [options]="mapOptions"
+                [mapDrawDataJSON]="mapdata"
+                (mapDataChangedEmitter)="onProjectMapDataChanged($event)"
+              >
+              </app-mapview-new>
+              <div class="form-field longlat">
+                <span>
+                  <span>Latitude <span class="required">* </span>:</span>
+                  <mat-form-field>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="center_latitude"
+                      readonly
+                    />
+                    <mat-error>Latitude is required</mat-error>
+                  </mat-form-field>
+                </span>
+                <span>
+                  <span>Longitude <span class="required">* </span>:</span>
+                  <mat-form-field>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="center_longitude"
+                      readonly
+                    />
+                    <mat-error>Longitude is required</mat-error>
+                  </mat-form-field>
+                </span>
+                <span>
+                  <span>GMT <span class="required">* </span>:</span>
+                  <mat-form-field>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="gmt"
+                      readonly
+                    />
+                    <mat-error>GMT is required</mat-error>
+                  </mat-form-field>
+                </span>
+              </div>
+              <div class="row">
+                <div class="col text-center">
+                  <span class="form-field longlat">
+                    <span>Country Name <span class="required">* </span>: </span>
+                    <mat-form-field>
+                      <input
+                        matInput
+                        type="text"
+                        formControlName="country_name"
+                        readonly
+                      />
+                      <mat-error>Country Name is required</mat-error>
+                    </mat-form-field>
+                  </span>
+                  <span class="form-field longlat">
+                    <span>Country Code <span class="required">* </span>:</span>
+                    <mat-form-field>
+                      <input
+                        matInput
+                        type="text"
+                        formControlName="country_code"
+                        readonly
+                      />
+                      <mat-error>Country Code is required</mat-error>
+                    </mat-form-field>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="project-new-page-content">
+      <div class="project-new-page-client-list-wrapper">
+        <div class="form-field">
+          <span>Client Details :</span>
+          <app-client-list
+            [(clients)]="clients"
+            [canUpdate]="canUpdate"
+            [projectId]="project?.id">
+          </app-client-list>
+        </div>
+      </div>
+      <hr />
+      <div class="project-new-page-selection-activities">
+        <div class="project-new-page-selection-activities-title-wrapper">
+          <h1 class="project-new-page-selection-activities-title">Activities</h1>
+          <button *ngIf="canUpdate"
+                  mat-flat-button
+                  color="basic"
+                  (click)="onAddActivity()">
+            <span class="pop-btn">
+              <mat-icon>add_circle</mat-icon>
+              Activities
+            </span>
+          </button>
+        </div>
+        <div class="project-new-page-selection-activities-wrapper d-flex flex-wrap">
+          <button form="ngForm"
+                  *ngFor="let activity of activities"
+                  class="activities-wrapper"
+                  (click)="onSelectActivity(activity)"
+                  [disabled]="project.id === undefind"
+                  [class.selected]="project?.id && selectedActivity?.name == activity.name">
+            <span>{{ activity.name }}</span>
+            <div class="icon-wrapper">
+              <img [src]="activity.icon" />
+            </div>
+          </button>
+          <div *ngIf="!activities.length" class="project-new-page-selection-activities-wrapper-no-data">
+            <span>No data, please add activity</span>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="keydate-list-wrapper">
+        <app-keydate-list [(keydates)]="keydates" [canUpdate]="canUpdate" [projectId]="project?.id">
+        </app-keydate-list>
+      </div>
+      <hr />
+      <div class="project-new-page-buttons-wrapper">
+        <button *ngIf="!project.id" mat-stroked-button color="primary" class="mr-2" (click)="onBack()">Cancel</button>
+        <button *ngIf="canUpdate" mat-flat-button color="primary" form="ngForm">{{ project?.id ? "Update" : "Create" }}</button>
+      </div>
+    </div>
+  </div>
+</main>

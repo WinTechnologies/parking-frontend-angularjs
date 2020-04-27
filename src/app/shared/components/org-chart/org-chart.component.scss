@@ -1,0 +1,248 @@
+
+:host {
+  ::ng-deep .orgchart .node,
+  ::ng-deep #r_container .dragged-user {
+    background-color: #31404b;
+    border-radius: 100px 10px 10px 100px;
+    color: #FFFFFF;
+    /* height: 75px; */
+    width: 150px;
+  }
+
+  ::ng-deep #r_container .dragged-user,
+  ::ng-deep .added-user {
+    background-color: #007bff;
+    border-radius: 100px 10px 10px 100px;
+    color: #FFFFFF;
+    /* height: 75px; */
+    width: 150px;
+  }
+
+  ::ng-deep #org_chart {
+    overflow: auto!important;
+    height: 100%;
+  }
+
+  ::ng-deep #r_container .dragged-user {
+    margin-top: 15px;
+    padding: 3px
+  }
+  
+  ::ng-deep .orgchart .node.added-user {
+    background-color: #007bff;
+  }
+
+  ::ng-deep .orgchart .node img {
+    border-radius: 50% 50% 50% 50%;
+    background-color: white;
+    height: 50px;
+  }
+  
+  ::ng-deep .node .fullname {
+    font-weight: bold;
+    font-size: 11px;
+  }
+  
+  ::ng-deep h6 {
+    color: rgb(45, 64, 75);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  ::ng-deep .node .position {
+    font-size: 11px;
+  }
+
+  ::ng-deep .orgchart .node img,
+  ::ng-deep .dragged-user img {
+    border-radius: 50% 50% 50% 50%;
+    background-color: white;
+    height: 50px;
+  }
+
+  t::ng-deep .orgchart table li {
+    padding: 0 10px 20px 10px !important;
+  }
+
+  ::ng-deep .orgchart table ul li:first-of-type {
+    padding-top: 10px !important;
+  }
+
+  ::ng-deep .orgchart .current-user {
+    position: absolute;
+    right: 10px;
+    top: 25px;
+  }
+
+  ::ng-deep .orgchart .add_employee {
+    background: #FFFFFF;
+    border: 1px dashed black;
+    color: gray;
+  }
+
+  ::ng-deep .orgchart td {
+    margin: 25px;
+  }
+
+  ::ng-deep .orgchart .verticalNodes ul>li::before,
+  ::ng-deep .orgchart .verticalNodes ul>li::after,
+  ::ng-deep .orgchart .verticalNodes>td::before {
+    border-color: #31404b !important;
+  }
+
+  ::ng-deep .orgchart table li {
+    padding: 10px;
+  }
+
+  ::ng-deep .orgchart .lines .rightLine {
+    border-right: 1px solid gray;
+  }
+
+  ::ng-deep .orgchart .lines .leftLine {
+    border-left: 1px solid gray;
+  }
+
+  ::ng-deep .orgchart .lines .topLine {
+    border-top: 1px solid gray;
+  }
+
+  ::ng-deep .orgchart .lines .bottomLine {
+    border-bottom: 1px solid gray;
+  }
+
+  ::ng-deep .orgchart .lines .downLine {
+    background-color: gray;
+  }
+
+  ::ng-deep .highlightColumn {
+    width: 150px;
+  }
+
+  ::ng-deep .highlight {
+    height: 60px;
+    width: 150px;
+    background-color: rgb(55, 125, 55);
+    border-radius: 100px 10px 10px 100px;
+    opacity: .8;
+    list-style: none;
+  }
+  /* ----------------------- */
+  ::ng-deep .oc-border {
+    border: 1px solid #31404b;
+  }
+
+  ::ng-deep .oc-background {
+    background-color: #31404b;
+  }
+
+  ::ng-deep .oc-name {
+    font-family: Cambria, Cochin, Georgia, Times, Times New Roman, serif;
+    white-space: nowrap;
+    color: #FFFFFF;
+  }
+
+  ::ng-deep .oc-designation {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-style: italic;
+    white-space: nowrap;
+    color: #FFFFFF;
+  }
+
+  ::ng-deep .oc-img img {
+    margin-left: -10px;
+    width: 60px;
+    height: 60px;
+  }
+
+  ::ng-deep .button-hide {
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 3em 0;
+    text-align: center;
+    top: 250px;
+    background-color: #007bff;
+    border-radius: 20px 0 0 20px;
+    width: 25px;
+    height: 120px;
+    margin-left: -25px;
+  }
+
+  ::ng-deep .button-hide:hover {
+    background-color: #119bff;
+    cursor: pointer;
+    z-index: 999;
+  }
+
+  ::ng-deep .button-hidden {
+    position: relative;
+    left: 0;
+  }
+
+  ::ng-deep .button-showed {
+    position: absolute;
+    right: 0;
+  }
+}
+.orgchart {
+  background-image: none;
+}
+
+.org-chart-wrap {
+  height: 80vh;
+}
+
+.node img {
+  border-radius: 50% 50% 50% 50%;
+  background-color: white;
+}
+
+.node {
+  background-color: #007bff;
+  border-radius: 100px 10px 10px 100px;
+  color: #FFFFFF;
+  width: 210px;
+}
+
+.btn-reset {
+  position: absolute;
+  display: block;
+  z-index: 30;
+  top: 3%;
+  left: 6%;
+}
+
+.link{
+  cursor: pointer;
+  color: #007bff;
+}
+
+.background-rs {
+  background: #f1f1f1;
+  border-left: 7px solid #a7a7a7;
+  height: 80vh;
+  overflow: overlay;
+}
+
+@media (min-width:1441px) {
+  .background-rs {
+    background: #f1f1f1;
+    border-left: 7px solid #a7a7a7;
+    height: 84vh;
+    overflow: overlay;
+  }
+  #org_chart {
+    height: 100%;
+    overflow: auto!important;
+  }
+  .org-chart-wrap {
+    height: 84vh;
+  }
+}
+
+.with-scroll-x {
+  overflow-x: scroll !important;
+}
+

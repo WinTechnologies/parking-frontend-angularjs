@@ -1,0 +1,285 @@
+<main class="add-employee-page">
+  <!-- ------------- Greybar -------------------- -->
+  <header class="page-top-header">
+    <div class="add-employee-page-header-buttons">
+      <button mat-icon-button color="base" (click)="onBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+    <p>Employee / Register New Employee</p>
+  </header>
+  <!-- ----------------------------------->
+  <h1 class="add-employee-page-content-title font-weight-bold mt-50px">
+    Register New Employee
+  </h1>
+  <div class="container-fluid">
+    <div class="">
+      <form [formGroup]="employeeForm">
+        <div class="d-flex justify-content-center row">
+          <div class="add-employee-avatar d-flex m-2" fxLayout="column">
+            <div
+              *ngIf="!employee.img_url"
+              class="attach-photo d-flex align-items-center justify-content-center w-100"
+              (click)="onOpenAvatarDialog()"
+              fxLayout="column"
+            >
+              <mat-icon role="img" aria-hidden="true">add_a_photo</mat-icon>
+              <span>Upload employee<br /> photo</span>
+            </div>
+            <img
+              *ngIf="employee.img_url"
+              [src]="baseUrl + employee.img_url"
+              (click)="onOpenAvatarDialog()"
+              alt=""
+            />
+            <span>Note :</span>
+            <textarea placeholder="Text here..." rows="5"></textarea>
+          </div>
+          <div class="">
+            <div class="d-flex flex-wrap">
+              <div class="col">
+                <div class="form-field">
+                  <mat-form-field>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="firstname"
+                      required
+                      placeholder="First Name"
+                    />
+                    <mat-error>Firstname is required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="form-field">
+                  <mat-form-field>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="lastname"
+                      required
+                      placeholder="Last Name"
+                    />
+                    <mat-error>Lastname is required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="form-field">
+                  <mat-form-field>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="username"
+                      required
+                      placeholder="Username"
+                    />
+                    <mat-error>Username is required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="form-field d-flex align-items-center">
+                  <div class="intl-tel-input-wrapper no-label"
+                  [class.has-error]="!employeeForm.get('phone_number').valid && (isPhoneNumberInvalid || isPhoneNumberEmpty)">
+                    <input type="text"
+                           class="background-transparent"
+                           required
+                           ng2TelInput
+                           (keypress)="numbersOnlyValidation($event)"
+                           [ng2TelInputOptions]="initialTelConfig"
+                           (hasError)="hasPhoneNumberError($event)"
+                           (ng2TelOutput)="getPhoneNumber($event)" />
+                    <label class="error" *ngIf="isPhoneNumberInvalid"> Valid phone number is required</label>
+                    <label class="error" *ngIf="isPhoneNumberEmpty && !isPhoneNumberInvalid"> Phone number is required </label>
+                  </div>
+                </div>
+                <div class="form-field">
+                  <mat-form-field>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="landline"
+                      placeholder="Landline #"
+                    />
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-field">
+                  <mat-form-field>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="email"
+                      required
+                      placeholder="Email"
+                    />
+                    <mat-error>Valid email is required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="form-field">
+                  <mat-form-field>
+                    <mat-label>Gender</mat-label>
+                    <mat-select [formControlName]="'sex'" required>
+                      <ng-container>
+                        <mat-option value="1"> Male</mat-option>
+                        <mat-option value="0"> Female</mat-option>
+                      </ng-container>
+                    </mat-select>
+                    <mat-error>Gender is required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="form-field">
+                  <mat-form-field>
+                    <input
+                      appInputDateFormat
+                      matInput
+                      formControlName="day_of_birth"
+                      [matDatepickerFilter]="birthtDateFilter.bind(this)"
+                      [matDatepicker]="day_of_birth"
+                      required
+                      placeholder="Birthday"
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="day_of_birth"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #day_of_birth></mat-datepicker>
+                    <mat-error>Birthday is required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="form-field">
+                  <mat-form-field>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="address"
+                      required
+                      placeholder="Address"
+                    />
+                    <mat-error>Address is required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="form-field">
+                  <mat-form-field>
+                    <mat-label>Marital Status</mat-label>
+                    <mat-select
+                      placeholder=" "
+                      [formControlName]="'marital_status'"
+                      required
+                    >
+                      <ng-container>
+                        <mat-option
+                          *ngFor="let item of status"
+                          [value]="item"
+                        >
+                          {{ item }}
+                        </mat-option>
+                      </ng-container>
+                    </mat-select>
+                    <mat-error>Marital Status is required</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col border-left-right">
+                <div class="form-field">
+                  <mat-form-field>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="employee_id"
+                      required
+                      placeholder="Employee ID"
+                    />
+                    <mat-error>Employee id is required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="form-field">
+                  <mat-form-field class="employee-filter">
+                    <mat-label>Department</mat-label>
+                    <mat-select [formControlName]="'department'" required>
+                      <mat-option
+                        *ngFor="let department of departments"
+                        [value]="department.department_name"
+                      >
+                        {{department.department_name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error>Department is required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="form-field">
+                  <mat-form-field class="employee-filter">
+                    <mat-label>Position</mat-label>
+                    <mat-select [formControlName]="'position'" (ngModelChange)="setJobType($event)" required>
+                      <mat-option
+                        *ngFor="let position of positions"
+                        [value]="position.name"
+                      >
+                        {{position.name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error>Position is required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="form-field">
+                  <mat-form-field class="employee-filter">
+                    <mat-label>Job Type</mat-label>
+                    <input
+                      matInput type="text"
+                      [formControlName]="'job_type'"
+                      readonly
+                    />
+                    <mat-error>Position is required</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-field">
+                  <mat-form-field>
+                    <input
+                      appInputDateFormat
+                      matInput
+                      [min]="minDateValue"
+                      [formControlName]="'date_start'"
+                      [matDatepicker]="datestart"
+                      [matDatepickerFilter]="startDateFilter.bind(this)"
+                      required
+                      placeholder="Start Date"
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="datestart"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #datestart></mat-datepicker>
+                    <mat-error>Start date is required</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-field">
+                  <mat-form-field class="picker_date">
+                    <input
+                      appInputDateFormat
+                      matInput
+                      [min]="employeeForm.controls.date_start.value"
+                      [formControlName]="'date_end'"
+                      [matDatepicker]="dateend"
+                      [matDatepickerFilter]="endDateFilter.bind(this)"
+                      placeholder="End Date"
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="dateend"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #dateend></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+            <div class="float-right p-4 button-section">
+              <button mat-stroked-button color="primary" type="button" (click)="onCancel()" class="mr-3">CANCEL</button>
+              <button mat-flat-button color="primary" type="submit" (click)="onSubmit()">SAVE</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>

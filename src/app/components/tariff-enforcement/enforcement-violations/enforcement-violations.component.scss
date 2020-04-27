@@ -1,0 +1,97 @@
+@import "../../../../styles/_color.scss";
+
+::ng-deep .ngx-datatable.material .datatable-body-cell {
+  white-space: normal !important;
+}
+
+::ng-deep .group-details-page .ngx-datatable.material {
+  height: 500px !important;
+}
+
+:host {
+  .enforcement-violations {
+    padding-top: 20px;
+
+    .table-wrapper {
+      padding-top: 105px;
+    }
+
+    ::ng-deep .page-title-header {
+      margin-top: 0px;
+      height: 60px;
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
+  .title {
+    margin: 5px 20px;
+    display: inline-block;
+    height: 50px;
+    line-height: 50px;
+    font-size: 1.5rem;
+  }
+
+  .mat-header-row {
+    position: sticky;
+  }
+
+  .mat-table {
+    .mat-row {
+      .mat-cell {
+        img {
+          width: 60px;
+        }
+      }
+    }
+
+    label.result_count{
+      color: gray;
+    }
+
+    .result_count{
+      font-weight: 700;
+      margin: 5px;
+    }
+
+    span.result_count{
+      color: $c-blue;
+    }
+  }
+
+  .buttons-wrapper {
+    button {
+      color: $c-blue1;
+      outline: none;
+      background: transparent;
+
+      .mat-icon {
+        vertical-align: middle;
+        margin-right: 10px;
+      }
+    }
+    button.btn-primary {
+      color: #fff;
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+  }
+
+  .border-bottom {
+    border-bottom: 1px solid rgba(0,0,0,.1);
+  }
+
+  .action-cell {
+    padding-left: 3rem;
+  }
+}
+
+::ng-deep .button-days {
+  span {
+    flex: 0 !important;
+  }
+}
+
+datatable-scroller {
+    width: 100% !important;
+}

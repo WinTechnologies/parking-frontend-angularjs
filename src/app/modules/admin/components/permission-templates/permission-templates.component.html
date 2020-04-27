@@ -1,0 +1,55 @@
+<main class="list-page">
+  <!-- ------------------- Greybar ------------------------ -->
+  <header class="list-page-header page-top-header">
+    <div class="d-flex align-items-center justify-content-between">
+      <mat-icon>search</mat-icon>
+      <mat-form-field>
+        <input matInput placeholder="Search Template" />
+      </mat-form-field>
+    </div>
+    <div class="buttons-wrapper">
+      <button
+        *ngIf="permission.isCreate"
+        color="basic"
+        mat-flat-button
+        (click)="onCreateTemplate()"
+      >
+        <mat-icon>
+          add_circle
+        </mat-icon>
+        Template
+      </button>
+    </div>
+  </header>
+  <!-- -------------------------------------------- -->
+  <h4 class="list-page-title font-weight-bold title-fixed">
+    Templates
+  </h4>
+  <div class="list-page-content mt-50px">
+    <div class="row mx-0 pt-50px">
+      <ng-container *ngFor="let template of templates">
+        <div class="col-lg-4 p-2">
+          <div
+            class="template-wrapper d-flex flex-column"
+            (click)="onEditTemplate(template)"
+          >
+            <div class="template-title">
+              {{ template.template_name }}
+            </div>
+            <button *ngIf="permission.isDelete" mat-icon-button color="warn" class="remove-btn" (click)="onRemoveTemplate($event, template);">
+              <mat-icon>remove_circle</mat-icon>
+            </button>
+            <div class="template-content d-flex justify-content-between p-4">
+              <img
+                *ngFor="let section of availableSections"
+                class="section-image"
+                [src]="getSectionIcon(template, section)"
+              />
+              <ng-container></ng-container>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,58 @@
+<div class="violation-details-wrapper">
+  <h4 class="violation-details-wrapper-title">{{isCreate ? 'Create' : isDelete ? 'Delete' : 'Update'}} Violation</h4>
+  <div class="d-flex">
+    <form class="w-100" [formGroup]="violationsForm">
+      <div class="d-flex">
+        <label for="name_en">English <span class="required">* </span>: </label>
+        <mat-form-field class="w-50">
+          <input matInput id="name_en" placeholder="English" formControlName="name_en">
+        </mat-form-field>
+      </div>
+      <div class="d-flex">
+        <label for="name_ar">Arabic <span class="required">* </span>: </label>
+        <mat-form-field class="w-50">
+          <input matInput id="name_ar" placeholder="Arabic" formControlName="name_ar">
+        </mat-form-field>
+      </div>
+      <div class="d-flex">
+        <label for="code">Code <span class="required">* </span>: </label>
+        <mat-form-field class="w-50">
+          <input matInput id="code" placeholder="Code"
+                 autocomplete="off"
+                 matTooltip="Сode is number only"
+                 (keypress)="numbersOnlyValidation($event)"
+                 (paste)="numbersOnlyValidation($event)"
+                 [readonly]="violation?.violation_code"
+                 formControlName="code">
+        </mat-form-field>
+      </div>
+      <div class="d-flex">
+        <label for="non_payment">Non-payment type<span class="required">*</span>:</label>
+        <mat-checkbox (change)="changeCheck($event)" [(ngModel)]="isNonpayment" formControlName="is_nonpayment" id="non_payment"></mat-checkbox>
+      </div>
+    </form>
+    <div class="add-violation-icon m-03rem">
+      <div class="d-flex">
+        <div class="col-md-12">
+          <label for="code">Image <span class="required">* </span>: </label>
+        </div>
+      </div>
+      <div class="d-flex">
+        <div class="col-md-12">
+          <div *ngIf="(!violation || !violation.icon_url) && !isDelete" class="attach-photo align-items-center justify-content-center w-100"
+              (click)="onOpenAvatarDialog()">
+            <mat-icon role="img" aria-hidden="true">photo_camera</mat-icon>
+            <span>Upload picture</span>
+          </div>
+          <img *ngIf="violation && violation.icon_url && !isDelete" [src]="baseUrl + violation.icon_url" (click)="onOpenAvatarDialog()" />
+          <img *ngIf="violation && violation.icon_url && isDelete" [src]="baseUrl + violation.icon_url"/>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-stroked-button color="primary" (click)="onCancel()" class="mr-2">Cancel</button>
+    <button *ngIf="canUpdate && !isCreate && !isDelete" mat-flat-button color="primary" (click)="onUpdate()">Update</button>
+    <button *ngIf="isCreate" mat-flat-button color="primary" (click)="onAdd()">Create</button>
+  </div>
+</div>

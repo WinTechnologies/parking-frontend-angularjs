@@ -1,0 +1,47 @@
+<main class="list-page">
+  <!-- ------------------- Grey bar ------------------------ -->
+  <header class="list-page-header page-top-header">
+    <div class="d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center justify-content-between">
+        <mat-icon>search</mat-icon>
+        <mat-form-field>
+          <input matInput
+                 placeholder="Search Project name or code"
+                 (keyup)="applyFilter($event.target.value)"/>
+        </mat-form-field>
+      </div>
+    </div>
+  </header>
+  <!-- -------------------------------------------- -->
+  <h4 class="list-page-title font-weight-bold title-fixed text-uppercase">
+    Projects
+  </h4>
+  <div class="list-page-content mt-50px">
+    <div class="row mx-0 pt-50px">
+      <div *ngFor="let project of filteredProjects" class="col-lg-6 p-2">
+        <div [routerLink]="project.id" class="item-wrapper d-flex flex-column">
+          <div class="item-title">
+            {{ project.project_code }}: {{project.project_name}}
+          </div>
+          <div class="item-content">
+            <div class="d-flex mb-2">
+              <div class="item-information">Type: {{project.type_establishment}}</div>
+              <div class="item-information">Tax/VAT ID: {{project.vat_code}}-{{project.vat_country}}-{{project.vat_percentage}}%</div>
+              <div class="item-information">City: {{project.city_name}}</div>
+            </div>
+            <div class="d-flex mb-3">
+              <div class="item-information">Currency: {{project.currency_code}}</div>
+              <div class="item-information">Start date: {{project.start_date | date:'M/d/yyyy'}}</div>
+              <div class="item-information">Country: {{project.country_name}}</div>
+            </div>
+            <div class="d-flex">
+              <ng-container *ngFor="let activityType of activityTypes" >
+                <img *ngIf="!!project[activityType.featureName]" class="activity-icon" [src]="activityType.icon">
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

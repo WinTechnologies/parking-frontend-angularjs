@@ -1,0 +1,32 @@
+:host {
+  .permission-template {
+    .template-name {
+      span {
+        color: #a2a2a2;
+        margin-right: 0.5rem;
+      }
+    }
+
+    .feature-list {
+      .feature-sub-list {
+        border: 2px solid #c3c3c3;
+      }
+
+      .feature-right {
+        /deep/ ngx-treeview {
+          label {
+            font-weight: normal;
+          }
+
+          .treeview-item {
+            .row-item {
+              i {
+                display: none !important;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+<ng-container ngif="value">
+  <div class="element pt-1" [ngStyle]="{'background-color': color, 'width': elemWidth}">
+    <h6 *ngIf="label" class="ml-1">{{label}}</h6>
+    <div class="scale">
+      
+      <div class="scale-value text-right" [ngStyle]="{'width': (scaleValue/value?.predicted)*100 + '%'}"><span class="">{{scaleValue}}</span>
+      </div>
+      <div class="d-flex">
+        <div id="triangle1" class="triangle-down"><span [ngStyle]="{'margin-left': value?.deployed > 100000 ? '-17px' : '-3px'}">{{value?.deployed}}</span></div>
+        <div id="triangle2" class="triangle-down"><span [ngStyle]="{'margin-left': value?.predicted > 100000 ? '-17px' : '-3px'}">{{value?.predicted}}</span></div>
+      </div>
+    </div>
+    <div class="d-flex align-items-center">
+      <div class="percent">
+        <span>Deployed</span><br />
+        <span class="green percent-span">{{deployedPercent}}%</span>
+      </div>
+      <div class="percent">
+        <span>Predicted</span><br />
+        <span class="yellow percent-span">{{predictedPercent}}%</span>
+      </div>
+    </div>
+  </div>
+</ng-container>

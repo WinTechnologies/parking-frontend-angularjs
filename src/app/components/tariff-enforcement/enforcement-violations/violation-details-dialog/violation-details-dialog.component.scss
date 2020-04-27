@@ -1,0 +1,37 @@
+@import "../../../../../styles/_color.scss";
+
+.violation-details-wrapper{
+  padding: 0 1rem 2rem 1rem;
+
+  &-title {
+    color: #31404b;
+    font-weight: bold;
+    height: 50px;
+    line-height: 50px;
+    font-size: 1.5rem;
+  }
+
+  span.required {
+    color: #ff3535;
+    width: 15px!important;
+  }
+
+  form{
+    label {
+      width: 100px;
+      font-weight: 700;
+      margin-right: 0.25rem;
+      margin-bottom: 0;
+    }
+  }
+
+  ::ng-deep .mat-icon {
+    height: 100px;
+    width: 100px;
+    font-size: 90px;
+  }
+
+  .attach-photo {
+    cursor: pointer;
+  }
+}

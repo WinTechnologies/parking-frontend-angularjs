@@ -1,0 +1,64 @@
+.container-detail{
+  padding-top: 40px;
+  padding-left: 53px;
+}
+
+.button-upload{
+  width: 12em;
+  height: 9em;
+  border-radius: 12px;
+}
+
+.empty {
+  border: 1px solid rgb(45, 64, 75);
+  color: rgb(45, 64, 75);
+}
+
+.full {
+  background-color: rgb(45, 64, 75);
+  color: whitesmoke;
+}
+
+.altered {
+  border: 1px solid teal;
+  background-color: rgb(45, 64, 75);
+  color: whitesmoke;
+}
+
+.label-detail{
+  font-weight: normal;
+  font-size: 13px;
+  margin-bottom: 0;
+  width: 85px;
+  text-align: right;
+}
+
+.input-detail{
+  font-weight: bold;
+  border: none;
+  font-size: 13px;
+  color: #2d404b;
+  margin-bottom: 5%;
+  padding-left: 9px;
+  text-align: left;
+}
+
+.container-empty{
+  padding-left: 67px;
+  padding-right: 67px;
+  padding-top: 5px;
+}
+
+.container-empty .row{
+  background-color: #dedddd;
+  height: 4px;
+}
+
+.container-activities{
+  padding-top: 40px;
+  padding-left: 65px;
+}
+
+.div-activities{
+  padding-top: 11px;
+}

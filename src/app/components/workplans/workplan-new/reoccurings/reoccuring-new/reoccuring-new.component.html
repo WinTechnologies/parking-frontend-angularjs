@@ -1,0 +1,86 @@
+<div class="reoccuring-new">
+  <div class="reoccuring-new-content d-flex flex-wrap align-items-center p-3">
+    <div class="d-flex flex-wrap align-items-center p-3 w-100">
+      <div class="reoccuring-new-content-name">
+        <span>Name <sup>*</sup> :</span>
+        <mat-form-field>
+          <input
+            matInput
+            type="text"
+            [(ngModel)]="reoccuring.reoccuring_name"
+            [disabled]="!canUpdate"
+            required
+          />
+          <mat-error>Name is required</mat-error>
+        </mat-form-field>
+      </div>
+      <!------------- Days of the week --------------->
+      <div class="reoccuring-new-content-weekdays-wrapper">
+        <label class="label-day">
+          Apply to <sup>*</sup> :
+        </label>
+        <app-selection-weekday
+          [weekdays]="this.reoccuring.working_days"
+          (changedWeekdays)="onChangedWeekdays($event)"
+        >
+        </app-selection-weekday>
+      </div>
+      <div class="divider"></div>
+      <button *ngIf="canUpdate" mat-icon-button color="warn" (click)="onClose()">
+        <mat-icon>remove_circle</mat-icon>
+      </button>
+    </div>
+    <div class="reoccuring-new-content-settings p-3">
+      <div class="reoccuring-new-content-add-wrapper d-flex flex-wrap align-items-center">
+        <span>Reoccuring: </span>
+        <mat-form-field>
+          <input
+            type="time"
+            atp-time-picker
+            matInput
+            placeholder="Start time"
+            [(ngModel)]="start_time"
+            [disabled]="!canUpdate"
+            required
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            type="time"
+            atp-time-picker
+            matInput
+            placeholder="End time"
+            [(ngModel)]="end_time"
+            [disabled]="!canUpdate"
+            required
+          />
+        </mat-form-field>
+        <!-- ---------------- Buttons -------------------------- -->
+        <div class="pl-3">
+          <button
+            *ngIf="canUpdate"
+            mat-stroked-button
+            color="secondary"
+            class="mr-2"
+            (click)="onClearTimeSlot()"
+          >
+            Clear
+          </button>
+          <button
+            *ngIf="canUpdate"
+            mat-flat-button
+            color="primary"
+            class="mr-2"
+            (click)="onAddTimeSlot()"
+          >
+            Add
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="reoccuring-new-content-timeline-wrapper p-3">
+      <app-timeline-view [timeslots]="slots" [color]="color">
+      </app-timeline-view>
+    </div>
+  </div>
+</div>

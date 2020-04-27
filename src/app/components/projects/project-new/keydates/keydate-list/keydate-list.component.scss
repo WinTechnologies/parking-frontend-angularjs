@@ -1,0 +1,49 @@
+@import "../../../../../../styles/color";
+
+:host {
+  .keydate-list-page {
+    &-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h1 {
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      button {
+        color: $c-lightblue;
+        outline: none;
+
+        .mat-icon {
+          vertical-align: middle;
+          margin-right: 10px;
+        }
+      }
+
+      button.btn-primary {
+        color: #fff;
+        background-color: #007bff;
+        border-color: #007bff;
+      }
+    }
+
+    &-content {
+      .ngx-datatable.material {
+        margin-top: 10px;
+      }
+
+      &-no-data {
+        color: $c-grey;
+        height: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+  .pop-btn {
+    color: teal;
+  }
+}

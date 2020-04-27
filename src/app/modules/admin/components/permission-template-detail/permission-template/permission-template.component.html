@@ -1,0 +1,58 @@
+<div *ngIf="template" class="permission-template">
+  <div class="permission-template-header" *ngIf="!isPreview">
+    <h4 class="font-weight-bold title-fixed">
+      {{editMode? 'Edit Template' : 'New Template'}}
+    </h4>
+    <div class="permission-template-change">
+      <h6>Template</h6>
+      <ngx-dropdown-treeview [config]="config" [items]="items" (selectedChange)="onSelectedChange($event)"></ngx-dropdown-treeview>
+    </div>
+  </div>
+  <div class="template-name" [ngClass]="{'pt-4': !isPreview, 'error': featureSubmitted && !template.template_name}">
+    <span>Template Name:</span>
+    <mat-form-field>
+      <input matInput [(ngModel)]="template.template_name" required [disabled]="!canUpdate"/>
+    </mat-form-field>
+  </div>
+  <div class="feature-list">
+    <div class="feature-sub-list pt-3">
+      <h4 class="mx-2">Global Rights</h4>
+      <button mat-stroked-button (click)="goBack()" class="go-back-btn mx-2 mb-1 mt-1" *ngIf="!isPreview">
+        <span class="lt-symbol"></span> to start
+      </button>
+      <div class="d-flex flex-wrap features-rights pl-3 pr-3 pt-2 pb-1">
+        <ng-container *ngFor="let feature of globalFeatures">
+          <div class="feature-right mx-2" *ngIf="!!template[feature.feature]">
+            <app-permission-feature
+              [feature]="feature"
+              [featureValue]="template[feature.feature]"
+              [canUpdate]="canUpdate"
+              (changed)="onChangeFeature($event, feature.feature)"
+            ></app-permission-feature>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="feature-sub-list pt-5">
+      <h4 class="mx-2">Project Rights</h4>
+      <button mat-stroked-button (click)="goBack()" class="go-back-btn mx-2 mb-1 mt-1" *ngIf="!isPreview">
+        <span class="lt-symbol"></span> to start
+      </button>
+      <div class="d-flex flex-wrap features-rights pl-3 pr-3 pt-2 pb-1">
+        <ng-container *ngFor="let feature of projectFeatures">
+          <div class="feature-right mx-2" *ngIf="!!template[feature.feature]">
+            <app-permission-feature
+              [feature]="feature"
+              [featureValue]="template[feature.feature]"
+              [canUpdate]="canUpdate && !!template['project_manage'].is_update"
+              (changed)="onChangeFeature($event, feature.feature)"
+            ></app-permission-feature>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="actions-wrapper mt-3 pt-4 d-flex justify-content-end">
+      <button *ngIf="canUpdate" mat-flat-button color="primary" (click)="saveTemplate()">Save</button>
+    </div>
+  </div>
+</div>

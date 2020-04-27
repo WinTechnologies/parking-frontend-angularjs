@@ -1,0 +1,81 @@
+<main class="workplan-list-page">
+  <!-- ------------------- Greybar ------------------------ -->
+  <header class="page-top-header">
+    <div class="d-flex align-items-center justify-content-between">
+      <mat-icon>search</mat-icon>
+      <div class="workplan-list-page-header-filter">
+        <mat-form-field class="workplan-filter">
+          <input
+            matInput
+            (keyup)="applyFilterWorkplan($event.target.value)"
+            placeholder="Search workplan name or code"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="workplan-list-page-header-buttons">
+      <button
+        *ngIf="canCreate(currentUser, 'hr_workplan')"
+        color="basic"
+        mat-flat-button
+        (click)="onCreateWorkplan()"
+      >
+        <mat-icon>
+          add_circle
+        </mat-icon>
+        Workplan
+      </button>
+    </div>
+  </header>
+  <!-- ------------------------------------------- -->
+  <h1 class="workplan-list-page-content-title font-weight-bold title-fixed">
+    Workplan
+  </h1>
+  <div class="workplan-list-page-content container-fluid mt-50px">
+    <div class="workplan-list-page-content-wrapper d-flex flex-wrap mt-50px">
+      <div class="workplan-item-wrapper" *ngFor="let workplan of fitleredWorkplans">
+        <div class="workplan-item-title d-flex justify-content-between" (click)="onViewAll(workplan)">
+          <span class="info-name">{{ workplan.wp_name }}</span>
+          <!-- <a >View All</a> -->
+        </div>
+        <div class="workplan-item-delete">
+          <button mat-icon-button color="warn" (click)="onDelete(workplan)">
+            <mat-icon>remove_circle</mat-icon>
+          </button>
+        </div>
+        <div class="workplan-item-content d-flex justify-content-between" (click)="onViewAll(workplan)">
+          <div class="workplan-item-column-wrapper d-flex">
+            <h5 class="title">Reoccuring</h5>
+            <ng-container *ngIf="workplan.reoccurings.length">
+              <span class="text">Date:</span>
+              <span>
+                {{ workplan.reoccurings[0].date_start | date: 'dd/MM/yyyy' }} -
+                {{ workplan.reoccurings[0].date_end | date: 'dd/MM/yyyy'}}
+              </span>
+              <span class="text">Time:</span>
+              <span>{{ workplan.reoccurings[0].timeslot_working }}</span>
+            </ng-container>
+          </div>
+          <div class="workplan-item-column-wrapper d-flex">
+            <h5 class="title">
+              Exceptions ({{ workplan.exceptions.length }})
+            </h5>
+            <ng-container
+              *ngFor="let exception of workplan.exceptions; let i = index"
+            >
+              <span class="text">Exception {{ i + 1 }}:</span>
+              <span>
+                {{ exception?.applied_dates }}
+                ({{ exception.exception_name }})
+              </span>
+            </ng-container>
+          </div>
+          <div class="team-wrapper">
+            <span class="count">{{ workplan.employees.length }}</span>
+            <span>Staff</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

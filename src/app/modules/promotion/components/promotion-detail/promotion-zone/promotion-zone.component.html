@@ -1,0 +1,52 @@
+<h5>Zone<sup>*</sup></h5>
+<div class="section-content">
+  <div class="search-panel">
+    <mat-form-field>
+      <mat-label>Select a zone</mat-label>
+      <mat-select (selectionChange)="onChangeZone($event)" [disabled]="!canUpdate">
+        <mat-option>All</mat-option>
+        <mat-option *ngFor="let zone of availableZones" [value]="zone.id"> {{zone.zone_name}} </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="table-filter ml-3">
+      <mat-icon>search</mat-icon>
+      <input matInput  (keyup)="applyFilterParkings($event.target.value)" placeholder="Search parkings">
+    </mat-form-field>
+    <button class="mr-2 btn-primary mat-raised-button float-right" (click)="editColumns()">Customize Columns</button>
+  </div>
+
+  <div class="table-wrapper">
+    <ngx-datatable class="material bg-white"
+                   style="height: 350px; margin-bottom: 20px;"
+                   [columnMode]="'force'"
+                   [headerHeight]="50"
+                   [footerHeight]="50"
+                   [rowHeight]="50"
+                   [limit]="5"
+                   scrollbarV="true"
+                   (reorder)="reorderColumns($event)"
+                   [rows]="filteredParkings">
+      <ngx-datatable-column *ngFor="let field of tableFields" name="{{field.label}}" prop="{{field.name}}">
+        <ng-template let-column="column" ngx-datatable-header-template *ngIf="field.name === 'checked'">
+          <ng-container *ngIf="field.name === 'checked'">
+            <mat-checkbox [ngModel]="getAllChecked()" (change)="checkAll($event)" [disabled]="!canUpdate">ALL</mat-checkbox>
+          </ng-container>
+        </ng-template>
+        <ng-template let-row="row" ngx-datatable-cell-template>
+            <span [matTooltip]="row[field.name]" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+              <ng-container [ngSwitch]="field.name">
+                <ng-container *ngSwitchCase="'checked'">
+                  <mat-checkbox [(ngModel)]="row.checked" (change)="checkParking()" [disabled]="!canUpdate"></mat-checkbox>
+                </ng-container>
+                <ng-container *ngSwitchDefault>{{ row[field.name] }}</ng-container>
+              </ng-container>
+            </span>
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable>
+
+    <div class="table-footer">
+      <div class="selected-value">Selected: {{selectedParkingIds.length}}</div>
+    </div>
+  </div>
+</div>

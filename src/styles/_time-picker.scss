@@ -1,0 +1,10 @@
+#time-picker-wrapper {
+    .time-picker-footer {
+        button {
+            &.atp-ref-dialog-close {
+                background-color: #31404b !important;
+                color: white !important;
+            }
+        }
+    }
+}

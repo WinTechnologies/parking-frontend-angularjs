@@ -1,0 +1,404 @@
+<div class="list">
+  <div class="list-page-content container-fluid mt-30px p-0">
+    <div class="list-header">
+      <h4 class="list-table-header">List of {{ listType }}s</h4>
+      <button
+        class="mr-2 btn-primary mat-raised-button"
+        (click)="editColumns()"
+      >
+        Customize Columns
+      </button>
+    </div>
+    <div
+      class="list-table-wrapper"
+      [ngClass]="{ row: isPreviewOn, 'm-0': isPreviewOn }"
+    >
+      <div
+        class="list-page-table-wrapper mat-elevation-z8 "
+        *ngIf="!isPreviewOn"
+      >
+        <ngx-datatable
+          class="material bg-white ngx-table"
+          [ngClass]="tblStyle"
+          [columnMode]="'force'"
+          [loadingIndicator]="isLoading"
+          [headerHeight]="50"
+          [footerHeight]="50"
+          [rowHeight]="50"
+          [limit]="10"
+          [selectionType]="'single'"
+          [rows]="listData"
+          scrollbarV="true"
+          (activate)="onRowSelect($event)"
+        >
+          <ngx-datatable-column
+            *ngFor="let field of listColumns"
+            name="{{ field.label }}"
+            prop="{{ field.name }}"
+          >
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <span
+                [matTooltip]="tooltip(row, field.name)"
+                matTooltipShowDelay="1000"
+                matTooltipHideDelay="1000"
+              >
+                <ng-container [ngSwitch]="field.name">
+                  <ng-container *ngSwitchCase="'zone'">
+                    {{ row['zone']['id'] ? row['zone']['zone_name'] : '' }}
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'terminal'">
+                    {{
+                      row['terminal']['id']
+                        ? row['terminal']['terminal_name']
+                        : ''
+                    }}
+                  </ng-container>
+
+                  <ng-container *ngSwitchCase="'parking_spaces'">
+                    {{ row[field.from] }} - {{ row[field.to] }}
+                  </ng-container>
+                  <!-- name -->
+                  <ng-container *ngSwitchCase="'name'">
+                    {{
+                      row[field.name] +
+                        (row['name_ar'] ? ' (' + row['name_ar'] + ')' : '')
+                    }}
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'zone_name'">
+                    {{
+                      row[field.name] +
+                        (row['zone_name_ar']
+                          ? ' (' + row['zone_name_ar'] + ')'
+                          : '')
+                    }}
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'carpark_name'">
+                    {{
+                      row[field.name] +
+                        (row['name_ar'] ? ' (' + row['name_ar'] + ')' : '')
+                    }}
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'name_en'">
+                    {{
+                      row[field.name] +
+                        (row['name_ar'] ? ' (' + row['name_ar'] + ')' : '')
+                    }}
+                  </ng-container>
+                  <!-- Zone -->
+                  <ng-container *ngSwitchCase="'perimeter'">
+                    {{ row[field.name] + ' ' + row['measurement_unit'] }}
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'area'">
+                    {{ row[field.name] + ' square ' + row['measurement_unit'] }}
+                  </ng-container>
+                  <!-- Carpark -->
+                  <ng-container *ngSwitchCase="'carpark_type'">
+                    {{ row[field.name] ? row[field.name]['name'] : '-' }}
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'is_automated'">
+                    {{ row[field.name] ? 'YES' : 'NO' }}
+                  </ng-container>
+                  <!-- Terminal-->
+                  <ng-container *ngSwitchCase="'zone_id'">
+                    {{ row[field.name] }}
+                  </ng-container>
+                  <!-- Park Space -->
+                  <ng-container *ngSwitchCase="'vehicle_type'">
+                    {{ row[field.name] ? row[field.name]['type_en'] : '-' }}
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'for_handicap'">
+                    {{ row[field.name] ? 'YES' : 'NO' }}
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'is_sensors'">
+                    <mat-checkbox
+                      [checked]="row[field.name]"
+                      [class.checkbox-checked]="row[field.name] === true"
+                      [aria-label]="row[field.name]"
+                      [disabled]="true"
+                    >
+                    </mat-checkbox>
+                  </ng-container>
+                  <!-- img_url -->
+                  <ng-container *ngSwitchCase="'img_url'">
+                    <ng-container
+                      *ngIf="listType === CarparkItemType.Terminal; else otherImgs">
+                      <img
+                        class="list-cell-img"
+                        [src]="row[field.name]"
+                        alt="photo"
+                        onError="this.src='/assets/nophoto.jpg';"
+                      />
+                    </ng-container>
+                    <ng-template #otherImgs>
+                      <ng-container
+                        *ngIf="row[field.name] && row[field.name].split(',')[0].startsWith('uploads'); else assetPic">
+                        <img
+                          class="list-cell-img"
+                          *ngIf="row[field.name]; else noPhoto"
+                          [src]="baseUrl + '/' + row[field.name].split(',')[0]"
+                          alt="photo"
+                          onError="this.src='/assets/nophoto.jpg';"
+                        />
+                      </ng-container>
+                      <ng-template #assetPic>
+                        <img
+                          class="list-cell-img"
+                          *ngIf="row[field.name]; else noPhoto"
+                          [src]="row[field.name].split(',')[0].startsWith('/') ? row[field.name].split(',')[0] : '/' + row[field.name].split(',')[0]"
+                          alt="photo"
+                          onError="this.src='/assets/nophoto.jpg';"
+                        />
+                      </ng-template>
+                    </ng-template>
+                    <ng-template #noPhoto>
+                      <img class="list-cell-img" src="/assets/nophoto.jpg" alt="no-photo">
+                    </ng-template>
+                  </ng-container>
+                  <!-- pictures_url -->
+                  <ng-container *ngSwitchCase="'pictures_url'">
+                    <ng-container *ngIf="listType === CarparkItemType.Terminal; else otherImgs">
+                      <img
+                        class="list-cell-img"
+                        [src]="row[field.name]"
+                        alt="photo"
+                        onError="this.src='/assets/nophoto.jpg';"
+                      />
+                    </ng-container>
+                    <ng-template #otherImgs>
+                      <ng-container *ngIf="row[field.name] && row[field.name].split(',')[0].startsWith('uploads'); else assetPic">
+                        <img
+                          class="list-cell-img"
+                          *ngIf="row[field.name]; else noPhoto"
+                          [src]="baseUrl + '/' + row[field.name].split(',')[0]"
+                          alt="photo"
+                          onError="this.src='/assets/nophoto.jpg';"
+                        />
+                      </ng-container>
+                      <ng-template #assetPic>
+                        <img
+                          class="list-cell-img"
+                          *ngIf="row[field.name]; else noPhoto"
+                          [src]="row[field.name].split(',')[0].startsWith('/') ? row[field.name].split(',')[0] : '/' + row[field.name].split(',')[0]"
+                          alt="photo"
+                          onError="this.src='/assets/nophoto.jpg';"
+                        />
+                      </ng-template>
+                    </ng-template>
+                    <ng-template #noPhoto>
+                      <img class="list-cell-img" src="/assets/nophoto.jpg" alt="no-photo">
+                    </ng-template>
+                  </ng-container>
+                  <ng-container *ngSwitchDefault>
+                    {{ row[field.name] ? row[field.name] : '' }}
+                  </ng-container>
+                </ng-container>
+              </span>
+            </ng-template>
+          </ngx-datatable-column>
+        </ngx-datatable>
+      </div>
+      <div
+        class="list-page-table-wrapper mat-elevation-z8 p-0"
+        *ngIf="isPreviewOn"
+        [ngClass]="{ 'col-9': listCategory !== 'onStreet' }"
+      >
+        <ngx-datatable
+          class="material bg-white ngx-table"
+          [ngClass]="tblStyle"
+          [columnMode]="'force'"
+          [loadingIndicator]="isLoading"
+          [headerHeight]="50"
+          [footerHeight]="50"
+          [rowHeight]="50"
+          [limit]="10"
+          [selectionType]="'single'"
+          [rows]="listData"
+          [rowClass]="defineClass"
+          scrollbarV="true"
+          (activate)="onRowSelect($event)">
+          <ngx-datatable-column
+            *ngFor="let field of listColumnsNoPics"
+            name="{{ field.label }}"
+            prop="{{ field.name }}"
+          >
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <span
+                [matTooltip]="tooltip(row, field.name)"
+                matTooltipShowDelay="1000"
+                matTooltipHideDelay="1000"
+              >
+                <ng-container [ngSwitch]="field.name">
+                  <ng-container *ngSwitchCase="'pictures_url'">
+                    <img
+                      class="list-cell-img"
+                      [src]="baseUrl + '/' + row[field.name].split(',')[0]"
+                    />
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'zone'">
+                    {{ row['zone']['id'] ? row['zone']['zone_name'] : '' }}
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'terminal'">
+                    {{
+                      row['terminal']['id']
+                        ? row['terminal']['terminal_name']
+                        : ''
+                    }}
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'parking_spaces'">
+                    {{ row[field.from] }} - {{ row[field.to] }}
+                  </ng-container>
+                  <!-- name -->
+                  <ng-container *ngSwitchCase="'name'">
+                    {{
+                      row[field.name] +
+                        (row['name_ar'] ? ' (' + row['name_ar'] + ')' : '')
+                    }}
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'zone_name'">
+                    {{
+                      row[field.name] +
+                        (row['zone_name_ar']
+                          ? ' (' + row['zone_name_ar'] + ')'
+                          : '')
+                    }}
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'carpark_name'">
+                    {{
+                      row[field.name] +
+                        (row['name_ar'] ? ' (' + row['name_ar'] + ')' : '')
+                    }}
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'name_en'">
+                    {{
+                      row[field.name] +
+                        (row['name_ar'] ? ' (' + row['name_ar'] + ')' : '')
+                    }}
+                  </ng-container>
+                  <!-- Zone -->
+                  <ng-container *ngSwitchCase="'perimeter'">
+                    {{ row[field.name] + ' ' + row['measurement_unit'] }}
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'area'">
+                    {{ row[field.name] + ' square ' + row['measurement_unit'] }}
+                  </ng-container>
+                  <!-- Carpark -->
+                  <ng-container *ngSwitchCase="'carpark_type'">
+                    {{ row[field.name] ? row[field.name]['name'] : '-' }}
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'is_automated'">
+                    {{ row[field.name] ? 'YES' : 'NO' }}
+                  </ng-container>
+                  <!-- Terminal-->
+                  <ng-container *ngSwitchCase="'zone_id'">
+                    {{ row[field.name] }}
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'terminal_id'">
+                    {{ row['terminal']['terminal_name'] }}
+                  </ng-container>
+                  <!-- -->
+                  <!-- Park Space -->
+                  <ng-container *ngSwitchCase="'vehicle_type'">
+                    {{ row[field.name] ? row[field.name]['type_en'] : '-' }}
+                  </ng-container>
+                  <!-- -->
+                  <ng-container *ngSwitchCase="'is_sensors'">
+                    <mat-checkbox
+                      [checked]="row[field.name]"
+                      [class.checkbox-checked]="row[field.name] === true"
+                      [aria-label]="row[field.name]"
+                      [disabled]="true"
+                    >
+                    </mat-checkbox>
+                  </ng-container>
+                  <!-- img_url -->
+                  <ng-container *ngSwitchCase="'img_url'">
+                    <ng-container
+                      *ngIf="listType === CarparkItemType.Terminal; else otherImgs">
+                      <img
+                        class="list-cell-img"
+                        [src]="row[field.name]"
+                        alt="photo"
+                        onError="this.src='/assets/nophoto.jpg';"
+                      />
+                    </ng-container>
+                    <ng-template #otherImgs>
+                      <ng-container
+                        *ngIf="row[field.name] && row[field.name].split(',')[0].startsWith('uploads'); else assetPic">
+                        <img
+                          class="list-cell-img"
+                          *ngIf="row[field.name]; else noPhoto"
+                          [src]="baseUrl + '/' + row[field.name].split(',')[0]"
+                          alt="photo"
+                          onError="this.src='/assets/nophoto.jpg';"
+                        />
+                      </ng-container>
+                      <ng-template #assetPic>
+                        <img
+                          class="list-cell-img"
+                          *ngIf="row[field.name]; else noPhoto"
+                          [src]="row[field.name].split(',')[0].startsWith('/') ? row[field.name].split(',')[0] : '/' + row[field.name].split(',')[0]"
+                          alt="photo"
+                          onError="this.src='/assets/nophoto.jpg';"
+                        />
+                      </ng-template>
+                    </ng-template>
+                    <ng-template #noPhoto>
+                      <img
+                        class="list-cell-img"
+                        src="/assets/nophoto.jpg"
+                        alt="no-photo"
+                      />
+                    </ng-template>
+                  </ng-container>
+                  <ng-container *ngSwitchDefault>
+                    {{ row[field.name] ? row[field.name] : '' }}
+                  </ng-container>
+                </ng-container>
+              </span>
+            </ng-template>
+          </ngx-datatable-column>
+        </ngx-datatable>
+      </div>
+      <div
+        class="list-details-container col-6 pr-0"
+        *ngIf="isPreviewOn && listCategory !== 'onStreet'">
+        <div class="list-maps-container">
+          <div class="">
+            <app-mapview-new
+              [mapCenter]="mapPositionCenter"
+              [options]="storeOptions"
+              [mapDataJSON]="mapdata"
+              [mapDrawDataJSON]="mapdrawdata"
+              [zoomValue]="defaultZoomSize">
+            </app-mapview-new>
+          </div>
+        </div>
+        <div class="list-img-types" *ngIf="isImagePreviewOn">
+          <div class="list-types-row row mt-1 mb-1">
+            <div
+              *ngFor="let imgUrl of parkingImages; let i = index"
+              class="img-item col-4"
+              [class.img-item-selected]="selectedImg && selectedImg.i === i">
+              <button
+                mat-icon-button
+                class="cancel-btn"
+                (click)="zoomImage(-1)">
+                <mat-icon>cancel</mat-icon>
+              </button>
+              <img
+                class="list-thumbnail"
+                [src]="imgUrl"
+                (click)="zoomImage(i)"
+              />
+            </div>
+          </div>
+          <div class="list-emplified-img row" *ngIf="isImageZoomOn">
+            <div class="col-12">
+              <img class="list-image" [src]="selectedImg.url" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

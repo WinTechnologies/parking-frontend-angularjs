@@ -1,0 +1,174 @@
+<ng-template #zoneSelector let-v="viewMode">
+  <div class="form-field">
+    <h4 *ngIf="v === ViewMode.ListView" class="list-table-header">Zone</h4>
+    <span *ngIf="v === ViewMode.MapView">Select zone</span>
+    <mat-form-field class="select-zone">
+      <mat-select [(ngModel)]="selectedZone" (selectionChange)="onZoneSelection($event.value)">
+        <mat-option *ngIf="v === ViewMode.ListView" [value]="EmptyPrZone">All</mat-option>
+        <mat-option *ngFor="let zone of allZones" [value]="zone">{{zone.zone_code}}: {{zone.zone_name}} </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</ng-template>
+
+<ng-template #terminalSelector>
+  <div class="form-field" *ngIf="formMode !== FormMode.CREATING">
+    <span>Select terminal <b class="span-bold">(or select on map)</b></span>
+    <mat-form-field class="select-terminal">
+      <mat-select [(ngModel)]="selectedTerminal" (selectionChange)="onTerminalSelection($event.value)">
+        <mat-option *ngFor="let terminal of terminals" [value]="terminal">{{terminal.terminal_code}}: {{terminal.terminal_name}} </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <span *ngIf="terminals && terminals.length === 0" class="terminal-sidebar-error">
+      There is no terminal available. Please make sure you selected a zone or create a new terminal
+    </span>
+  </div>
+</ng-template>
+
+<ng-container *ngIf="viewMode === ViewMode.ListView">
+  <div class="carparkitem-selector">
+      <div class="row">
+        <ng-container *ngTemplateOutlet="zoneSelector; context:{viewMode: ViewMode.ListView}"></ng-container>
+      </div>
+    </div>
+  <div class="terminal">
+    <app-listview-new
+    [tblStyle]="'carpark-tbl'"
+    [filter]="filter"
+    [projectId]="projectId"
+    [options]="mapOptions"
+    [mapdata]="tabMapDataJSON"
+    [mapdrawdata]="tabMapDrawDataJSON"
+    [listType]="CarparkItemType.Terminal"
+    [listData]="terminals"
+    (selectedRowItem)="onTerminalSelection($event)">
+    </app-listview-new>
+  </div>
+</ng-container>
+<ng-container *ngIf="viewMode === ViewMode.MapView">
+  <div class="terminal">
+    <div class="terminal-sidebar">
+      <div class="terminal-sidebar-title">
+        <ng-container *ngIf="formMode === FormMode.CREATING">Create new terminal</ng-container>
+        <ng-container *ngIf="formMode !== FormMode.CREATING">Terminal selection</ng-container>
+      </div>
+
+      <ng-container *ngTemplateOutlet="zoneSelector; context:{viewMode: ViewMode.MapView}"></ng-container>
+      <ng-container *ngTemplateOutlet="terminalSelector"></ng-container>
+
+      <hr>
+
+      <form *ngIf="form && (formMode === FormMode.UPDATING || formMode === FormMode.CREATING)"
+            [formGroup]="form"
+            (ngSubmit)="onSubmit()"
+            autocomplete="off"
+            novalidate>
+        <div class="form-field">
+          <span>Terminal Name</span>
+          <mat-form-field>
+            <input matInput type="text" formControlName="terminal_name">
+            <mat-error>Name is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span>Terminal code</span>
+          <mat-form-field>
+            <input matInput type="text" formControlName="terminal_code" (keypress)="inputCheck($event)" (paste)="inputCheck($event)">
+            <mat-error>Terminal Code is required. This field accepts only alphabetical and numerical characters.</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span>Airport name</span>
+          <mat-form-field class="select-zone">
+            <input matInput type="text" formControlName="airport_name" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="matchAirportCode($event.option.value)">
+              <mat-option *ngIf="isAirportsLoading" class="is-loading"><mat-spinner diameter="50"></mat-spinner></mat-option>
+              <mat-option *ngFor="let airport of filteredAirports$ | async" [value]="airport.name">
+                {{airport.name}}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-error>Airport name is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span>Airport code</span>
+          <mat-form-field>
+            <input matInput type="text" formControlName="airport_code" readonly>
+            <mat-error>Airport Code is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span>Latitude & Longitude <b class="span-bold">(auto-fill by draw tool)</b></span>
+          <mat-form-field class="place_LL border-right-0">
+            <input matInput type="text" formControlName="latitude" readonly>
+            <mat-error>Latitude is required</mat-error>
+          </mat-form-field>
+          <mat-form-field class="place_LL border-left-0">
+            <input matInput type="text" formControlName="longitude" readonly>
+            <mat-error>Longitude is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="form-field">
+          <span>Notes</span>
+          <textarea formControlName="notes" rows="3"></textarea>
+        </div>
+
+        <div class="form-field">
+          <span>Image upload</span>
+          <ng2-file-input
+            *ngIf="!selectedTerminal.project_id || !selectedTerminal.img_url"
+            [drop-text]="'Drag files here or'"
+            accept="['image/jpeg']"
+            (onAdded)="onImageAdded($event)"
+          >
+          </ng2-file-input>
+          <ng-container *ngIf="selectedTerminal.img_url && selectedTerminal">
+            <div class="terminal-image-wrapper">
+              <span class="text">{{ selectedTerminal.img_url?selectedTerminal.img_url:'' }}</span>
+              <img class="imgfield" [src]="selectedTerminal.img_url.startsWith('uploads') ?  this.apiEndpoint + '/' + selectedTerminal.img_url: selectedTerminal.img_url" />
+              <span
+                *ngIf = "selectedTerminal && selectedTerminal.img_url"
+                class="remove"
+                (click)="onRemoveImage()"
+              >
+                <p>Remove</p>
+              </span>
+            </div>
+          </ng-container>
+        </div>
+        <div class="buttons-wrapper">
+          <button mat-stroked-button type="button" class="mr-2 ml-2" (click)="onCancel()">CANCEL</button>
+          <button class="add" mat-flat-button type="submit" color="primary">
+            <ng-container *ngIf="formMode === FormMode.CREATING">CREATE</ng-container>
+            <ng-container *ngIf="formMode === FormMode.UPDATING">UPDATE</ng-container>
+          </button>
+        </div>
+        <div class="buttons-wrapper" *ngIf="formMode === FormMode.UPDATING">
+          <span (click)="onDeleteCurrentTerminal()">DELETE  <mat-icon>delete</mat-icon></span>
+        </div>
+      </form>
+
+      <div class="notification-box" *ngIf="formMode === FormMode.JUST_CREATED || formMode === FormMode.JUST_UPDATED || formMode === FormMode.JUST_DELETED">
+        <span *ngIf="formMode === FormMode.JUST_CREATED">New terminal created!</span>
+        <span *ngIf="formMode === FormMode.JUST_UPDATED">The terminal updated!</span>
+        <span *ngIf="formMode === FormMode.JUST_DELETED">The terminal deleted!</span>
+        <div>
+          <button mat-flat-button type="button" class="mt-3" color="primary" (click)="returnToSelection()">OK</button>
+        </div>
+      </div>
+    </div>
+    <div class="terminal-map-wrapper">
+      <app-mapview-new
+        [mapCenter]="mapCenter"
+        [options]="mapOptions"
+        [mapDataJSON]="tabMapDataJSON"
+        [mapDrawDataJSON]="tabMapDrawDataJSON"
+        [isForceCenter]="true"
+        [zoomValue]="mapZoomValue"
+        (mapDataChangedEmitter)="onSiteMapDataChanged($event)"
+        (mapDataEditEmitter)="onTerminalSelection($event)"
+      >
+      </app-mapview-new>
+    </div>
+  </div>
+</ng-container>

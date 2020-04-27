@@ -1,0 +1,78 @@
+:host {
+  .enforcement-routes {
+    margin: 0 -20px;
+    padding: 20px 20px;
+    background-color: #fafafb;
+    .filter-menu {
+      color: #1c75bc;
+    }
+    .add-staff {
+      cursor: pointer;
+      text-align: left !important;
+      color: #1c75bc;
+
+      .mat-icon {
+        vertical-align: middle;
+        margin-right: 3px;
+      }
+    }
+    &-header-list {
+      color: #1c75bc;
+      cursor: pointer;
+
+      img {
+        height: 24px;
+        width: 24px;
+      }
+    }
+
+    &-content {
+      .mat-drawer-container {
+        background-color: transparent;
+        height: calc(100vh - 320px);
+
+        .routes-sidebar {
+          padding-right: 20px;
+
+          h1 {
+            height: 50px;
+            line-height: 50px;
+            font-weight: 700;
+            font-size: 16px;
+            color: #023b41;
+          }
+
+          .form-field {
+            .staff-count {
+              color: #1c75bc;
+              input {
+                cursor: pointer;
+              }
+              /deep/ .mat-form-field-underline {
+                background-color: #1c75bc;
+              }
+            }
+
+            span {
+              width: 90px;
+              text-align: right;
+              margin-right: 0.25rem;
+
+              &.image-label {
+                vertical-align: top;
+              }
+            }
+            .street-list {
+              width: 280px;
+              height: auto;
+              overflow-y: auto;
+            }
+          }
+        }
+        .mat-drawer.mat-drawer-side {
+          background-color: transparent;
+        }
+      }
+    }
+  }
+}

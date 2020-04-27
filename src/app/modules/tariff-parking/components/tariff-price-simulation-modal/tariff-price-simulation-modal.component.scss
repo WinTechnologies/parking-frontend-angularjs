@@ -1,0 +1,42 @@
+:host {
+  .mat-dialog-title {
+    display: flex;
+    justify-content: space-between;
+
+    button.mat-icon-button {
+      outline: none;
+      margin-right: -15px;
+      margin-top: -15px;
+    }
+  }
+
+  .mat-dialog-content {
+
+    .filed-item {
+      display: flex;
+      align-items: center;
+
+      .item-label {
+        padding-right: 0.5rem;
+      }
+
+      .item-value {
+        font-weight: 600;
+      }
+    }
+
+    .fields-wrapper {
+      .filed-item:not(:last-child),
+      .mat-form-field:not(:last-child) {
+        margin-right: 1rem;
+      }
+    }
+
+    .result {
+      padding: 1rem;
+      background-color: #eee;
+      border-radius: 6px;
+    }
+  }
+}
+

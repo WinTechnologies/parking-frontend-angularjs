@@ -1,0 +1,59 @@
+<h1 mat-dialog-title>{{isCreateMode ? 'Create New Type of Asset' : 'Modify Asset Type'}}</h1>
+<form [formGroup]="assetTypeForm" class="p-2">
+  <div mat-dialog-content>
+    <ng2-file-input *ngIf="isCreateMode"
+                    (onRemoved)="onPictureRemoved($event)"
+                    (onAdded)="onPictureAdded($event)"
+                    (onAction)="onPictureAction($event)"
+                    [multiple]="false"
+                    accept="['jpg', 'jpeg', 'png', 'gif', 'svg']"
+                    [show-previews]="true"
+                    [drop-text]="'Picture'"
+                    [browse-text]="'Browse'">
+    </ng2-file-input>
+    <ng-container *ngIf="!isCreateMode">
+      <ng2-file-input
+        (onRemoved)="onPictureRemoved($event)"
+        (onAdded)="onPictureAdded($event)"
+        (onAction)="onPictureAction($event)"
+        [multiple]="false"
+        accept="['jpg', 'jpeg', 'png', 'gif', 'svg']"
+        [show-previews]="true"
+        [drop-text]="'Picture'"
+        [browse-text]="'Browse'">
+      </ng2-file-input>
+      <img *ngIf="!picture || !picture.length" class="original-image" [src]="defineUrl(data.icon_url)" onError="this.src='/assets/nophoto.jpg';">
+    </ng-container>
+    <div class="m-1">
+      <div class="d-flex justify-content-center">
+        <label>Type Name <span class="required">* </span> </label>
+        <mat-form-field>
+          <input matInput formControlName="typeName" autocomplete="off" required>
+        </mat-form-field>
+      </div>
+      <div class="d-flex justify-content-center">
+        <label>Type Code <span class="required">* </span> </label>
+        <mat-form-field>
+          <input matInput
+                 formControlName="typeCode"
+                 autocomplete="off" required
+                 (keypress)="inputCheck($event)"
+                 (paste)="inputCheck($event)">
+        </mat-form-field>
+      </div>
+      <div class="d-flex justify-content-center">
+        <label>Category <span class="required">* </span></label>
+        <mat-select formControlName="categoryAsset" [disabled]="!isCreateMode" [ngClass]="{'disabled': !isCreateMode}">
+          <mat-option *ngFor="let category of categoryAsset" [value]="category.category_asset">
+            {{category.category_asset}}
+          </mat-option>
+        </mat-select>
+      </div>
+    </div>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-raised-button (click)="onCancel()">Cancel</button>
+    <button *ngIf="isCreateMode" type="submit" mat-raised-button cdkFocusInitial color="primary" (click)="onAdd()">Add</button>
+    <button *ngIf="!isCreateMode" type="submit" mat-raised-button cdkFocusInitial color="primary" (click)="onUpdate()">Update</button>
+  </div>
+</form>

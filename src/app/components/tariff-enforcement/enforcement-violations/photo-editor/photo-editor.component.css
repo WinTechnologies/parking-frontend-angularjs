@@ -1,0 +1,8 @@
+.green-btn {
+    background-color: yellowgreen;
+    color: #ffffff;
+}
+
+.mat-dialog-actions {
+    justify-content: flex-end;
+}

@@ -1,0 +1,186 @@
+@import "../../../../../styles/_color.scss";
+$active-dark-blue: #023b41;
+$active-blue: #1c75bc;
+$inactive-grey: #A5A9B4;
+
+:host {
+      ::ng-deep {
+        color: $c-blue;
+        font-weight: 700;
+        .page-title-header {
+          margin-top: 30px;
+          height: 60px;
+          margin-left: 0;
+          margin-right: 0;
+          mat-form-field {
+            margin-right: 1rem;
+          }
+        }
+      }
+
+      ::ng-deep .mat-icon.delete-group{
+        color:red;
+        text-shadow: none;
+      }
+
+      .create_group_btn {
+        color:#0c7bbb;
+        cursor: pointer;
+      }
+
+      .button-days {
+        background-color: #105498;
+        color: #e5e5e5;
+        margin: 4px;
+        border-radius: 5px;
+        width: 27px;
+        height: 27px;
+        cursor: pointer;
+      }
+
+      .button-days-text {
+        margin: 0 auto;
+      }
+
+    .group-item {
+      margin: 1rem;
+
+      &-wrapper {
+        width: 48%;
+        min-height: 180px;
+        border: 1px solid $c-greylight;
+        border-radius: 6px;
+        cursor: pointer;
+
+        &:hover {
+          border: 1px solid teal;
+          transition: 0.3s;
+
+          .info-name {
+            background-color:teal;
+            transition: 0.3s;
+          }
+        }
+
+        .expired {
+          position: relative;
+          p, span, ul li {
+            color: $inactive-grey !important;
+          }
+          .group-item-title .focus-info-name, .group-item-title .info-name, .button-days {
+            color: #fff;
+            background-color: $inactive-grey !important;
+          }
+        }
+
+        .expired-watermark {
+          font-size: 4rem;
+          font-weight: bold;
+          transform: rotate(-45deg);
+          position: absolute;
+          bottom: 30%;
+          left: 15%;
+          transform-origin: 30%;
+          text-transform: uppercase;
+          color: $inactive-grey;
+        }
+      }
+
+      &-title {
+        padding: 10px;
+
+        .info-name {
+          margin: -11px;
+          padding: 10px;
+          min-width: 200px;
+          border-top-left-radius: 6px;
+          border-bottom-right-radius: 6px;
+          background-color: #023b41;;
+          color: $c-white;
+        }
+
+        .focus-info-name {
+          margin: -11px;
+          padding: 10px;
+          min-width: 200px;
+          border-top-left-radius: 6px;
+          border-bottom-right-radius: 6px;
+          background-color: #1c2a32;
+          border: 1px solid  #1c2a32;
+          color: $c-white;
+        }
+
+        span {
+          margin: -11px;
+          padding: 10px;
+          min-width: 200px;
+          border-top-left-radius: 6px;
+          border-bottom-right-radius: 6px;
+          background-color: #023b41;;
+          color: $c-white;
+        }
+
+        a {
+          text-decoration: underline;
+          color: $c-lightblue;
+          cursor: pointer;
+        }
+      }
+
+      &-content {
+        padding: 20px;
+        font-size: 14px;
+
+        .team-wrapper {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          color: $c-lightblue;
+          align-items: center;
+
+          .count {
+            font-size: 30px;
+            line-height: 20px;
+            font-weight: 500;
+          }
+        }
+
+        p.gray {
+          color:gray;
+        }
+        span{
+          color:$c-blue;
+          font-weight: 700;
+        }
+      }
+
+    }
+
+    .buttons-wrapper {
+      button {
+        color: $c-blue1;
+        outline: none;
+        background: transparent;
+
+        .mat-icon {
+          vertical-align: middle;
+          margin-right: 10px;
+        }
+      }
+    }
+
+  .pt-60px {
+    padding-top: 60px;
+  }
+    .border-bottom {
+      border-bottom: 1px solid rgba(0,0,0,.1);
+  }
+
+  .pt-110px {
+    padding-top: 110px;
+  }
+
+  .mt-50px {
+    margin-top: 50px;
+  }
+}

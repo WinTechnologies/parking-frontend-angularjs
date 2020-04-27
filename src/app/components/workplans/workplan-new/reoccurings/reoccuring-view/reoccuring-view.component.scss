@@ -1,0 +1,42 @@
+@import "../../../../../../styles/_color.scss";
+
+:host {
+  .reoccuring-new {
+    .reoccuring-new-content {
+      margin: 10px 0;
+      padding: 0.5rem;
+      border: 1px solid $c-greylight;
+      border-radius: 10px;
+
+      &-name {
+        .mat-form-field {
+          width: 360px;
+        }
+      }
+
+      span {
+        width: 130px;
+      }
+
+      &-settings {
+        display: flex;
+        align-items: center;
+      }
+
+      &-weekdays-wrapper {
+        margin-left: 100px;
+      }
+
+      form ::ng-deep {
+        label-day {
+          color: gray;
+          font-weight: 800;
+        }
+      }
+    }
+  }
+
+  sup {
+    color: red;
+  }
+}

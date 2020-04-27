@@ -1,0 +1,94 @@
+<h1 mat-dialog-title>{{!chart ? 'Create chart' : 'Update chart'}}</h1>
+
+<form [formGroup]="form">
+
+  <div mat-dialog-content>
+    <div class="form-fields-wrapper">
+      <mat-form-field>
+        <input matInput placeholder="Name" formControlName="name" required>
+        <mat-error>Name is required</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Description" formControlName="chart_label">
+      </mat-form-field>
+    </div>
+
+    <div class="form-fields-wrapper">
+      <mat-form-field>
+        <mat-select formControlName="type" (selectionChange)="changeType($event)" placeholder="Chart type" required>
+          <mat-option *ngFor="let type of analyticsConfig.chartTypes" [value]="type">{{type}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select formControlName="db_table" (selectionChange)="changeTable($event)" placeholder="Table" required>
+          <mat-option *ngFor="let table of analyticsConfig.tables"
+                      [value]="table.name"
+                      [disabled]="checkDisableTable(table.name)"
+          >
+            {{table.label}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div *ngIf="form.value.type !== 'map'">
+
+      <div class="form-fields-wrapper" formGroupName="extra_params">
+        <mat-form-field>
+          <mat-select formControlName="aggregation" placeholder="Aggregation" (selectionChange)="changeAggregation($event)" required>
+            <mat-option *ngFor="let item of aggregations" [value]="item">{{item}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select formControlName="computation" placeholder="Computation" required>
+            <mat-option value="normal">Normal</mat-option>
+            <mat-option value="percentage">Percentage</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-fields-wrapper" formGroupName="parameters">
+        <mat-form-field>
+          <mat-select formControlName="x" placeholder="X axis Param 1" required>
+            <mat-option *ngFor="let item of xParams" [value]="item" [disabled]="checkDisableParam(item, 'z')">{{item}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field *ngIf="form.value.type !== 'pie'">
+          <mat-select formControlName="z" placeholder="X axis Param 2 (Optional)">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let item of zParams" [value]="item" [disabled]="checkDisableParam(item, 'x')">{{item}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-fields-wrapper" formGroupName="parameters">
+        <mat-form-field>
+          <mat-select formControlName="y" (selectionChange)="changeYParam($event)" placeholder="Y axis Param" required>
+            <!--<mat-option value="*">*</mat-option>-->
+            <mat-option *ngFor="let item of yParams" [value]="item" [disabled]="checkDisableYParam(item)">{{item}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="form-fields-wrapper">
+        <mat-form-field *ngIf="form.value.type === 'line'">
+          <mat-select formControlName="group_by_date_param" placeholder="Time aggregation" required>
+            <mat-option *ngFor="let item of analyticsConfig.timeAggregations" [value]="item">{{item}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select formControlName="date_param" placeholder="Date" required>
+            <mat-option *ngFor="let item of dateParams" [value]="item">{{item}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+  </div>
+
+  <div mat-dialog-actions align="end">
+    <button mat-stroked-button color="primary" class="mr-2" (click)="onClose()">Cancel</button>
+    <button mat-flat-button color="primary" (click)="onCreate()" type="submit">OK</button>
+  </div>
+
+</form>

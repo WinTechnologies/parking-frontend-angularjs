@@ -1,0 +1,58 @@
+<div class="assigned-employee-list-content container-fluid">
+  <div class="assigned-employee-list-content-header d-flex  align-items-center justify-content-between">
+    <div class="assigned-employee-list-content-title-wrapper">
+      <h1 class="assigned-employee-list-content-title font-weight-bold">Assigned Staff</h1>
+    </div>
+    <div class="buttons-wrapper">
+      <button
+      *ngIf="canUpdate"
+      color="basic"
+      mat-flat-button
+      (click)="AddEmployee()">
+        <mat-icon>
+          add_circle
+        </mat-icon>
+      Staff
+    </button>
+    </div>
+  </div>
+  <span style="width: 100%">
+    Below list of assigned staffs
+    <button class="mr-2 mb-2 btn-primary mat-raised-button float-right" (click)="editColumns()">Customize Columns</button>
+  </span>
+  <div class="assigned-employee-list-table-wrapper mat-elevation-z8">
+    <ngx-datatable class="material bg-white"
+       style="height: calc(100vh - 395px)"
+       [columnMode]="'force'"
+       [loadingIndicator]="isLoading"
+       [headerHeight]="50"
+       [footerHeight]="50"
+       [rowHeight]="70"
+       [limit]="10"
+       [rows]="employees"
+       scrollbarV="true"
+       (activate)="onSelect($event)"
+       (reorder)="reorderColumns($event)">
+      <ngx-datatable-column *ngFor="let field of tableFields" name="{{field.label}}" prop="{{field.name}}">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+              <span [matTooltip]="row[field.name]" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+                <ng-container [ngSwitch]="field.name">
+                  <ng-container *ngSwitchCase="'avatar'">
+                    <img *ngIf="row.img_url" [src]="baseUrl + row.img_url" alt="" />
+                    <img *ngIf="!row.img_url" src="assets/noavatar.png" alt="" />
+                    {{ (row[field.name] ? row[field.name] : row['creation']) | date:'dd/MM/yyyy hh:mm:ss a' }}
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'projects'">{{ row[field.name]? row[field.name] : '' }}</ng-container>
+                  <ng-container *ngSwitchCase="'phone_number'">{{ row[field.name]? row[field.name] : '' }}</ng-container>
+                  <ng-container *ngSwitchCase="'status'">{{ row[field.name]? row[field.name] : '' }}</ng-container>
+                  <ng-container *ngSwitchCase="'action'">
+                    <button mat-icon-button	(click)="onDelete(row); $event.stopPropagation()"><mat-icon>delete</mat-icon></button>
+                  </ng-container>
+                  <ng-container *ngSwitchDefault>{{ row[field.name] }}</ng-container>
+                </ng-container>
+              </span>
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable>
+  </div>
+</div>

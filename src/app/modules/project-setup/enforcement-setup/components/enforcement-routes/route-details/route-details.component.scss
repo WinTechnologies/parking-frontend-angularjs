@@ -1,0 +1,71 @@
+@import "../../../../../../../styles/color";
+
+:host {
+  .route-details {
+
+    &-streets {
+      display: flex;
+
+      ul {
+        width: 400px;
+        padding-left: 20px;
+        li {
+          overflow: hidden;
+          white-space: pre;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+
+    &-time {
+      display: flex;
+      align-items: center;
+      mat-icon {
+        color: $c-grey;
+      }
+    }
+
+    &-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+
+      .label-text {
+        color: $c-grey;
+        font-size: 12px;
+      }
+
+      &-filter {
+        .filter {
+          padding: 0 20px 0 44px;
+          mat-icon {
+            position: absolute;
+            left: -24px;
+          }
+        }
+      }
+
+      button {
+        color: $c-blue1;
+        outline: none;
+        background: transparent;
+
+        .mat-icon {
+          vertical-align: middle;
+          margin-right: 3px;
+        }
+      }
+
+      button.btn-primary {
+        color: #fff;
+        background-color: #007bff;
+        border-color: #007bff;
+      }
+
+    }
+
+    &-content {
+    }
+  }
+}

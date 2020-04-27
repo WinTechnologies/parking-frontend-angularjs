@@ -1,0 +1,142 @@
+@import '../../../../../../../styles/color';
+
+.incentive-title{
+  margin: 0 1rem 0 1rem ;
+
+  .incentive-item-title {
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .incentive-item-column-wrapper{
+    text-align: center;
+  }
+
+  h5 {
+    margin-top: 13px;
+  }
+
+  &-add-button {
+    cursor: pointer;
+
+    .button_plus_blue{
+      width: 20px;
+    }
+
+    .span_add{
+      margin-left: 6px;
+    }
+  }
+
+  .incentive_list{
+    .incentive-item {
+      display: flex;
+      flex-wrap: wrap;
+
+      &-wrapper {
+        width: 400px;
+        border: 1px solid $c-greylight;
+        border-radius: 10px;
+        margin: 15px;
+        cursor: pointer;
+
+        &:hover {
+          border: 1px solid #023b41;
+          transition: 0.3s;
+        }
+      }
+
+      &-contain-title {
+        display: flex;
+      }
+
+      &-delete {
+        margin-left: 200px;
+      }
+
+      &-title {
+        padding: 10px;
+        display: flex;
+        justify-content: unset;
+
+        span {
+          margin: -11px;
+          padding: 10px;
+          min-width: 155px;
+          border-top-left-radius: 7px;
+          border-bottom-right-radius: 7px;
+          background-color: $c-blue;
+          color: $c-white;
+        }
+
+        a {
+          text-decoration: underline;
+          color: $c-lightblue;
+          cursor: pointer;
+        }
+      }
+
+      &-content {
+        display: flex;
+        justify-content: space-between;
+        padding: 20px;
+        font-size: 12px;
+
+        .team-wrapper {
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          color: $c-lightblue;
+
+          .count {
+            font-size: 30px;
+            line-height: 20px;
+            font-weight: 500;
+          }
+        }
+      }
+
+      &-column-wrapper {
+        display: inline-block;
+        flex-direction: column;
+
+        .title {
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+.label {
+  margin-top: 10px;
+  color: $c-grey;
+  font-size: 12px;
+  width: 50%;
+  text-align: right;
+  display: inline-block;
+}
+
+.value {
+    color: $c_blue;
+    width: 50%;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: left;
+    display: inline-block;
+    padding-left: 10px;
+}
+
+.input-span{
+  width: 100%;
+  display: inline-block;
+}
+
+.add_btn {
+  vertical-align:top;
+}
+
+.color {
+  color: #32a8cd;
+  font-weight: 500;
+}

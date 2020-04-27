@@ -1,0 +1,14 @@
+<nav *ngIf="authService.authStatusSub | async" class="navbar navbar-expand-sm navbar-light rounded-0 mb-0">
+  <button class="dt-navbar-btn text-white mr-9px" id="sidebarCollapse" (click)="toggleSidebar()"  mat-icon-button>
+    <i class="material-icons">menu</i>
+  </button>
+  <p class="text-white m-0">Mawgif Advanced Performance System</p>
+  <div class="ml-auto px-3">
+    <a class="nav-link disabled text-white" *ngIf="profile" [routerLink]="profileRouterLink">
+      <i class="fa fa-user-circle"></i>
+      {{profile.firstname}}
+      {{profile.lastname}}
+    </a>
+    <button class="btn btn-outline-danger my-2 my-sm-0 text-white border-white bg-transparent" (click)="onLogoutClick()"><i class="fa fa-sign-out has-danger"></i> Logout</button>
+  </div>
+</nav>

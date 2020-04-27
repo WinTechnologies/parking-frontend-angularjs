@@ -1,0 +1,112 @@
+<div fxLayout="row"
+     fxLayoutAlign="space-between stretch"
+     *ngIf="status === ViewMode.ListView">
+  <div
+    fxFlex="250px"
+    fxLayout="row"
+    class="leftSide">
+    <nav class="leftSide">
+      <div>
+        <ul class="list-unstyled components">
+          <li class="mb-4">
+            <a class="cat-link" href="javascript:;" data-target="#myLibraryMenu" data-toggle="collapse" aria-expanded="true">
+              <span>{{headerName}}</span>
+            </a>
+            <ul class="collapse list-unstyled in" id="myLibraryMenu" aria-expanded="true">
+              <li>
+                <div class="search-box mat-elevation-z2" fxFlex="1 1 0%">
+                  <input
+                    type="text"
+                    [value]="searchValue"
+                    #searchTerm
+                    (keyup)="filterReport(searchTerm.value)"
+                    placeholder="Search..."
+                  />
+                  <button mat-icon-button><mat-icon>search</mat-icon></button>
+                </div>
+              </li>
+              <li>
+                <ul class="list-unstyled components">
+                  <li class="mb-3">
+                    <a class="sub-cat-link" href="javascript:;" data-target="#globalMenu" data-toggle="collapse" aria-expanded="true">
+                      <span>GLOBAL</span>
+                    </a>
+                    <ul class="collapse list-unstyled in" id="globalMenu" aria-expanded="true">
+                      <li *ngFor="let report of reportList; let index=index">
+                        <div class="search-box" fxFlex="1 1 0%" *ngIf="!report.project_id">
+                          <label>{{report.name}}</label>
+                          <button mat-icon-button class="reportButton" (click)="toggleView({index: index, viewMode: ViewMode.DetailView}, false)"><mat-icon>keyboard_backspace</mat-icon></button>
+                        </div>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="mb-3">
+                    <a class="sub-cat-link" href="javascript:;" data-target="#projectMenu" data-toggle="collapse" aria-expanded="false">
+                      <span>PROJECT</span>
+                    </a>
+                    <ul class="collapse list-unstyled" id="projectMenu">
+                      <li *ngFor="let report of reportList; let index=index">
+                        <div class="search-box" fxFlex="1 1 0%" *ngIf="report.project_id">
+                          <label>{{report.name}}<br><span>({{report.project.project_name}})</span></label>
+                          <button mat-icon-button class="reportButton" (click)="toggleView({index: index, viewMode: ViewMode.DetailView}, false)"><mat-icon>keyboard_backspace</mat-icon></button>
+                        </div>
+                      </li>
+                      <li>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li *ngIf="tabIndex === 0">
+            <a class="cat-link" href="javascript:" data-target="#groupLibraryMenu" data-toggle="collapse" aria-expanded="false">
+              <span>GROUP LIBRARY</span>
+            </a>
+            <ul class="collapse list-unstyled" id="groupLibraryMenu">
+              <li *ngFor="let report of groupLibrary; let index=index">
+                <div class="search-box" fxFlex="1 1 0%">
+                  <label>{{report.name}}</label>
+                  <button mat-icon-button class="reportButton" (click)="toggleView({index: index, viewMode: ViewMode.DetailView}, true)"><mat-icon>keyboard_backspace</mat-icon></button>
+                </div>
+              </li>
+              <li>
+              </li>
+            </ul>
+          </li>
+
+        </ul>
+      </div>
+    </nav>
+
+  </div>
+  <div fxFlex fxFlexOffset="30px">
+    <button mat-button color="basic" (click)="onCreatDashboard()" *ngIf="tabIndex === 0">
+      <mat-icon>add_circle</mat-icon>
+      <span class="ml-1">New Dashboard</span>
+    </button>
+  </div>
+</div>
+<div fxLayout="row"
+     fxLayoutAlign="space-between stretch"
+     *ngIf="status === ViewMode.DetailView">
+  <div
+    fxFlex="250px"
+    fxLayout="row"
+    class="leftSideBox detailBox">
+    <app-report-detail
+      [groups]="groups"
+      [currentReport]="selectedReport"
+      [charts]="charts"
+      (viewChanged)="toggleView($event, true)"
+      (updateFlag)="updateAllLibrary($event)"
+    ></app-report-detail>
+  </div>
+  <div fxFlex fxFlexOffset="30px">
+    <app-report-chart
+      [currentReport]="selectedReport"
+      [charts]="charts"
+      (filterParameter)="filterChart($event)"
+    ></app-report-chart>
+  </div>
+</div>

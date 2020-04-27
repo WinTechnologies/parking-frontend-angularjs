@@ -1,0 +1,109 @@
+@import "../../../../../styles/color";
+
+:host {
+  
+  .onstreet-map-wrapper {
+    height: 75vh;
+  }
+
+  .on-street-page {
+    &-header {
+
+      .mat-icon-button {
+        outline: none;
+      }
+    }
+
+    &-content {
+      margin-top: 130px;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      // margin: 5px 20px;
+      // background-color: $c-greylight1;
+      // min-height: calc(100vh - 100px);
+
+      &-header {
+        display: flex;
+        align-items: center;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        position: fixed;
+        top: 110px;
+        right: 0;
+        left: 15rem;
+        z-index: 35;
+        background: white;
+
+        // Check on the app.component.css for the style
+        .filter {
+          // padding: 0 20px 0 44px;
+          mat-icon {
+            position: absolute;
+            // left: -24px;
+          }
+        }
+
+        .divider {
+          flex-grow: 1;
+        }
+
+        button {
+          color: $c-blue1;
+          outline: none;
+          background: transparent;
+
+          .mat-icon {
+            vertical-align: middle;
+            margin-right: 5px;
+          }
+        }
+
+        &-type-wrapper {
+          margin-top: 10px;
+          display: flex;
+        }
+
+        &-type-item {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          margin: 0 10px;
+          cursor: pointer;
+          border-bottom: 2px solid transparent;
+
+          &.selected {
+            border-bottom: 2px solid $c-blue1;
+          }
+
+          img {
+            width: 40px;
+            height: 40px;
+          }
+          .name {
+            width: 60px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            text-align: center;
+          }
+        }
+      }
+
+      &-content {
+        background-color: $c-greylight1;
+      }
+    }
+
+  }
+
+  .page-top-header {
+    justify-content: initial;
+  }
+
+  ::ng-deep app-listview-new {
+    width: 100%;
+  }
+}

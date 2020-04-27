@@ -1,0 +1,85 @@
+<div class="add-project-page">
+  <div class="add-project-page-header" *ngIf="!dialog">
+    <div class="add-project-page-header-buttons">
+      <button mat-icon-button color="base" (click)="onBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div class="add-project-page-content">
+    <h1 class="add-project-page-content-title">Add Project</h1>
+    <div class="add-project-page-content-filters">
+      <div class="row">
+        <div class="col-lg-12">
+          <mat-form-field class="add-project-page-content-filters-wrapper">
+            <mat-icon>search</mat-icon>
+            <input matInput (keyup)="applyFilterProject($event.target.value)" placeholder="Search Project" />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <hr class="add-project-page-content-divider" />
+    <div class="row">
+      <div class="col-lg-12">
+        <h2 class="add-project-page-content-title" style="font-size: 16px;">Existing Project</h2>
+        <div class="add-project-page-content-wrapper">
+          <ng-container *ngFor="let project of filteredProjects; let i = index">
+            <div
+              class="add-project-item-wrapper"
+              *ngIf="i < 1 || seeAll"
+              (click)="addProject(project)"
+              [class.selected]="selectedProjects?.includes(project)">
+              <div class="add-project-item-title d-flex justify-content-between">
+                <span>{{ project.project_code }} - {{ project.project_name }}</span>
+                <ng-container *ngFor="let icon of projectActivities">
+                  <div *ngIf="project.id == icon.project_id" class="add-project-item-title-icons">
+                    <img *ngIf="icon.has_car_park && project.id == icon.project_id"
+                      src="assets/Icons/Projects_section/car_park.svg">
+                    <img *ngIf="icon.has_enforcement && project.id == icon.project_id"
+                      src="assets/Icons/Projects_section/enforcement.svg">
+                    <img *ngIf="icon.has_on_street && project.id == icon.project_id"
+                      src="assets/Icons/Projects_section/on_street.svg">
+                    <img *ngIf="icon.has_rental_car && project.id == icon.project_id"
+                      src="assets/Icons/Projects_section/rental_car.svg">
+                    <img *ngIf="icon.has_taxi_management && project.id == icon.project_id"
+                      src="assets/Icons/Projects_section/taxi_management.svg">
+                    <img *ngIf="icon.has_valet_parking && project.id == icon.project_id"
+                      src="assets/Icons/Projects_section/valet_parking.svg">
+                  </div>
+                </ng-container>
+              </div>
+              <div class="add-project-item-content">
+                <img class="add-project-item-content"
+                  [src]="project?.img_url ? baseUrl + project.img_url : 'assets/logo.png'" alt="project img">
+                <div class="add-project-item-column-wrapper">
+                  <span class="labl">Name:</span>
+                  <span class="text">{{ project?.project_name }}</span>
+                  <span class="labl">Type:</span>
+                  <span class="text">{{ project?.type_establishment }}</span>
+                </div>
+                <div class="add-project-item-column-wrapper">
+                  <span class="labl">Contract Date:</span>
+                  <span class="text">{{project?.start_date | date: 'MMM d, y'}}</span>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <a (click)="changeSeeAll()">
+      <h5 class="add-project-page-content-see-all">{{ seeAll ? 'Hide' : 'Show All' }}</h5>
+    </a>
+    <hr *ngIf="!dialog" class="add-project-page-content-divider">
+    <div *ngIf="!dialog" class="float-right">
+      <div class="p-2">
+        <button mat-stroked-button class="btn-light mr-3 empty" type="button" (click)="onCancel()">
+          Cancel
+        </button>
+        <button mat-flat-button class="btn-primary full" type="submit" (click)="onSubmit()">
+          Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

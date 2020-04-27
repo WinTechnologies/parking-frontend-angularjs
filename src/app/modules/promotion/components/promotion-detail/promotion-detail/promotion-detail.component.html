@@ -1,0 +1,90 @@
+<main class="promotions-wrapper">
+  <!-- ------------------- Greybar ------------------------ -->
+  <header class="page-top-header">
+    <div class="d-flex align-items-center">
+      <div class="value-added-list-page-buttons">
+        <button mat-icon-button color="base" (click)="onBack()"><mat-icon>arrow_back</mat-icon></button>
+      </div>
+      <div>Tariff / Promotion / {{!promotionId ? 'Create a Promotion' : 'Update a Promotion'}}</div>
+    </div>
+    <div class="current-time">
+      {{ today | date:'dd/MM/yyyy hh:mm a'}}
+    </div>
+  </header>
+  <!-- ------------------------------------------- -->
+  <h4 class="font-weight-bold title-fixed promotion-detail-title">
+    {{!promotionId ? 'Create a Promotion' : 'Update a Promotion'}}
+  </h4>
+  <div class="content-wrapper mt-50px">
+    <form *ngIf="promotion && promotionForm" [formGroup]="promotionForm" (submit)="onSubmit()">
+      <section>
+        <mat-form-field class="mr-3">
+          <input matInput type="text"
+                 formControlName="promo_code"
+                 placeholder="Code" required
+                 (keypress)="inputCheck($event)"
+                 (paste)="inputCheck($event)">
+          <mat-error>Promotion code is required. This field accepts only alphabetical and numerical characters.</mat-error>
+        </mat-form-field>
+        <mat-form-field class="mr-3">
+          <input matInput type="text" formControlName="promo_name_en" placeholder="Name (English)" required>
+          <mat-error>Promotion name(En) is required</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput type="text" formControlName="promo_name_ar" placeholder="Name (Ar)" required>
+          <mat-error>Promotion name(Ar) is required</mat-error>
+        </mat-form-field>
+      </section>
+
+      <section class="pt-3">
+        <app-promotion-location
+          [promotion]="promotion"
+          [formGroup]="promotionForm"
+          [canUpdate]="canUpdate">
+        </app-promotion-location>
+      </section>
+
+      <section class="pl-3 pt-3">
+        <app-promotion-zone
+          [promotion]="promotion"
+          [canUpdate]="canUpdate">
+      </app-promotion-zone>
+      </section>
+
+      <section class="pt-3">
+        <app-promotion-values
+          [formGroup]="promotionForm"
+          [canUpdate]="canUpdate">
+      </app-promotion-values>
+      </section>
+
+      <section class="pt-3">
+        <app-promotion-validity
+          [promotion]="promotion"
+          [formGroup]="promotionForm"
+          [canUpdate]="canUpdate">
+      </app-promotion-validity>
+      </section>
+
+      <section class="terms-and-conditions pt-3">
+        <h4 class="font-weight-bold">General</h4>
+        <div class="section-content pt-3">
+          <mat-form-field>
+            <textarea 
+              matInput 
+              type="text" 
+              formControlName="term_conditions" 
+              rows="5" 
+              placeholder="Terms & Conditions">
+            </textarea>
+          </mat-form-field>
+        </div>
+      </section>
+
+      <div *ngIf="canUpdate" class="text-right pt-3">
+        <button mat-stroked-button color="primary" class="mr-2" type="button" (click)="onBack()">Cancel</button>
+        <button mat-flat-button color="primary" [disabled]="!checkValidForm()">{{!promotionId ? 'Create' : 'Update'}}</button>
+      </div>
+    </form>
+  </div>
+</main>

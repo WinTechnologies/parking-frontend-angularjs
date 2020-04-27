@@ -1,0 +1,149 @@
+/*
+* -----------------------------------------------------------------------
+*                                  Colors
+* -----------------------------------------------------------------------
+*/
+$mawgif-primary: #2d404a;
+
+$c-white: #ffffff;
+$c-green: #28fdb4;
+$c-yellowgreen: yellowgreen;
+$c-yellow: #D5C16A;
+$c-orange: #fda428;
+$c-grey: #A5A9B4;
+$c-greylight: #edeef0;
+$c-greylight1: #fafafb;
+$c-textdark: #282D32;
+$c-blue: #023b41;
+$c-blue1: #1c75bc;
+$c-lightblue: #13a7e2;
+$c-darkgrey: #6c7980;
+
+// pagination color
+$c-pagination-back: #ffffff;
+$c-pagination-font: #6c7980;
+$c-pagination-border: #6c7980;
+$c-pagination-disabled-back: #eff5f5;
+$c-pagination-disabled-color: #6c7980;
+$c-pagination-selected-back: #1c75bc;
+$c-pagination-selected-font: #ffffff;
+
+// category color
+$requested-background-color: #ffffff;
+$category-default-border-color: black;
+$in-progress-border-color: #2f5597;
+$in-progress-background-color: #4472c4;
+$started-background-color: #2f5597;
+$released-background-color: #00b050;
+$canceled-background-color: #ff0000;
+$clamped-background-color: #2f5597;
+$completed-background-color: #efcb92;
+$missed-background-color: yellow;
+
+$solid-colors: (
+  secondary: (
+    color: #008080,
+    alt: #008080,
+    foreground: rgba(0, 0, 0, 0.76)
+  ),
+  white: (
+    color: #fff,
+    alt: #eee,
+    foreground: rgba(0, 0, 0, 0.76)
+  ),
+  black: (
+    color: #1e2129,
+    alt: #2d323d,
+    foreground: #ffffff
+  ),
+  gray: (
+    color: #9E9E9E,
+    alt: #9E9E9E,
+    foreground: #ffffff
+  ),
+  dark-gray: (
+    color: #424242,
+    alt: #303030,
+    foreground: #ffffff
+  ),
+  slate-gray: (
+    color: #607D8B,
+    alt: #37474F,
+    foreground: #ffffff
+  ),
+  dark-purple: (
+    color: #322740,
+    alt: #322740,
+    foreground: #ffffff
+  ),
+
+  dark-blue: (
+    color: #10174c,
+    alt: #151c4e,
+    foreground: #ffffff
+  ),
+  blue: (
+    color: #03A9F4,
+    alt: #039BE5,
+    foreground: #ffffff
+  ),
+  indigo: (
+    color: #3F51B5,
+    alt: #5C6BC0,
+    foreground: #ffffff
+  ),
+  yellow: (
+    color: #fcc02e,
+    alt: #f9c23b,
+    foreground: rgba(0, 0, 0, 0.87)
+  ),
+  green: (
+    color: #4CAF50,
+    alt: #66BB6A,
+    foreground: rgba(0, 0, 0, 0.87)
+  ),
+  red: (
+    color: #F44336,
+    alt: #FF5252,
+    foreground: #ffffff
+  ),
+  orange: (
+    color: #FF5722,
+    alt: #FF6E40,
+    foreground: #ffffff
+  ),
+  pink: (
+    color: #e91f63,
+    alt: #e82c6c,
+    foreground: #ffffff
+  ),
+  mawgif: (
+    color: #2d404a,
+    alt: #008080,
+    foreground: #ffffff
+  )
+);
+
+// Gradient colors
+$gradient-colors: (
+  gradient-purple-indigo: (
+    "start-color": #663399,
+    "end-color": #33214b,
+    "foreground": #ffffff
+  ),
+  gradient-black-blue: (
+    "start-color": #004e92,
+    "end-color": #000428,
+    "foreground": #ffffff
+  ),
+  gradient-black-gray: (
+    "start-color": #404040,
+    "end-color": #000000,
+    "foreground": #ffffff
+  ),
+  gradient-steel-gray: (
+    "start-color": #616d86,
+    "end-color": #1f1c2c,
+    "foreground": #ffffff
+  )
+);

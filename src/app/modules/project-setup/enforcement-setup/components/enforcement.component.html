@@ -1,0 +1,61 @@
+<div class="enforcement-page mt-50px">
+  <!-- --------------- Greybar ---------------- -->
+  <header class="page-top-header">
+    <div class="enforcement-page-header-buttons">
+      <button mat-icon-button color="base" (click)="onBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+    <span>{{project?.project_name}} > Enforcement > {{EnforcementType[selectedType.type] || ''}}</span>
+  </header>
+  <!-- ------------------------------- -->
+  <div class="enforcement-page-content">
+
+    <div class="enforcement-page-content-title">
+      <h1>Enforcement Setup</h1>
+      <div class="enforcement-page-content-title-type-wrapper">
+        <ng-container *ngFor="let type of types">
+          <div [class.selected]="type==selectedType"
+               class="enforcement-page-content-title-type-item"
+               (click)="onSelectType(type)">
+            <img [src]="type.icon">
+            <div class="name">{{type.name}}</div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="enforcement-page-content-table-wrapper">
+
+      <app-enforcement-eo-list
+        [projectId]="projectId" 
+        [enforcementItem]="selectedType" 
+        *ngIf="selectedType.type==EnforcementType.Enforcer || selectedType.type==EnforcementType.EOD || selectedType.type==EnforcementType.Driver">
+      </app-enforcement-eo-list>
+
+      <app-enforcement-device-list
+        [projectId]="projectId"
+        *ngIf="selectedType.type==EnforcementType.Devices">
+      </app-enforcement-device-list>
+
+      <app-tariff-enforcement
+        [projectId]="projectId"
+        *ngIf="selectedType.type==EnforcementType.Tariff">
+      </app-tariff-enforcement>
+
+      <app-enforcement-asset-list
+        [projectId]="projectId"
+        [enforcementItem]="selectedType"
+        *ngIf="selectedType.type==EnforcementType.Truck || selectedType.type==EnforcementType.Van || selectedType.type==EnforcementType.Clamp">
+      </app-enforcement-asset-list>
+
+      <!-- <app-products 
+        *ngIf="selectedType.type==EnforcementType.Tariff">
+      </app-products> -->
+
+      <app-enforcement-routes
+        [projectId]="projectId"
+        *ngIf="selectedType.type==EnforcementType.Routes">
+      </app-enforcement-routes>
+    </div>
+  </div>
+</div>

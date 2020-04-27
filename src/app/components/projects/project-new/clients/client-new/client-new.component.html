@@ -1,0 +1,88 @@
+<div mat-dialog-title>
+  <h1>Client Detail</h1>
+  <button mat-icon-button (click)="onNoClick()"><mat-icon>close</mat-icon></button>
+</div>
+<form
+  id="ngForm"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit()"
+  *ngIf="form"
+  autocomplete="off"
+  novalidate
+>
+<div mat-dialog-content>
+  <div class="row">
+    <div class="col-6">
+      <div class="form-field">
+        <span>First Name:</span>
+        <mat-form-field>
+          <input matInput type="text" formControlName="firstname">
+          <mat-error>First name is required</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="form-field">
+        <span>Last Name:</span>
+        <mat-form-field>
+          <input matInput type="text" formControlName="lastname">
+          <mat-error>Last name is required</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="form-field">
+        <span>Designation:</span>
+        <mat-form-field class="designation">
+          <input matInput type="text" formControlName="designation">
+          <mat-error>Designation is required</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-6">
+      <div class="form-field d-flex align-items-center">
+        <span>Mobile:</span>
+        <div class="intl-tel-input-wrapper no-label" [class.has-error]="invalidPhoneNumber()">
+          <input type="text"
+                 required
+                 ng2TelInput
+                 [ng2TelInputOptions]="{initialCountry: 'SA', preferredCountries: ['SA', 'AE', 'BH', 'KW', 'QA, OM']}"
+                 (hasError)="hasPhoneNumberError($event)"
+                 (ng2TelOutput)="getPhoneNumber($event)"
+                 (intlTelInputObject)="telInputObject($event)"/>
+          <label class="error" *ngIf="phoneNumberValid !== undefined && !phoneNumberValid"> Valid Phone number is required </label>
+          <label class="error" *ngIf="phoneNumberValid === undefined && invalidPhoneNumber()"> Valid Phone number is required </label>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="form-field">
+        <span>Email:</span>
+        <mat-form-field>
+          <input matInput type="text" formControlName="email">
+          <mat-error>Email is required</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="form-field">
+        <span>Address:</span>
+        <mat-form-field class="address">
+          <input matInput type="text" formControlName="address">
+          <mat-error>Address is required</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-stroked-button type="button" color="primary" class="mr-2" (click)="onNoClick()">Cancel</button>
+  <button mat-flat-button color="primary">{{client ? 'Update' : 'Add'}}</button>
+</div>
+</form>

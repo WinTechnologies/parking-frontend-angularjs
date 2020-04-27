@@ -1,0 +1,8 @@
+#parkingMap{
+    height: 570px;
+}
+
+::ng-deep .tooltip-label{
+    color: gray;
+    font-weight: 700;
+}

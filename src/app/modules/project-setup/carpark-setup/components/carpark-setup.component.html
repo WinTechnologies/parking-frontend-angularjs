@@ -1,0 +1,175 @@
+<div class="carpark-setup-page">
+  <!-- --------------- Greybar ---------------- -->
+  <header class="page-top-header">
+    <div class="carpark-setup-page-header-buttons">
+      <button mat-icon-button color="base" (click)="onBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+    <span>{{project?.project_name}} / Car Park {{selectedType === undefined ? '' : ' > ' + CarparkItemType[selectedType.type]}}</span>
+  </header>
+  <!-- ---------------------------------- -->
+  <div class="carpark-setup-page-content">
+    <div class="carpark-setup-page-content-header">
+      <div class="carpark-setup-page-content-header-filter-wrapper">
+        <div class="d-flex align-items-center">
+          <mat-icon>search</mat-icon>
+          <mat-form-field class="filter">
+            <input
+              matInput
+              (keyup)="applyFilterAssets($event.target.value)"
+              placeholder="Search Name">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="carpark-setup-page-content-header-type-wrapper">
+        <ng-container *ngFor="let type of types">
+          <div (click)="onSelectType(type)" [ngClass]="determineTypeStyle(type, selectedType)">
+            <img [src]="determineTypeImage(type, selectedType)" [alt]="type.name">
+            <div class="name">{{type.name}}</div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="divider"></div>
+
+      <!--selectedOptions.length === 1-->
+      <ng-container *ngIf="selectedType" >
+        <div class="parking-mode-change-button">
+          <button mat-icon-button (click)="onChangeDisplayMode(selectedOptions)">
+            <mat-icon *ngIf="!viewMode">list</mat-icon>
+            <mat-icon *ngIf="viewMode" svgIcon="maps" class="mr-3px"></mat-icon>
+          </button>
+        </div>
+        <div>
+          <ng-container *ngIf="selectedType && selectedType.type !== CarparkItemType.Asset">
+            <button mat-flat-button color="basic" (click)="onAdd(selectedOptions)">
+              <mat-icon>add_circle</mat-icon>Create {{selectedType.name}}
+            </button>
+          </ng-container>
+          <ng-container *ngIf="selectedType && selectedType.type === CarparkItemType.Asset">
+            <button mat-flat-button color="basic" (click)="onAdd(selectedOptions)">
+              <mat-icon>add_circle</mat-icon>Install {{selectedType.name}}
+            </button>
+          </ng-container>
+        </div>
+      </ng-container>
+
+      <div class="filter-menu">
+        <button mat-icon-button [matMenuTriggerFor]="filterMenu">
+          <mat-icon>tune</mat-icon>
+        </button>
+        <mat-menu #filterMenu="matMenu">
+          <div>
+            <mat-selection-list #filterList
+                                [(ngModel)]="selectedOptions"
+                                (selectionChange)="onShowItemsSelection($event, filterList)">
+              <mat-list-option checkboxPosition='before' value="All">
+                View All
+                <mat-divider></mat-divider>
+              </mat-list-option>
+              <mat-list-option *ngFor="let filter of filterLists; let i = index;" checkboxPosition='before' [value]="filter">
+                {{filter}}
+              </mat-list-option>
+            </mat-selection-list>
+          </div>
+        </mat-menu>
+      </div>
+    </div>
+    <div class="carpark-setup-page-content-content">
+      <app-carpark-project-zone
+        #child
+        *ngIf="selectedType?.type === CarparkItemType.Zone"
+        [projectId]="projectId"
+        [viewMode]="viewMode"
+        [formMode]="formMode"
+        [showOptions]="selectedOptions"
+        (changeFormMode)="formMode=$event">
+      </app-carpark-project-zone>
+      <app-project-terminal
+        #child
+        *ngIf="selectedType?.type === CarparkItemType.Terminal"
+        [projectId]="projectId"
+        [viewMode]="viewMode"
+        [formMode]="formMode"
+        [showOptions]="selectedOptions"
+        (changeFormMode)="formMode=$event">
+      </app-project-terminal>
+      <app-carpark-parking
+        #child
+        *ngIf="selectedType?.type === CarparkItemType.Parking"
+        [projectId]="projectId"
+        [viewMode]="viewMode"
+        [formMode]="formMode"
+        [showOptions]="selectedOptions"
+        (changeFormMode)="formMode=$event">
+      </app-carpark-parking>
+      <app-carpark-level
+        #child
+        *ngIf="selectedType?.type === CarparkItemType.Level"
+        [projectId]="projectId"
+        [viewMode]="viewMode"
+        [formMode]="formMode"
+        [showOptions]="selectedOptions"
+        (changeFormMode)="formMode=$event">
+      </app-carpark-level>
+      <app-carpark-zone
+        #child
+        *ngIf="selectedType?.type === CarparkItemType.ParkZone"
+        [projectId]="projectId"
+        [viewMode]="viewMode"
+        [formMode]="formMode"
+        [showOptions]="selectedOptions"
+        (changeFormMode)="formMode=$event">
+      </app-carpark-zone>
+      <app-park-gate
+        #child
+        *ngIf="selectedType?.type === CarparkItemType.Gate"
+        [projectId]="projectId"
+        [viewMode]="viewMode"
+        [formMode]="formMode"
+        [showOptions]="selectedOptions"
+        (changeFormMode)="formMode=$event">
+      </app-park-gate>
+      <app-park-lane
+        #child
+        *ngIf="selectedType?.type === CarparkItemType.Lane"
+        [projectId]="projectId"
+        [viewMode]="viewMode"
+        [formMode]="formMode"
+        [showOptions]="selectedOptions"
+        (changeFormMode)="formMode=$event">
+      </app-park-lane>
+      <app-park-space
+        #child
+        *ngIf="selectedType?.type === CarparkItemType.ParkSpace"
+        [projectId]="projectId"
+        [viewMode]="viewMode"
+        [formMode]="formMode"
+        [showOptions]="selectedOptions"
+        (changeFormMode)="formMode=$event">
+      </app-park-space>
+      <app-carpark-asset
+        #child
+        *ngIf="selectedType?.type === CarparkItemType.Asset"
+        [projectId]="projectId"
+        [viewMode]="viewMode"
+        [formMode]="formMode"
+        [showOptions]="selectedOptions"
+        (changeFormMode)="formMode=$event">
+      </app-carpark-asset>
+
+      <div *ngIf="!selectedType">
+        <div class="carpark-setup-map-wrapper">
+          <!-- Overview Map -->
+          <app-mapview-new
+            *ngIf="!viewMode"
+            [mapCenter]="projectCenter"
+            [options]="mapOptions"
+            [mapDataJSON]="overviewMapDataJSON"
+            [mapDrawDataJSON]="overviewMapDrawDataJSON">
+          </app-mapview-new>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

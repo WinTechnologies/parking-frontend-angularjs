@@ -1,0 +1,46 @@
+@import "../../../../../../styles/color";
+
+:host {
+  .mat-dialog-title {
+    display: flex;
+    justify-content: space-between;
+
+    h1 {
+      font-weight: 700;
+      font-size: 16px;
+      color: $c-lightblue;
+    }
+
+    button.mat-icon-button {
+      outline: none;
+      margin-right: -15px;
+      margin-top: -15px;
+    }
+  }
+
+  .mat-dialog-content {
+    .allday {
+      margin-top: 15px;
+    }
+
+    .form-field {
+      span {
+        width: 80px;
+        text-align: right;
+        margin-right: 20px;
+      }
+
+      .mat-form-field {
+        width: 180px;
+
+        &.title {
+          width: 330px;
+        }
+
+        &.remarks {
+          width: 80%;
+        }
+      }
+    }
+  }
+}

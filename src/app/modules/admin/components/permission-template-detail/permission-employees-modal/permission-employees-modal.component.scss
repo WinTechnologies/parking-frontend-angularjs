@@ -1,0 +1,22 @@
+:host {
+  .mat-dialog-title {
+    h4 {
+      font-weight: bold;
+      color: #31404b;
+    }
+  }
+
+  .table-filter{
+    padding: 0 20px 0 24px;
+
+    mat-icon {
+      position: absolute;
+      left: -24px;
+    }
+  }
+
+  .mat-table {
+    height: calc(65vh - 125px);
+    overflow-y: auto;
+  }
+}

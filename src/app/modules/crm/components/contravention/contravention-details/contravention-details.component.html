@@ -1,0 +1,48 @@
+<div class="information-wrapper">
+  <div class="information-block">
+    <h5 class="title">{{getStatusName(contravention)}}</h5>
+    <button class="close" mat-button (click)="onClose()">X</button>
+    <div class="information-item">
+      <div class="assets">
+        <div class="images-asset">
+          <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+        </div>
+      </div>
+    </div>
+    <div class="item-item">
+      <span class="violation" (click)="onMapView()">{{violationLocation}}</span>
+    </div>
+  </div>
+  <div *ngFor="let section of Details_Fields" class="information-block ml-3">
+    <h5 class="title py-1">{{section.sectionTitle}}</h5>
+    <div *ngFor="let field of section.fields" class="information-item row mr-0 my-3 ">
+      <div class="col-4">
+          <ng-container [ngSwitch]="field.label">
+             <ng-container *ngSwitchCase="'Amount'">{{ field.label }}({{contravention['currency_code'] }})</ng-container>
+            <ng-container *ngSwitchDefault>{{ field.label }}</ng-container>
+          </ng-container>
+      </div>
+      <div class="col-8 text-info information-item-value">
+        <ng-container [ngSwitch]="field.name">
+          <ng-container *ngSwitchCase="'creation'">
+                {{ formatTimeWithGmt(contravention[field.name])}}
+          </ng-container>
+          <ng-container *ngSwitchCase="'contravention_created_at'">
+              {{ formatTimeWithGmt(contravention[field.name])}}
+          </ng-container>
+          <ng-container *ngSwitchCase="'evolved_into_cn_at'">{{ formatTimeWithGmt(contravention[field.name])}}</ng-container>
+          <ng-container *ngSwitchCase="'violation_created'">{{ formatTimeWithGmt(contravention[field.name])}}</ng-container>
+          <ng-container *ngSwitchCase="'sent_at'">{{ formatTimeWithGmt(contravention[field.name])}}</ng-container>
+          <ng-container *ngSwitchCase="'is_paid'">{{ contravention[field.name] ? 'Paid' : 'Unpaid' }}</ng-container>
+          <ng-container *ngSwitchCase="'status'">{{ statusCodes[contravention[field.name]] }}</ng-container>
+          <ng-container *ngSwitchCase="'category'">{{ getStatusName(contravention) }}</ng-container>
+          <ng-container *ngSwitchCase="'plate_country'">
+            <span class="flag-icon flag-icon-gb flag-icon-squared {{getFlagClass()}}"></span>
+            {{contravention[field.name]}}
+          </ng-container>
+          <ng-container *ngSwitchDefault>{{ contravention[field.name] }}</ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

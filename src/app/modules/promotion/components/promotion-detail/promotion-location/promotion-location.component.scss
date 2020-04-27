@@ -1,0 +1,6 @@
+@import "../../../styles/promotion-common";
+.ngx-datatable.material {
+  ::ng-deep .datatable-body-cell img {
+    height: 30px !important;
+  }
+}

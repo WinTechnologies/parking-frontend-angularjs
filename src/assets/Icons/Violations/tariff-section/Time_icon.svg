@@ -1,0 +1,13 @@
+<svg id="clock-circular-outline_1_" data-name="clock-circular-outline (1)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24.387 24.387">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #1c75bc;
+      }
+    </style>
+  </defs>
+  <g id="Group_14105" data-name="Group 14105">
+    <path id="Path_16712" data-name="Path 16712" class="cls-1" d="M12.193,0A12.193,12.193,0,1,0,24.387,12.193,12.207,12.207,0,0,0,12.193,0Zm0,21.792a9.6,9.6,0,1,1,9.6-9.6A9.61,9.61,0,0,1,12.193,21.792Z"/>
+    <path id="Path_16713" data-name="Path 16713" class="cls-1" d="M51.554,24.423h-5.48V17.834a1,1,0,1,0-2.008,0v7.593a1,1,0,0,0,1,1h6.484a1,1,0,0,0,0-2.008Z" transform="translate(-33.006 -12.606)"/>
+  </g>
+</svg>

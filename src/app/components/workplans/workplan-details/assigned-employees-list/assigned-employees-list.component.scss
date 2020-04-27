@@ -1,0 +1,102 @@
+@import "../../../../../styles/_color.scss";
+
+:host {
+  .assigned-employee-list {
+
+    &-table-wrapper {
+      box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+      0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+      overflow: overlay;
+    }
+
+    @media (max-height: 850px) {
+      &-table-wrapper {
+        box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
+        0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+        overflow: overlay;
+      }
+    }
+
+    &-content {
+      &-header {
+        .mat-flat-button {
+          color: $c-blue1;
+          outline: none;
+          background: transparent;
+        }
+
+        .mat-icon {
+          vertical-align: middle;
+          margin-right: 10px;
+        }
+      }
+
+      &-title {
+        height: 50px;
+        line-height: 50px;
+        font-size: 1.5rem;
+
+      }
+
+      button.mat-icon-button {
+        color: $c-greylight;
+        outline: none;
+      }
+
+      .mat-table {
+        ::ng-deep .mat-sort-header-arrow.ng-trigger.ng-trigger-arrowPosition {
+          opacity: 0;
+        }
+
+        ::ng-deep .mat-sort-header-pointer-left.ng-trigger.ng-trigger-leftPointer{
+            transform: rotate(-45deg);
+        }
+        ::ng-deep .mat-sort-header-pointer-right.ng-trigger.ng-trigger-rightPointer{
+            transform: rotate(45deg);
+        }
+
+        .mat-header-row {
+          background-color: $c-blue;
+          position: sticky;
+          top: 0;
+          z-index: 100;
+
+          /deep/ .mat-sort-header-button {
+            color: $c-white !important;
+          }
+
+          /deep/ .mat-sort-header-arrow {
+            color: #32a8cd;
+          }
+        }
+
+        .mat-row {
+          padding: 0 5px;
+
+          &:hover {
+            cursor: pointer;
+            background-color: #2E626A;
+            .mat-cell {
+              color: $c-white;
+            }
+          }
+        }
+      }
+
+      .mat-column-avatar {
+        flex: 0 0 60px;
+        img {
+          width: 50px;
+          height: 50px;
+        }
+      }
+      .mat-column-action {
+        flex: 0 0 85px;
+      }
+    }
+
+    &-table-wrapper {
+      margin-bottom: 15px;
+    }
+  }
+}

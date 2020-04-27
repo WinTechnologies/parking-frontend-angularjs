@@ -1,0 +1,161 @@
+<div class="assignment-wrapper">
+  <app-assignment-violation-details [violation]="violation"></app-assignment-violation-details>
+  <hr>
+  <h4 class="subtitle">Values</h4>
+  <form *ngIf="assignmentForm" [formGroup]="assignmentForm" (ngSubmit)="onSubmit()">
+    <div class="values">
+      <div>
+        <div class="field">
+          <label>Value <span class="required">* </span>: </label>
+          <mat-form-field>
+            <input matInput type="number" formControlName="value" required min="1"  onPaste="return false" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+            <mat-error>Value is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="field">
+          <label>Late Fee:</label>
+          <mat-form-field>
+            <input matInput type="number" formControlName="late_fee_value" min="1"  onPaste="return false" onkeypress='return event.charCode >= 48 && event.charCode <= 57' />
+          </mat-form-field>
+          <span>Every</span>
+          <mat-form-field>
+            <input matInput type="number" formControlName="late_fee_days" min="1"  onPaste="return false" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+          </mat-form-field>
+          <span>Days</span>
+        </div>
+        <div class="field">
+          <label>Discount:</label>
+          <mat-form-field>
+            <input matInput type="number" formControlName="discount_value" min="1"  onPaste="return false" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+          </mat-form-field>
+          <span>if paid within</span>
+          <mat-form-field>
+            <input matInput type="number" formControlName="discount_days" min="1" onPaste="return false" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+          </mat-form-field>
+          <span>Days</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>Observation Time (min.):</label>
+        <mat-form-field>
+          <input matInput type="number" formControlName="observation_min" min="1" onPaste="return false" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+          <mat-error> Observation Time is required</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="field checkbox-container">
+        <div class="d-flex align-items-center">
+          <label class="mr-2">Action:</label>
+          <label for="action_clamp" class="mr-2">
+            <input type="checkbox" id="action_clamp" formControlName="action_clamp" (click)="changeClampAction()" [checked]="clamp_checked">
+            <span><img src="./assets/Icons/Violations/tariff-section/Clamp_icon.svg"/></span>
+          </label>
+          <label for="action_tow">
+            <input type="checkbox" id="action_tow" formControlName="action_tow" (click) ="changeTowAction()" [checked]="tow_checked"/>
+            <span><img src="./assets/Icons/Violations/tariff-section/Tow_truck_icon.svg"/></span>
+          </label>
+        </div>
+        <div *ngIf="tow_checked || clamp_checked">
+          <label>Service Fee <span class="required">* </span>:</label>
+          <mat-form-field>
+            <input  matInput type="number" formControlName="service_fee" onPaste="return false" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+          </mat-form-field>
+          <mat-error *ngIf="assignmentForm.get('service_fee').hasError('required')">Service Fee is required!</mat-error>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="schedules">
+      <h4 class="subtitle">Schedules</h4>
+      <div>
+        <mat-form-field>
+          <input
+            appInputDateFormat
+            matInput
+            class="date"
+            formControlName="date_start"
+            [matDatepicker]="pickerDateStart"
+            [min]="assignmentForm.value.date_start?assignmentForm.value.date_start:today"
+            [max]="dateEnd"
+            placeholder="Date from"
+          />
+          <mat-datepicker-toggle matSuffix [for]="pickerDateStart"></mat-datepicker-toggle>
+          <mat-datepicker #pickerDateStart> </mat-datepicker>
+          <mat-error *ngIf="assignmentForm.get('date_start').hasError('required')">Date from is required</mat-error>
+          <mat-error *ngIf="!assignmentForm.get('date_start').hasError('required')">Invalid date</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            appInputDateFormat
+            matInput
+            class="date"
+            formControlName="date_end"
+            [matDatepicker]="pickerDateEnd"
+            [min]="assignmentForm.value.date_start"
+            [max]="dateEnd"
+            placeholder="Date to"
+          />
+          <mat-datepicker-toggle matSuffix [for]="pickerDateEnd"></mat-datepicker-toggle>
+          <mat-datepicker #pickerDateEnd></mat-datepicker>
+          <mat-error *ngIf="assignmentForm.get('date_end').hasError('required')">Date from is required</mat-error>
+          <mat-error *ngIf="!assignmentForm.get('date_end').hasError('required')">Invalid date</mat-error>
+        </mat-form-field>
+      </div>
+      <div>
+        <label>Apply to <span class="required">*</span>: </label>
+        <app-selection-weekday
+          [weekdays]="workingDays"
+          (changedWeekdays)="onChangedWeekdays($event)"
+          [assignment]="true"
+        ></app-selection-weekday>
+        <mat-error *ngIf="formSubmitted && assignmentForm.get('working_days').hasError('required')">Working days are required</mat-error>
+      </div>
+      <div>
+        <mat-form-field>
+          <input
+            type="time"
+            atp-time-picker
+            matInput
+            formControlName="time_from"
+            placeholder="Start time"
+            [attr.start]="timeStart"
+            [attr.end]="timeEnd"
+          />
+        </mat-form-field>
+        <mat-form-field>
+          <input
+            type="time"
+            atp-time-picker
+            matInput
+            formControlName="time_to"
+            placeholder="End time"
+            [attr.start]="timeStart"
+            [attr.end]="timeEnd"
+          />
+        </mat-form-field>
+        <button type="button" mat-stroked-button color="primary" class="mr-1" (click)="onClearTimeSlot()">Clear</button>
+        <button type="button" mat-flat-button color="primary" (click)="onAddTimeSlot()">Add</button>
+      </div>
+      <div>
+        <mat-error *ngIf="this.slots.length==0">Time is required</mat-error>
+      </div>
+      <app-timeline-view [timeslots]="slots" [color]="'#31404b'"></app-timeline-view>
+    </div>
+    <hr>
+    <div class="zones-wrapper">
+      <h4 class="subtitle">Applied Zones</h4>
+      <app-project-zones-selector
+        *ngIf="selectedZones"
+        [selectedZones]="selectedZones"
+        [project_id]="projectId"
+        [assignment]="true"
+        (selectZones)="onSelectZones($event)"
+      >
+      </app-project-zones-selector>
+      <mat-error *ngIf="formSubmitted && !selectedZones.length">At lest one zone is required</mat-error>
+    </div>
+    <div class="buttons mt-3">
+      <button mat-stroked-button color="primary" type="button" class="mr-2" (click)="onCancel()">Cancel</button>
+      <button mat-flat-button color="primary">{{!assignment ? 'Add' : 'Update' }}</button>
+    </div>
+  </form>
+</div>

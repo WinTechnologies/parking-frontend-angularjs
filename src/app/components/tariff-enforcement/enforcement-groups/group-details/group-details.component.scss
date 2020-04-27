@@ -1,0 +1,84 @@
+@import "../../../../../styles/_color.scss";
+
+:host {
+  ::ng-deep .page-title-header {
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+    margin-top: 0px;
+    height: 60px;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .group-details-page {
+    padding: 0 2rem 2rem;
+    margin-top: 23px;
+  }
+
+  h4 {
+    color: #31404b;
+    line-height: 50px;
+    font-size: 1.5rem;
+  }
+
+  .create-btn {
+    color: $c-blue1;
+  }
+
+  form {
+    margin-top: 25px;
+
+    .mat-form-field {
+      margin-right: 0.25rem;
+    }
+
+    h5 {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    label {
+      width: 100px;
+      font-weight: 700;
+      margin-right: 0.25rem;
+      margin-bottom: 0;
+
+      span.required {
+        color: #ff3535;
+        width: 15px!important;
+      }
+    }
+
+    .area-name {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .area-assignment-name {
+      margin-bottom: 1rem;
+    }
+
+    .area-schedule {
+      border: 1px solid #282d32;
+      border-radius: 5px;
+      padding: 1rem;
+      margin: 0 auto 1rem;
+      div {
+        margin-top: 1rem;
+        mat-form-field, button {
+          margin-right: 1rem !important;
+        }
+      }
+    }
+  }
+
+  app-enforcement-violations {
+    /deep/ .pt-50px {
+      padding-top: 0 !important;
+    }
+
+    /deep/ .page-title-header {
+        position: initial;
+    }
+  }
+}

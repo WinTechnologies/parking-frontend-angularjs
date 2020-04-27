@@ -1,0 +1,40 @@
+// color scheme
+$active-dark-blue: #023b41;
+$active-blue: #1c75bc;
+$inactive-grey: #A5A9B4;
+
+.table-filter {
+  padding: 0 20px 0 24px;
+
+  mat-icon {
+    position: absolute;
+    left: -24px;
+  }
+}
+
+.mat-table {
+  .mat-row {
+
+    .mat-cell {
+
+      img.activity-icon {
+        width: 30px;
+        height: 30px;
+
+        &:not(:last-child) {
+          margin-right: 2px;
+        }
+      }
+    }
+  }
+}
+
+.table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .selected-value {
+
+  }
+}

@@ -1,0 +1,79 @@
+.delButton {
+  background: red;
+  margin: 20px;
+  border-radius: 5px;
+  width: calc(100% - 40px);
+  font-size: 23px;
+  letter-spacing: 2px;
+  border: none;
+}
+.cancelButton {
+  background: transparent;
+  margin: 0 20px;
+  border-radius: 5px;
+  width: calc(100% - 40px);
+  font-size: 23px;
+  letter-spacing: 2px;
+  color: #777777;
+  border: 2px solid #777777;
+}
+h4 {
+  text-align: center;
+  color: black;
+}
+.sendToMyButton {
+  // background: transparent;
+  // margin: 0 20px;
+  // border-radius: 5px;
+  width: calc(100% - 40px);
+  // font-size: 23px;
+  // color: #3189CE;
+  // letter-spacing: 2px;
+  // border: 2px solid #3189ce;
+  img {
+    width: 30px;
+    margin-right: 10px;
+  }
+  span {
+    font-size: 16px;
+  }
+}
+::ng-deep .mat-checkbox-layout .mat-checkbox-label {
+  white-space: normal;
+}
+.shareGroup {
+  display: flex;
+  .sidebarButton {
+    width: auto;
+    margin: 0 5px 0 15px !important;
+    letter-spacing: 1px;
+    padding: 0 10px;
+    line-height: 30px;
+    span {
+      font-size: 14px !important;
+    }
+    img {
+      width: 20px;
+      margin-right: 2px;
+    }
+  }
+  mat-form-field {
+    width: auto !important;
+    font-size: 15px;
+    margin: 0 15px 0 0 !important;
+  }
+  ::ng-deep .mat-form-field-wrapper {
+    padding-bottom: 0 !important;
+  }
+  ::ng-deep .mat-form-field-infix {
+    width: 120px !important;
+    margin-top: 0 !important;
+  }
+}
+.sharedGroups {
+  width: calc(100% - 40px);
+  display: block;
+  color: #3189CE;
+  font-size: 18px;
+  margin: 30px auto;
+}

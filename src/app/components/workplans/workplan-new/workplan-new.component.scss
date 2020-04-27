@@ -1,0 +1,89 @@
+@import "../../../../styles/_color.scss";
+
+:host {
+  .workplan-new-page {
+    &-header {
+      &-buttons {
+        button {
+          outline: none;
+        }
+        .mat-flat-button.add {
+          background-color: $c-yellowgreen;
+          margin: 0 20px;
+        }
+      }
+
+      .mat-icon-button {
+        outline: none;
+      }
+    }
+
+    &-content {
+      &-title {
+        height: 50px;
+        line-height: 50px;
+        font-size: 1.5rem;
+      }
+
+      &-wrapper {
+        border-bottom: 4px solid $c-greylight;
+
+        .form-field {
+          span {
+            width: 130px;
+          }
+
+          .mat-form-field {
+            width: 180px;
+          }
+        }
+      }
+
+      &-exceptions-title {
+          margin-top: 20px;
+          font-weight: 400;
+          font-size: 16px;
+      }
+
+      &-reoccuring-title {
+          font-weight: 400;
+          font-size: 16px;
+      }
+
+      &-schedule-buttons-wrapper {
+        border-bottom: 4px solid $c-greylight;
+        display: flex;
+        margin: 20px 0;
+
+        .divider {
+          flex-grow: 1;
+        }
+
+        button.mat-flat-button {
+          color: $c-blue1;
+        }
+      }
+
+      &-buttons-wrapper {
+        .next {
+          .mat-icon {
+            margin-top: -3px;
+            vertical-align: middle;
+          }
+        }
+      }
+    }
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .page-top-header {
+    justify-content: initial;
+  }
+
+  sup {
+    color: red;
+  }
+}

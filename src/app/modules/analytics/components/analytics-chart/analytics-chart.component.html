@@ -1,0 +1,29 @@
+<ng-container *ngIf="chart && chart?.data">
+  <div class="chart-wrapper">
+    <ng-container *ngIf="chart.type != 'map'">
+      <canvas
+        *ngIf="chart.type == 'pie'"
+        baseChart
+        [data]="chart.data"
+        [labels]="chart.labels"
+        [chartType]="chart.type"
+        [options]="chart.options"
+        [legend]="chart.legend"
+      >
+      </canvas>
+      <canvas
+        *ngIf="chart.type == 'bar' || chart.type == 'line'"
+        baseChart
+        [datasets]="chart.data"
+        [labels]="chart.labels"
+        [chartType]="chart.type"
+        [options]="chart.options"
+        [legend]="chart.legend"
+      >
+      </canvas>
+    </ng-container>
+
+    <app-analytics-map-chart *ngIf="chart.type == 'map'" [markers]="chart.data"></app-analytics-map-chart>
+  </div>
+</ng-container>
+<h4 *ngIf="chart && !chart?.data">No available data</h4>

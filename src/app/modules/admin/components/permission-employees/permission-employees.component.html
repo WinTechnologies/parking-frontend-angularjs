@@ -1,0 +1,43 @@
+<div class="d-flex align-items-center justify-content-between">
+  <mat-form-field class="table-filter ml-3">
+    <mat-icon>search</mat-icon>
+    <input
+    matInput
+    (keyup)="applyFilterEmployee($event.target.value)"
+    placeholder="Search employees">
+  </mat-form-field>
+  <div class="result">
+    Results: {{getResultValue()}}
+  </div>
+  <button class="mr-2 btn-primary mat-raised-button" (click)="editColumns()">Customize Columns</button>
+</div>
+<div class="table-wrapper">
+  <ngx-datatable class="material bg-white"
+       style="height: 70vh"
+       [columnMode]="'force'"
+       [loadingIndicator]="isLoading"
+       [headerHeight]="50"
+       [footerHeight]="50"
+       [rowHeight]="70"
+       [limit]="10"
+       [rows]="employees"
+       scrollbarV="true"
+       (activate)="onSelect($event)"
+       (reorder)="reorderColumns($event)">
+    <ngx-datatable-column *ngFor="let field of tableFields" name="{{field.label}}" prop="{{field.name}}">
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        <span [matTooltip]="row[field.name]" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+          <ng-container [ngSwitch]="field.name">
+            <ng-container *ngSwitchCase="'avatar'">
+              <img *ngIf="row.img_url" [src]="baseUrl + row.img_url" />
+              <img *ngIf="!row.img_url" src="assets/noavatar.png" />
+            </ng-container>
+            <ng-container *ngSwitchCase="'phone_number'">{{ row[field.name]? row[field.name] : '' }}</ng-container>
+            <ng-container *ngSwitchCase="'status'">{{ row[field.name]? row[field.name] : '' }} Active</ng-container>
+            <ng-container *ngSwitchDefault>{{ row[field.name] }}</ng-container>
+          </ng-container>
+        </span>
+      </ng-template>
+    </ngx-datatable-column>
+  </ngx-datatable>
+</div>

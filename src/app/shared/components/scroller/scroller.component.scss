@@ -1,0 +1,27 @@
+:host ::ng-deep .scroller {
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+
+    .controls {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .scroller-subject {
+        display: flex;
+        align-items: center;
+        overflow-x: scroll;
+
+        .mat-table {
+            .mat-header-row, .mat-row {
+                display: inline-flex;
+            }
+
+            .mat-header-cell, .mat-cell {
+                width: 250px;
+            }
+        }
+    }
+}

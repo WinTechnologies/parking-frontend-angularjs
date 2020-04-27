@@ -1,0 +1,16 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between">
+  <h5 class="m-0 mat-color-primary">{{'cn_review.challenge'| translate}}</h5>
+  <button mat-icon-button (click)="onCancel()"><mat-icon>close</mat-icon></button>
+</div>
+<div mat-dialog-content>
+  <form [formGroup]="form" id="ngForm" (ngSubmit)="onSubmit()" class="form-field" fxFlex="1 1 auto">
+    <span class="text-muted">{{'cn_review.reason'| translate}}:</span>
+    <mat-form-field class="textarea full-width">
+      <textarea matInput formControlName="reason"></textarea>
+      <mat-error>Reason is required</mat-error>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button form="ngForm" mat-flat-button color="primary">{{'cn_review.save'| translate}}</button>
+</div>

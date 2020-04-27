@@ -1,0 +1,75 @@
+@import "../../../../styles/_color.scss";
+
+:host {
+  .mat-dialog-title {
+    color: $c-white;
+    background-color: $c-blue;
+    margin: -24px -24px 20px;
+    padding: 10px 24px;
+    span {
+      font-weight: 700;
+      font-size: 24px;
+    }
+  }
+
+  .form-field {
+    span {
+      width: 130px;
+    }
+  }
+
+  .disabled {
+    ::ng-deep mat-form-field {
+      input {
+        color: gray;
+      }
+      .mat-form-field-underline {
+        background: transparent;
+        height: 0px;
+        border-bottom: 1px dotted gray;
+      }
+    }
+  }
+
+  button {
+    outline: none;
+    margin-left: 1rem;
+  }
+
+  .add {
+    background-color: $c-blue;
+    color: $c-white;
+  }
+
+  .mat-dialog-content {
+    min-height: 400px;
+  }
+
+  .mat-dialog-actions {
+    justify-content: flex-end;
+  }
+
+  .add-options {
+    .material-icons {
+      height: 36px;
+      width: 36px;
+      font-size: 36px;
+      color: $c-yellowgreen;
+    }
+  }
+
+  .original-image {
+    width: 120px;
+    height: 120px;
+  }
+
+  ::ng-deep .mat-form-field-wrapper {
+    max-width: 180px;
+  }
+
+  ::ng-deep .form-field span.required {
+    width: 10px !important;
+    font-weight: 600 !important;
+    color: rgb(255, 53, 53) !important;
+  }
+}

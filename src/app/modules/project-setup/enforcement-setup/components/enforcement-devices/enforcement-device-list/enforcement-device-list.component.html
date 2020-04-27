@@ -1,0 +1,48 @@
+<div class="enforcement-device-list-page">
+  <div class="enforcement-device-list-page-content">
+    <div class="enforcement-device-list-page-content-title">
+      <h1>List of Devices</h1>
+      <div class="buttons-wrapper">
+        <button class="mr-2 btn-primary mat-raised-button" (click)="editColumns()">Customize Columns</button>
+        <button mat-flat-button 
+          color="basic" 
+          (click)="onAdd()">
+            <mat-icon>
+              add_circle
+            </mat-icon>
+          Device
+      </button>
+        <!-- <button mat-flat-button><mat-icon>delete</mat-icon></button> -->
+      </div>
+    </div>
+    <div class="enforcement-device-list-page-table-wrapper mat-elevation-z8">
+      <ngx-datatable class="material bg-white"
+                     style="height: calc(100vh - 290px)"
+                     [columnMode]="'force'"
+                     [headerHeight]="50"
+                     [footerHeight]="50"
+                     [rowHeight]="70"
+                     [limit]="10"
+                     [rows]="devices"
+                     scrollbarV="true"
+                     (reorder)="reorderColumns($event)">
+        <ngx-datatable-column *ngFor="let field of tableFields" name="{{field.label}}" prop="{{field.name}}">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <span [matTooltip]="row[field.name]" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+              <ng-container [ngSwitch]="field.name">
+                <ng-container *ngSwitchCase="'avatar'">
+                  <img *ngIf="row.img_url" [src]="row.img_url.startsWith('uploads') ?  apiEndpoint + '/' + row.img_url : row.img_url" alt="">
+                  <img *ngIf="!row.img_url" src="assets/noavatar.png" alt="">
+                </ng-container>
+                <ng-container *ngSwitchCase="'action'">
+                  <button mat-icon-button	(click)="onDelete(row); $event.stopPropagation()"><mat-icon>delete</mat-icon></button>
+                </ng-container>
+                <ng-container *ngSwitchDefault>{{ row[field.name]? row[field.name] : '' }}</ng-container>
+              </ng-container>
+            </span>
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
+    </div>
+  </div>
+</div>

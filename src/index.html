@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <base href="/">
+  <title>NP Dashboard</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed|Material+Icons" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+
+  <script>
+    var global = global || window;
+    var Buffer = Buffer || [];
+    var process = process || {
+      env: { DEBUG: undefined },
+      version: []
+    };
+  </script>
+
+  <style>
+    .application-splash {
+      display: flex;
+      justify-content: center;
+      align-content: center;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      background: url('./assets/logo.gif') center no-repeat;
+      background-size: 300px;
+    }
+  </style>
+
+</head>
+<body>
+  <app-root>
+    <div class="application-splash"></div>
+  </app-root>
+</body>
+</html>
+
+
+
+
+
+
+

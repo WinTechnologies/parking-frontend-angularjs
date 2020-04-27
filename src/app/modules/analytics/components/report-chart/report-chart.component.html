@@ -1,0 +1,65 @@
+<h2 class="text-center mb-5 mt-50px">{{currentReport.name}}</h2>
+<div
+  class="mb-5"
+  fxLayoutAlign="center stretch"
+  fxLayout="row">
+  <mat-form-field
+    class="picker_date"
+    fxFlex="300px">
+    <input
+    appInputDateFormat
+    matInput
+    [(ngModel)]="searchFrom"
+    [matDatepicker]="fromDatePicker"
+    [max]="searchTo"
+    placeholder=" Begin date: "
+    />
+    <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #fromDatePicker></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field fxFlex="300px">
+    <input
+    appInputDateFormat
+    matInput
+    [(ngModel)]="searchTo"
+    [matDatepicker]="toDatePicker"
+    [min]="searchFrom"
+    placeholder=" End date: "
+    />
+    <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #toDatePicker></mat-datepicker>
+  </mat-form-field>
+
+  <button mat-flat-button color="primary" (click)="onSearch()" fxFlex="64px">OK</button>
+</div>
+<button mat-button color="basic" (click)="onShowChartSettings()" *ngIf="!isPublic">
+  <mat-icon>add_circle</mat-icon>
+  <span class="ml-1">New Chart</span>
+</button>
+<gridster *ngIf="!!charts" class="mb-3" [options]="gridsterOptions" [draggableOptions]="{ handlerClass: 'draggableChart' }">
+  <gridster-item *ngFor="let widget of charts; let i=index" [w]="3" [h]="2">
+    <div class="draggableChart" *ngIf="widget.isShow">
+      <div class="d-flex justify-content-between p-1">
+        <span>{{widget.settings.name}}</span>
+        <div class="d-inline-block">
+          <i class="material-icons material-icons-outline" (click)="onCollapseChart(widget)">
+            {{widget.isShow ? 'expand_less' : 'expand_more'}}
+          </i>
+          <i *ngIf="widget.dataSets.length" class="material-icons" (click)="onShowChartDetails(widget)">
+            zoom_out_map
+          </i>
+          <i *ngIf="!filters?.project_id && !isPublic" class="material-icons" (click)="onShowChartSettings(widget)">
+            settings
+          </i>
+          <i *ngIf="widget.dataSets.length" class="material-icons" (click)="onReloadChart(widget)">
+            refresh
+          </i>
+          <!--<i *ngIf="permission?.isUpdate" class="material-icons" (click)="onDeleteChart(i)">-->
+            <!--cancel-->
+          <!--</i>-->
+        </div>
+      </div>
+      <app-analytics-chart [settings]="widget.settings" [dataSets]="widget.dataSets"></app-analytics-chart>
+    </div>
+  </gridster-item>
+</gridster>

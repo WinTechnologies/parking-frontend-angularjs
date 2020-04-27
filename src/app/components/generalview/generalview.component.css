@@ -1,0 +1,130 @@
+.generalview-page-header-filter {
+  padding: 0 20px 0 44px;
+}
+
+.generalview-page-header-filter mat-icon{
+  position: absolute;
+  left: -24px;
+}
+
+.generalview-page-header-buttons button{
+    outline: none;
+}
+
+.generalview-page-header-buttons .mat-flat-button.add{
+  background-color: yellowgreen;
+  margin: 0 20px;
+}
+
+.generalview-page-content {
+  /* margin: 5px 20px; */
+  margin-top:50px;
+}
+
+.column {
+  float: left;
+  width: 20%;
+  padding: 0.5em;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.selected {
+  background-color: #cfd8dc !important;
+  color: white;
+  cursor: pointer;
+}
+
+.itemGroup {
+  margin: 0 0 2em 0;
+  list-style-type: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.itemGroup li {
+  cursor: pointer;
+  position: relative;
+  left: 0;
+  background-color: #eee;
+  margin: 0.5em;
+  padding: 0.3em 0;
+  height: 2.5em;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.itemGroup li.selected:hover {
+  background-color: #bbd8dc !important;
+  color: white;
+}
+
+.itemGroup li:hover {
+  color: #607d8b;
+  background-color: #ddd;
+  left: 0.1em;
+}
+
+.itemGroup .text {
+  position: relative;
+  top: -3px;
+  padding-left: 0.3em;
+}
+
+.groupBtn {
+  width: 100%;
+}
+
+.periodeForm {
+  float: right;
+  margin-top: 5px;
+}
+
+.go-loader-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.go-loader {
+  margin: auto;
+}
+
+.mat-raised-button.mat-accent, .mat-fab.mat-accent, .mat-mini-fab.mat-accent {
+  background-color: #00A8E6;
+}
+
+.empty {
+  border: 1px solid rgb(45, 64, 75);
+  color: rgb(45, 64, 75);
+}
+.full {
+  background-color: rgb(45, 64, 75);
+  color: whitesmoke;
+}
+.altered {
+  border: 1px solid teal;
+  background-color: rgb(45, 64, 75);
+  color: whitesmoke;
+}
+
+@media only screen and (max-width: 1095px) {
+  .page-top-header {
+    height: auto;
+    min-height: 50px;
+  }
+}
+
+::ng-deep .mat-form-field-infix {
+  padding-top: 4px;
+  padding-bottom: 6px;
+  margin-top: .5rem;
+}
+
+::ng-deep .map-view {
+  height: calc(100vh - 131px) !important;
+}

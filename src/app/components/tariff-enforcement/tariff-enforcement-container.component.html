@@ -1,0 +1,35 @@
+<div>
+  <header class="page-top-header">
+    <div class="select-project-wrapper">
+      <span>Project:&nbsp;</span>
+      <mat-form-field>
+        <mat-select
+          [(ngModel)]="projectIdSelected"
+          (ngModelChange)="onChangeProject($event)">
+          <ng-container *ngFor="let project of projects" >
+            <mat-option [value]="project.id">
+              {{project.project_code}}:{{project.project_name}}
+            </mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div>
+      <span>{{ today | date:'dd/MM/yyyy hh:mm a'}}</span>
+    </div>
+  </header>
+  <div class="tariff-enforcement-page-content">
+    <div class="tabs-wrapper">
+      <nav mat-tab-nav-bar>
+        <a mat-tab-link
+            *ngFor="let link of tabLinks"
+            [routerLink]="link.link(projectCodeSelected)"
+            routerLinkActive #rla="routerLinkActive"
+            [active]="rla.isActive">
+          {{ link.label }}
+        </a>
+      </nav>
+      <router-outlet (activate)="onMountChild($event)"></router-outlet>
+    </div>
+  </div>
+</div>

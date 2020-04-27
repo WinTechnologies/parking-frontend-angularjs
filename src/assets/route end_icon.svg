@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 56.199 58.236">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #00a3e4;
+        opacity: 0.15;
+      }
+
+      .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-3 {
+        fill: none;
+        stroke: #023b41;
+        stroke-linecap: round;
+        stroke-miterlimit: 10;
+        stroke-width: 2px;
+      }
+
+      .cls-4 {
+        fill: #dd352e;
+      }
+
+      .cls-5 {
+        fill: #f76363;
+      }
+
+      .cls-6 {
+        filter: url(#Ellipse_62);
+      }
+    </style>
+    <filter id="Ellipse_62" x="0" y="2.036" width="56.199" height="56.2" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_18049" data-name="Group 18049" transform="translate(-768 -587.964)">
+    <g id="Group_16763" data-name="Group 16763" transform="translate(33 -15)">
+      <circle id="Ellipse_61" data-name="Ellipse 61" class="cls-1" cx="17.5" cy="17.5" r="17.5" transform="translate(745.3 615.5)"/>
+      <g class="cls-6" transform="matrix(1, 0, 0, 1, 735, 602.96)">
+        <circle id="Ellipse_62-2" data-name="Ellipse 62" class="cls-2" cx="13.1" cy="13.1" r="13.1" transform="translate(15 17.04)"/>
+      </g>
+    </g>
+    <g id="pin" transform="translate(773 587.964)">
+      <line id="Line_1203" data-name="Line 1203" class="cls-3" y2="17.317" transform="translate(23.36 16.72)"/>
+      <circle id="Ellipse_457" data-name="Ellipse 457" class="cls-4" cx="8.36" cy="8.36" r="8.36" transform="translate(15)"/>
+      <circle id="Ellipse_458" data-name="Ellipse 458" class="cls-5" cx="1.791" cy="1.791" r="1.791" transform="translate(18.583 4.18)"/>
+    </g>
+  </g>
+</svg>

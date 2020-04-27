@@ -1,0 +1,110 @@
+<ng-container *ngIf="data">
+  <div class="d-flex align-items-center justify-content-between">
+    <app-widget-element-universal *ngIf="options.als"
+                                  color="#023b41"
+                                  icon="car park_icon.svg"
+                                  elemWidth="50%">
+    </app-widget-element-universal>
+    <app-widget-element-universal *ngIf="false"
+                                  color="yellowgreen"
+                                  [value]="data?.occupancy"
+                                  [units_of_measurement]="'%'"
+                                  elemWidth="100%"
+                                  label="PAID OCCUPANCY ">
+    </app-widget-element-universal>
+  </div>
+  <app-widget-element-universal-advanced *ngIf="false"
+                                        label="SPACES"
+                                        [color]="'yellowgreen'"
+                                        icon="pin1_icon.svg"
+                                        [value_current]="0"
+                                        [value_total]="0"
+                                        [label_value_current]="'AVAILABLE SPACES'"
+                                        [label_value_total]="'TOTAL NUMBER OF SPACES'"
+                                        elemWidth="100%">
+  </app-widget-element-universal-advanced>
+  <app-widget-element-universal *ngIf="options.als"
+                                color="#023b41"
+                                [value]="data?.ALS"
+                                [units_of_measurement]="'HRS'"
+                                icon="clock_icon.svg"
+                                elemWidth="100%"
+                                label="ALS">
+  </app-widget-element-universal>
+  <div class="d-flex column align-items-center">
+    <app-widget-element-universal *ngIf="options.atv"
+                                  color="#023b41"
+                                  icon="money_icon.svg"
+                                  [value]="data?.ATV?.amount"
+                                  [units_of_measurement]="data?.ATV?.currency"
+                                  elemWidth="99%"
+                                  label="ATV PARKING">
+    </app-widget-element-universal>
+    <app-widget-element-universal *ngIf="options.atv_total"
+                                  [color]="'#023b41'"
+                                  [value]="data?.ATVTotal"
+                                  units_of_measurement="SAR"
+                                  icon="money_icon.svg"
+                                  elemWidth="100%"
+                                  label="ATV TOTAL">
+    </app-widget-element-universal>
+  </div>
+  <app-widget-element-chart *ngIf="options.payment"
+                            label="PAYMENTS"
+                            color="#023b41"
+                            elemWidth="100%"
+                            [pieData]="data?.Payment">
+  </app-widget-element-chart>
+  <app-widget-element-universal *ngIf="options.revenue"
+                                color="#023b41"
+                                icon="money_icon.svg"
+                                [value]="data?.Revenue"
+                                label="REVENUE"
+                                units_of_measurement="SAR"
+                                elemWidth="100%">
+  </app-widget-element-universal>
+  <app-widget-element-universal *ngIf="false"
+                                color="#023b41"
+                                icon="money_icon.svg"
+                                label="REVENUE/SPACE/12M"
+                                [value]="data?.RevenuePerSpace"
+                                units_of_measurement="SAR"
+                                elemWidth="100%">
+  </app-widget-element-universal>
+  <div class="d-flex column align-items-center">
+    <app-widget-element-universal *ngIf="options.APM"
+                                  label="APMs"
+                                  color="orange"
+                                  image="apm_icon.svg"
+                                  elemWidth="99%"
+                                  [value]="data?.APM"
+                                  elemHeight="180px">
+    </app-widget-element-universal>
+    <app-widget-element-universal *ngIf="options.Barrier"
+                                  label="BARRIERS"
+                                  color="yellowgreen"
+                                  image="barrier_icon.svg"
+                                  elemWidth="100%"
+                                  [value]="data?.Barrier"
+                                  elemHeight="180px">
+    </app-widget-element-universal>
+  </div>
+  <div class="d-flex column align-items-center">
+    <app-widget-element-universal *ngIf="options.TDispenser"
+                                  label="DISPENSER"
+                                  color="yellowgreen"
+                                  image="ticket dispenser_icon.svg"
+                                  elemWidth="99%"
+                                  [value]="data?.TDispenser"
+                                  elemHeight="180px">
+    </app-widget-element-universal>
+    <app-widget-element-universal *ngIf="options.TVerifier"
+                                  label="VERIFIER"
+                                  color="yellowgreen"
+                                  image="ticket dispenser_icon.svg"
+                                  elemWidth="100%"
+                                  [value]="data?.TVerifier"
+                                  elemHeight="180px">
+    </app-widget-element-universal>
+  </div>
+</ng-container>

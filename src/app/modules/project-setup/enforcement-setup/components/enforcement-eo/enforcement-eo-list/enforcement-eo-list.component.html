@@ -1,0 +1,21 @@
+<div class="enforcement-eo-list-page">
+  <app-data-grid
+    [title]="'List of ' + enforcementItem.name"
+    [tableName]="tableName"
+    [useDeletion]="true"
+    (rowSelect)="onSelect($event)"
+    (rowDelete)="onDelete($event)"
+  >
+    <div headerActions>
+      <button
+        *ngIf="permission.isCreate"
+        mat-flat-button
+        color="basic"
+        (click)="onAdd()"
+      >
+        <mat-icon>add_circle</mat-icon>
+        Staff
+      </button>
+    </div>
+  </app-data-grid>
+</div>

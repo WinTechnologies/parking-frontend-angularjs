@@ -1,0 +1,81 @@
+@import "../../../../../../../styles/color";
+
+:host {
+  .enforcement-eo-list-page {
+    &-content {
+      margin: 5px -20px;
+      padding: 0 20px;
+      background-color: $c-greylight1;
+      
+      &-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        
+        h1 {
+          height: 50px;
+          line-height: 50px;
+          font-weight: 700;
+          font-size: 16px;
+        }
+        
+        button {
+          color: $c-blue1;
+          outline: none;
+          background: transparent;
+
+          .mat-icon {
+            vertical-align: middle;
+            margin-right: 10px;
+          }
+        }
+        button.btn-primary {
+          color: #fff;
+          background-color: #007bff;
+          border-color: #007bff;
+        }
+      }
+
+      button.mat-icon-button {
+        color: $c-greylight;
+        outline: none;
+      }
+      .mat-table {
+
+        .mat-header-row {
+          background-color: $c-blue;
+
+          /deep/ .mat-sort-header-button {
+            color: $c-white !important;
+          }
+
+          /deep/ .mat-sort-header-arrow {
+            color: #32a8cd;
+          }
+        }
+
+        .mat-row {
+          padding: 0 5px;
+          &:hover {
+            cursor: pointer;
+            background-color: #2E626A;
+            .mat-cell {
+              color: $c-white;
+            }
+          }
+        }
+      }
+      
+      .mat-column-avatar {
+        flex: 0 0 100px;
+        img {
+          width: 50px;
+          height: 50px;
+        }
+      }
+      .mat-column-action {
+        flex: 0 0 85px;
+      }
+    }
+  }
+}

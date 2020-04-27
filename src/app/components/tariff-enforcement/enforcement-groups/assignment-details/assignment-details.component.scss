@@ -1,0 +1,103 @@
+@import "../../../../../styles/_color.scss";
+
+$color-blue: #007bff;
+
+.assignment-wrapper {
+  margin-top: 50px;
+  padding: 0 1rem 1rem 1rem;
+
+  h4 {
+    margin: 0 0 10px 0;
+    font-weight: 600;
+    font-size: 17px;
+  }
+
+  label {
+    margin-bottom: 0;
+  }
+
+  .mat-error {
+    font-size: 75%;
+  }
+
+  .mat-form-field-subscript-wrapper {
+    font-size: 100%
+  }
+
+  span.required {
+    color: #ff3535;
+    width: 15px!important;
+  }
+
+  .values {
+    display: flex;
+    justify-content: space-between;
+
+    label {
+      width: 100px;
+      font-weight: 700;
+      margin-right: 0.5rem;
+      margin-bottom: 0;
+      min-width: 140px;
+      text-align: right;
+    }
+
+    input {
+      text-align: right;
+      padding: 2px;
+    }
+
+    .mat-form-field {
+      width: 7rem;
+    }
+  }
+
+  .field {
+    margin: 5px 0;
+  }
+
+  .schedules {
+    & > div {
+      .mat-form-field:not(:last-child) {
+        margin-right: 0.25rem;
+      }
+    }
+  }
+
+  input {
+    &[type="checkbox"] {
+      display: none;
+
+      & + span {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        width: 57px;
+        height: 57px;
+        border-radius: 10px;
+        background: gray;
+        cursor: pointer;
+
+        img {
+          width: 100%;
+          max-height: 100%;
+        }
+      }
+
+      &:checked + span {
+        background: $c-blue;
+      }
+    }
+  }
+
+  .checkbox-container {
+    label {
+      min-width: 57px;
+    }
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+  }
+}

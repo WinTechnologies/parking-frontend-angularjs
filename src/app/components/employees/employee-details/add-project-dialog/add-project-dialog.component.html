@@ -1,0 +1,12 @@
+<div mat-dialog-content>
+  <app-add-project
+    [dialog]="true"
+    (selectedProjectsOutput)="onSelectedProjects($event)"
+    (selectedWorkplansOutput)="onSelectedWorkplans($event)"
+  >
+  </app-add-project>
+</div>
+<div mat-dialog-actions>
+  <button class="btn btn-light empty" type="button" (click)="onCancel()">Cancel</button>
+  <button class="btn btn-primary full" type="submit" (click)="onSubmit()">Add</button>
+</div>

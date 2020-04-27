@@ -1,0 +1,63 @@
+<h1 mat-dialog-title></h1>
+<div mat-dialog-content>
+  <div class="row">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-lg-3 col-sm-12">
+          <div class="form-group">
+            <div class="d-flex a-i-baseline align-items-baseline">
+              <img
+                src="assets/Icons/Projects_section/on_street.svg"
+                alt="On streets icon"
+                class="height-20px"
+              />
+              <strong class="pad-left">On streets</strong>
+            </div>
+            <ngx-treeview [config]="config" [items]="itemsOnStreets" (filterChange)="onFilterChange($event)" (selectedChange)="onSelectedChange($event, 'onStreets')">
+            </ngx-treeview>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-12">
+          <div class="form-group">
+            <div class="d-flex a-i-baseline align-items-baseline">
+              <img
+                src="assets/Icons/Projects_section/car_park.svg"
+                alt="Car Parks icon"
+                class="height-20px"
+              />
+              <strong class="pad-left">Car Parks</strong>
+            </div>
+            <ngx-treeview [config]="config" [items]="itemsCarParks" (filterChange)="onFilterChange($event)" (selectedChange)="onSelectedChange($event, 'carParks')">
+            </ngx-treeview>
+          </div>
+        </div>
+        <div class="col-lg-6 col-sm-12">
+          <div class="form-group">
+            <div class="d-flex a-i-baseline align-items-baseline">
+              <img
+                src="assets/Icons/Projects_section/enforcement.svg"
+                alt="Enforcement icon"
+                class="height-20px"
+              />
+              <strong class="pad-left">Enforcement</strong>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <ngx-treeview [config]="config" [items]="itemsEnforcement" (filterChange)="onFilterChange($event)" (selectedChange)="onSelectedChange($event, 'enforcement')" >
+                </ngx-treeview>
+              </div>
+              <div class="col-lg-6">
+                <ngx-treeview [config]="config" [items]="itemsEnforcementCRM" (filterChange)="onFilterChange($event)" (selectedChange)="onSelectedChange($event, 'enforcementCRM')" >
+                </ngx-treeview>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions class="justify-content-end">
+  <button mat-stroked-button color="primary" class="mr-1" (click)="onNoClick()">Cancel</button>
+  <button mat-flat-button color="primary" (click)="onSave()">Apply</button>
+</div>

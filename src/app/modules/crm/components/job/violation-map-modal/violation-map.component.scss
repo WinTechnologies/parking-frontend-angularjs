@@ -1,0 +1,12 @@
+:host {
+    .mat-dialog-title {
+      display: flex;
+      justify-content: space-between;
+
+      button.mat-icon-button {
+        outline: none;
+        margin-right: -15px;
+        margin-top: -15px;
+      }
+    }
+  }

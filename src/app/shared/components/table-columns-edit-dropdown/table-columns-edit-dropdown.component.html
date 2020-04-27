@@ -1,0 +1,22 @@
+<div style="visibility: hidden; position: fixed"
+  [style.left]="contextMenuPosition.x"
+  [style.top]="contextMenuPosition.y"
+  [matMenuTriggerFor]="contextMenu">
+</div>
+<mat-menu #contextMenu="matMenu" #contextMenu2="matMenu">
+	<ng-template matMenuContent let-aliasMenuItems="menuItems" >
+      <button mat-menu-item *ngFor="let item of aliasMenuItems; let index = index" (click) = "$event.stopPropagation()">
+        <mat-checkbox [checked]="item.isShow"  [(ngModel)]="item.isShow" (change)="onShowFlag(index, $event.checked)"></mat-checkbox>   {{item.label}}
+      </button>
+
+      <div class="apply-btn">
+        <button class="mr-2 btn-info mat-raised-button btn" (click)="onApply()">
+          Apply
+        </button>
+        <button class="mr-2 btn-info mat-raised-button btn" (click)="onReset()">
+          Set Default
+        </button>
+      </div>
+  </ng-template>
+</mat-menu>
+

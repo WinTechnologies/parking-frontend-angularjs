@@ -1,0 +1,36 @@
+<div class="pro-dashboard-page">
+  <div class="col-12">
+    <div class="input-group calendarform compare-filters p-3" id="date">
+      <label for="date" class="p-3">Date</label>
+      <mat-form-field class="picker_date">
+        <input appInputDateFormat matInput [(ngModel)]="selectedDate"
+               (ngModelChange)="onDatePickerChange()" [matDatepicker]="date"/>
+        <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+        <mat-datepicker #date></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </div>
+  <div *ngFor="let widgetGroup of widgetGroups; let i = index">
+    <div *ngIf="widgetGroup.enabled" class="col-md-4 col-xs-8 widget-wrapper">
+      <div class="d-flex column justify-content-between">
+        <h4 class="d-block">{{widgetGroup.label}}</h4>
+        <span class="add_widget d-flex" (click)="show(origin, widgetGroup)" #origin>
+          <i class="material-icons">add_circle</i>
+          <span>Widgets</span>
+        </span>
+      </div>
+      <app-widget-on-street
+        *ngIf="widgetGroup.id === 'has_on_street'"
+        [options]="widgetGroup.enableWidgets"
+        [data]="widgetGroup.data"></app-widget-on-street>
+      <app-widget-car-park
+        *ngIf="widgetGroup.id === 'has_car_park'"
+        [options]="widgetGroup.enableWidgets"
+        [data]="widgetGroup.data"></app-widget-car-park>
+      <app-widget-enforcement
+        *ngIf="widgetGroup.id === 'has_enforcement'"
+        [options]="widgetGroup.enableWidgets"
+        [data]="widgetGroup.data"></app-widget-enforcement>
+    </div>
+  </div>
+</div>

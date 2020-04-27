@@ -1,0 +1,258 @@
+<main>
+  <header *ngIf="useSearch">
+    <div class="header-search">
+      <mat-icon>search</mat-icon>
+      <mat-form-field>
+        <label>
+          <input
+            matInput
+            (keyup)="applyFilter($event)"
+            placeholder="Search"
+          />
+        </label>
+      </mat-form-field>
+    </div>
+    <div class="header-actions">
+      <ng-content select="[headerActions]"></ng-content>
+    </div>
+  </header>
+  <h1 class="title">
+    {{title}}
+  </h1>
+  <div>
+    <div [hidden]="loading" class="table-wrapper mat-elevation-z0">
+      <app-scroller>
+        <mat-table [dataSource]="dataSource" class="material bg-white" cdkDropListGroup matSort>
+          <ng-container
+            *ngFor="let column of columnsDef.showColumns; let i = index"
+            [matColumnDef]="column.column_name"
+          >
+            <mat-header-cell
+              *matHeaderCellDef
+              cdkDropList
+              cdkDropListLockAxis="x"
+              cdkDropListOrientation="horizontal"
+              cdkDrag
+              mat-sort-header
+              (cdkDropListDropped)="onDropListDropped($event, i)"
+              (cdkDragStarted)="onDragStarted($event, i)"
+              (contextmenu)="$event.preventDefault(); onContextMenu($event)"
+            >
+              {{ column.column_label }}
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <span [matTooltip]="row[column.column_name]" matTooltipShowDelay="1000" matTooltipHideDelay="1000"></span>
+              <ng-container [ngSwitch]="column.data_type">
+                <ng-container *ngSwitchCase="'image'">
+                  <img *ngIf="row[column.column_name]; else noImage" class="avatar" [src]="apiEndpoint + '/' + row[column.column_name]" alt=""/>
+                  <ng-template #noImage>
+                    <img class="avatar" [src]="column.options['not_found']" alt=""/>
+                  </ng-template>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'select'">
+                  <ng-container *ngIf="column.options.options && row[column.column_name]; else noOptions">
+                    {{ column.options.options[row[column.column_name]] || row[column.column_name] }}
+                  </ng-container>
+                  <ng-template #noOptions>
+                    {{ row[column.column_name] }}
+                  </ng-template>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'date'">
+                  {{ row[column.column_name] | date:'yyyy-MM-dd' }}
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'checkbox'">
+                  <mat-checkbox
+                    [checked]="row[column.column_name] || false"
+                    [disabled]="true"
+                  >
+                  </mat-checkbox>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'datetime'">
+                  {{ row[column.column_name] | date:'yyyy-MM-dd HH:mm:ss' }}
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'action'">
+                  <button
+                    *ngIf="useDeletion"
+                    mat-icon-button
+                    (click)="onRowDeletion(row); $event.stopPropagation()"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </ng-container>
+
+                <ng-container *ngSwitchDefault>
+                  {{ row[column.column_name] || '' }}
+                </ng-container>
+              </ng-container>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="columnsDef.showColumnNames">
+          </mat-header-row>
+
+          <ng-container
+            *ngFor="let column of columnsDef.filterColumns; let i = index"
+            [class.mat-cell]="true"
+            [matColumnDef]="column.filter_name"
+          >
+            <mat-header-cell *matHeaderCellDef>
+              <ng-container [ngSwitch]="column.data_type">
+                <ng-container *ngSwitchCase="'image'">
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'select'">
+                  <mat-form-field
+                    *ngIf="column.options.options"
+                    class="m-2"
+                    appearance="standard"
+                  >
+                    <mat-select
+                      [multiple]="true"
+                      [placeholder]="column.column_label"
+                      (selectionChange)="filter.applyColumnFilter(column.column_name, 'select', $event.value)"
+                    >
+                      <mat-option
+                        *ngIf="column.is_nullable"
+                        [value]="null"
+                      >
+                        Empty
+                      </mat-option>
+                      <mat-option
+                        *ngFor="let option of column.options.options | keyvalue"
+                        [value]="option.key"
+                      >
+                        {{option.value}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'datetime'">
+                  <ng-container *ngTemplateOutlet="dateField"></ng-container>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'date'">
+                  <ng-container *ngTemplateOutlet="dateField"></ng-container>
+                </ng-container>
+
+                <ng-template #dateField>
+                  <mat-form-field class="m-2" appearance="standard">
+                    <label>
+                      <input
+                        matInput
+                        class="bg-white text-dark"
+                        [matDatepicker]="picker"
+                        [placeholder]="column.column_label"
+                        (click)="picker.open()"
+                        (dateInput)="filter.applyColumnFilter(column.column_name, 'date', $any($event).target.value)"
+                      >
+                    </label>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                </ng-template>
+
+                <ng-container *ngSwitchCase="'checkbox'">
+                  <mat-form-field
+                    class="m-2"
+                    appearance="standard"
+                  >
+                    <mat-select
+                      [placeholder]="column.column_label"
+                      (selectionChange)="filter.applyColumnFilter(column.column_name, 'select', $event.value)"
+                    >
+                      <mat-option
+                        *ngIf="column.is_nullable"
+                        [value]="null"
+                      >
+                        Empty
+                      </mat-option>
+                      <mat-option
+                        [value]="true"
+                      >
+                        Yes
+                      </mat-option>
+                      <mat-option
+                        [value]="false"
+                      >
+                        No
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'action'">
+                </ng-container>
+
+                <ng-container *ngSwitchDefault>
+                  <mat-form-field class="m-2" appearance="standard">
+                    <label>
+                      <input
+                        matInput
+                        class="bg-white text-dark"
+                        [placeholder]="column.column_label"
+                        (input)="filter.applyColumnFilter(column.column_name, 'input', $any($event).target.value)"
+                      />
+                    </label>
+                  </mat-form-field>
+                </ng-container>
+              </ng-container>
+            </mat-header-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="columnsDef.filterColumnNames" class="mat-header-filter">
+          </mat-header-row>
+
+          <mat-row *matRowDef="let row; columns: columnsDef.showColumnNames;" (click)="onRowSelect(row)">
+          </mat-row>
+        </mat-table>
+      </app-scroller>
+      <mat-paginator
+        style-paginator
+        showFirstLastButtons
+        [pageSize]="10"
+        [pageSizeOptions]="[10,20,50,100]"
+        (change)="onChangePaginator()"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+
+  <div
+    style="visibility: hidden; position: fixed"
+    [style.left]="contextMenuPosition.x"
+    [style.top]="contextMenuPosition.y"
+    [matMenuTriggerFor]="contextMenu">
+  </div>
+  <mat-menu #contextMenu="matMenu">
+    <ng-template matMenuContent>
+      <button
+        mat-menu-item
+        *ngFor="let item of matMenuColumns; let index = index"
+        (click)="$event.stopPropagation()"
+      >
+        <mat-checkbox
+          [checked]="item.is_show"
+          [(ngModel)]="item.is_show"
+          (change)="onShowInMenu(index, $event.checked)"
+        >
+        </mat-checkbox>
+        {{item.column_label}}
+      </button>
+
+      <div class="apply-btn-wrapper mx-auto mb-2">
+        <button class="btn btn-info mat-raised-button" (click)="onApplyColumnsShow()">
+          Apply
+        </button>
+      </div>
+      <div class="apply-btn-wrapper mx-auto">
+        <button class="btn btn-info mat-raised-button" (click)="onResetColumnsShow()">
+          Set Default
+        </button>
+      </div>
+    </ng-template>
+  </mat-menu>
+</main>

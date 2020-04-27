@@ -1,0 +1,23 @@
+<app-data-grid
+  [title]="'List of Employees'"
+  [tableName]="tableName"
+  [useSearch]="true"
+  [useSelectConfirmation]="true"
+  [useDeletion]="true"
+  [useRedirectDialog]="true"
+  (rowSelect)="onRowSelect($event)"
+  (rowRedirect)="onRowSelect($event, true)"
+  (rowDelete)="onDelete($event)"
+>
+  <div headerActions>
+    <button
+      *ngIf="permission.isCreate"
+      mat-flat-button
+      color="basic"
+      (click)="onAddEmployee()"
+    >
+      <mat-icon>add_circle</mat-icon>
+      Employee
+    </button>
+  </div>
+</app-data-grid>

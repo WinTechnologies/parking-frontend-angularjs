@@ -1,0 +1,199 @@
+<ng-template #zoneSelector let-v="viewMode">
+  <div class="form-field">
+    <h4 *ngIf="v === ViewMode.ListView" class="list-table-header">Zone</h4>
+    <span *ngIf="v === ViewMode.MapView">Select zone</span>
+    <mat-form-field class="select-zone">
+      <mat-select [(ngModel)]="selectedZone" (selectionChange)="onZoneSelection($event.value)">
+        <mat-option *ngIf="v === ViewMode.ListView" [value]="EmptyTerminal">All</mat-option>
+        <mat-option *ngFor="let zone of allZones" [value]="zone">{{zone.zone_code}}: {{zone.zone_name}} </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</ng-template>
+<ng-template #terminalSelector let-v="viewMode">
+  <div class="form-field">
+    <h4 *ngIf="v === ViewMode.ListView" class="list-table-header">Terminal</h4>
+    <span *ngIf="v === ViewMode.MapView">Select terminal</span>
+    <mat-form-field class="select-terminal">
+      <mat-select [(ngModel)]="selectedTerminal" (selectionChange)="onTerminalSelection($event.value)">
+        <mat-option *ngIf="v === ViewMode.ListView" [value]="EmptyTerminal">All</mat-option>
+        <mat-option *ngFor="let terminal of terminals" [value]="terminal">{{terminal.terminal_code}}: {{terminal.terminal_name}} </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</ng-template>
+<ng-template #parkSelector>
+  <div class="form-field" *ngIf="formMode !== FormMode.CREATING">
+    <span>Select parking <b class="span-bold">(or select on map)</b></span>
+    <mat-form-field class="select-parking">
+      <mat-select [(ngModel)]="selectedParking" (selectionChange)="onParkingSelection($event.value)">
+        <mat-option *ngFor="let parking of parkings" [value]="parking">{{parking.code}}: {{parking.carpark_name}} </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <span *ngIf="parkings && parkings.length === 0" class="parking-sidebar-error">
+      There is no parking available. Please make sure you selected a terminal or create a new parking
+    </span>
+  </div>
+</ng-template>
+
+<ng-container *ngIf="viewMode === ViewMode.ListView">
+  <div class="carparkitem-selector">
+      <div class="row">
+        <ng-container *ngTemplateOutlet="zoneSelector; context:{viewMode: ViewMode.ListView}"></ng-container>
+        <ng-container *ngTemplateOutlet="terminalSelector; context:{viewMode: ViewMode.ListView}"></ng-container>
+      </div>
+    </div>
+  <div class="parking">
+    <app-listview-new
+      [tblStyle]="'carpark-tbl'"
+      [filter]="filter"
+      [projectId]="projectId"
+      [options]="mapOptions"
+      [mapdata]="tabMapDataJSON"
+      [mapdrawdata]="tabMapDrawDataJSON"
+      [listType]="CarparkItemType.Parking"
+      [listData]="parkings"
+      (selectedRowItem)="onParkingSelection($event)">
+    </app-listview-new>
+  </div>
+</ng-container>
+<ng-container *ngIf="viewMode === ViewMode.MapView">
+  <div class="parking">
+    <div class="parking-sidebar">
+      <div class="parking-sidebar-title">
+        <ng-container *ngIf="formMode === FormMode.CREATING">Create new parking</ng-container>
+        <ng-container *ngIf="formMode === FormMode.UPDATING">Parking selection</ng-container>
+      </div>
+
+      <ng-container *ngTemplateOutlet="zoneSelector; context:{viewMode: ViewMode.MapView}"></ng-container>
+      <ng-container *ngTemplateOutlet="terminalSelector; context:{viewMode: ViewMode.MapView}"></ng-container>
+      <ng-container *ngTemplateOutlet="parkSelector"></ng-container>
+
+      <hr>
+
+      <form *ngIf="form && (formMode === FormMode.UPDATING || formMode === FormMode.CREATING)"
+            [formGroup]="form"
+            (ngSubmit)="onSubmit()"
+            autocomplete="off"
+            novalidate>
+          <div class="form-field">
+            <span>Name</span>
+            <mat-form-field>
+              <input matInput type="text" formControlName="carpark_name">
+              <mat-error>Name is required</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-field">
+            <span>Name (ar):</span>
+            <mat-form-field>
+              <input matInput type="text" formControlName="name_ar">
+              <mat-error>Name (ar) is required</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-field">
+            <span>Parking Code</span>
+            <mat-form-field>
+              <input matInput type="text" formControlName="code" (keypress)="inputCheck($event)" (paste)="inputCheck($event)">
+              <mat-error>Parking Code is required. This field accepts only alphabetical and numerical characters.</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-field">
+            <span>Latitude & Longitude <b class="span-bold">(auto-fill by draw tool)</b></span>
+            <mat-form-field class="place_LL border-right-0">
+              <input matInput type="text" formControlName="latitude" readonly>
+              <mat-error>Latitude is required</mat-error>
+            </mat-form-field>
+            <mat-form-field class="place_LL border-left-0">
+              <input matInput type="text" formControlName="longitude" readonly>
+              <mat-error>Longitude is required</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-field">
+            <span>Automated</span>
+            <mat-form-field>
+              <mat-select formControlName="is_automated">
+                <mat-option [value]="Automated.No"> No </mat-option>
+                <mat-option [value]="Automated.Yes"> Yes </mat-option>
+              </mat-select>
+              <mat-error>Automated is required</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-field">
+            <span>Parking Type</span>
+            <mat-form-field>
+              <mat-select formControlName="type_id">
+                <mat-option *ngFor="let item of carparkTypes" [value]="item.id"> {{item.name}} </mat-option>
+              </mat-select>
+              <mat-error>Parking Type is required</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="form-field">
+            <span>Managed by</span>
+            <mat-form-field>
+              <mat-select formControlName="managed_by">
+                <mat-option *ngFor="let item of managedByTypes" [value]="item"> {{item}} </mat-option>
+              </mat-select>
+              <mat-error>Managed by is required</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-field">
+            <span>Notes</span>
+            <textarea formControlName="info_notes" rows="3"></textarea>
+          </div>
+          <div class="parking-document-wrapper">
+            <div class="form-field">
+              <span>Image upload</span>
+              <ng2-file-input
+                [drop-text]="'Drag files here or'"
+                [id]="'document'"
+                [show-previews]="false"
+                [multiple]="true"
+                accept="['application/jpeg', 'application/png']"
+                (onRemoved)="onDocumentRemoved($event)"
+                (onAdded)="onDocumentAdded($event)">
+              </ng2-file-input>
+            </div>
+            <div class="documents-wrapper">
+              <div *ngIf="imageUrls&&imageUrls.length" class="document-item">
+                <div class="type"> <img [src]="imageUrls[0].startsWith('uploads/') ? apiEndpoint + '/' + imageUrls[0] : imageUrls[0]"></div>
+                <a (click)="onViewAll()">View All</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="buttons-wrapper mt-4">
+            <button mat-stroked-button type="button" class="mr-2 ml-2" (click)="onCancel()">CANCEL</button>
+            <button class="add" mat-flat-button type="submit" color="primary">
+              <ng-container *ngIf="formMode === FormMode.CREATING">CREATE</ng-container>
+              <ng-container *ngIf="formMode === FormMode.UPDATING">UPDATE</ng-container>
+            </button>
+          </div>
+          <div class="buttons-wrapper" *ngIf="formMode === FormMode.UPDATING">
+            <span (click)="onDeleteCurrentParking()">DELETE  <mat-icon>delete</mat-icon></span>
+          </div>
+      </form>
+
+      <div class="notification-box" *ngIf="formMode === FormMode.JUST_CREATED || formMode === FormMode.JUST_UPDATED || formMode === FormMode.JUST_DELETED">
+        <span *ngIf="formMode === FormMode.JUST_CREATED">New parking created!</span>
+        <span *ngIf="formMode === FormMode.JUST_UPDATED">The parking updated!</span>
+        <span *ngIf="formMode === FormMode.JUST_DELETED">The parking deleted!</span>
+        <div>
+          <button mat-flat-button type="button" class="mt-3" color="primary" (click)="returnToSelection()">OK</button>
+        </div>
+      </div>
+    </div>
+    <div class="parking-map-wrapper">
+      <app-mapview-new
+        [mapCenter]="mapCenter"
+        [options]="mapOptions"
+        [mapDataJSON]="tabMapDataJSON"
+        [mapDrawDataJSON]="tabMapDrawDataJSON"
+        [isForceCenter]="true"
+        [zoomValue]="mapZoomValue"
+        (mapDataChangedEmitter)="onSiteMapDataChanged($event)"
+        (mapDataEditEmitter)="onParkingSelection($event)">
+      </app-mapview-new>
+    </div>
+  </div>
+</ng-container>

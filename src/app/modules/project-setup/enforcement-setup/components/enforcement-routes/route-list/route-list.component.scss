@@ -1,0 +1,124 @@
+@import "../../../../../../../styles/color";
+
+:host {
+  .route-list {
+    &-header {
+      font-weight: 700;
+      font-size: 16px;
+      color: $c-blue;
+
+      &-wrapper {
+        display: flex;
+        align-items: center;
+      }
+
+      &-filter {
+        .filter {
+          padding: 0 20px 0 44px;
+          mat-icon {
+            position: absolute;
+            left: -24px;
+          }
+        }
+      }
+    }
+
+    &-content {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 -15px;
+
+      .route-list-item {
+        &-wrapper {
+          position: relative;
+          width: 300px;
+          min-height: 180px;
+          border: 1px solid $c-greylight;
+          border-radius: 10px;
+          margin: 15px;
+          cursor: pointer;
+
+          &:hover {
+            border: 1px solid $c-blue1;
+            .route-list-item-title span {
+              background-color: $c-blue1;
+            }
+          }
+
+          .remove-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+          }
+        }
+
+        &-title {
+          padding: 10px;
+          display: flex;
+          justify-content: space-between;
+          span {
+            margin: -11px;
+            padding: 10px;
+            width: 200px;
+            border-top-left-radius: 7px;
+            border-bottom-right-radius: 7px;
+            background-color: $c-blue;
+            color: $c-white;
+            white-space: pre;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
+        }
+
+        &-content {
+          padding: 20px;
+          font-size: 14px;
+
+          .label-text {
+            color: $c-grey;
+            font-size: 12px;
+          }
+        }
+
+        &-row {
+          display: flex;
+          justify-content: space-between;
+        }
+
+        &-time {
+          display: flex;
+          align-items: center;
+        }
+
+        &-street {
+          ul {
+            width: 200px;
+            padding-left: 20px;
+            li {
+              overflow: hidden;
+              white-space: pre;
+              text-overflow: ellipsis;
+            }
+          }
+        }
+
+        &-staff {
+          position: absolute;
+          bottom: 15px;
+          right: 15px;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          color: $c-blue1;
+          align-items: center;
+
+          .count {
+            font-size: 30px;
+            line-height: 20px;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
+}

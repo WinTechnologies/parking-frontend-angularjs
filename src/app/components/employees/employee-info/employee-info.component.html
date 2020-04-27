@@ -1,0 +1,92 @@
+<h1 class="employee-details-page-content-title font-weight-bold title-fixed">
+  Personal Informations
+</h1>
+<div class="employee-details-page-content mt-50px">
+  <div *ngIf="employee" class="employee-details-page-content-wrapper">
+    <div class="employee-details-info d-flex flex-wrap">
+      <img *ngIf="!employee.img_url" src="assets/noavatar.png">
+      <img *ngIf="employee.img_url" [src]= "baseUrl + employee.img_url">
+      <div class="employee-details-info-column">
+        <div class="employee-details-info-row">
+          <span class="info">First Name:</span>
+          <span>{{employee.firstname}}</span>
+        </div>
+        <div class="employee-details-info-row">
+          <span class="info">Last Name:</span>
+          <span>{{employee.lastname}}</span>
+        </div>
+        <div class="employee-details-info-row">
+          <span class="info">Username:</span>
+          <span>{{employee.username}}</span>
+        </div>
+        <div class="employee-details-info-row">
+          <span class="info">Gender:</span>
+          <span>{{employee.sex ? 'Male' : 'Female'}}</span>
+        </div>
+      </div>
+      <div class="employee-details-info-column">
+        <div class="employee-details-info-row">
+          <span class="info">Birth Date:</span>
+          <span>{{employee.day_of_birth | date:'dd/MM/yyyy'}}</span>
+        </div>
+        <div class="employee-details-info-row">
+          <span class="info">Address:</span>
+          <span>{{employee.address}}</span>
+        </div>
+        <div class="employee-details-info-row">
+          <span class="info">Phone #:</span>
+          <span>{{employee?.phone_number}}</span>
+        </div>
+        <div class="employee-details-info-row">
+          <span class="info">Land #:</span>
+          <span>{{employee?.landline}}</span>
+        </div>
+      </div>
+      <div class="employee-details-info-column">
+        <div class="employee-details-info-row">
+          <span class="info">Employee ID:</span>
+          <span>{{employee?.employee_id}}</span>
+        </div>
+        <div class="employee-details-info-row">
+          <span class="info">Department:</span>
+          <span>{{employee?.department}}</span>
+        </div>
+        <div class="employee-details-info-row">
+          <span class="info">Position:</span>
+          <span>{{employee?.job_position}}</span>
+        </div>
+        <div class="employee-details-info-row">
+          <span class="info">Job Type:</span>
+          <span>{{employee?.job_type}}</span>
+        </div>
+      </div>
+      <div class="employee-details-info-column">
+        <div class="employee-details-info-row">
+          <span class="info">Start Date:</span>
+          <span>{{employee?.date_start | date:'dd/MM/yyyy'}}</span>
+        </div>
+        <div class="employee-details-info-row">
+          <span class="info">End Date:</span>
+          <span>{{employee?.date_end | date:'dd/MM/yyyy'}}</span>
+        </div>
+        <div class="employee-details-info-row">
+          <span class="info">Working Status:</span>
+          <span>{{employee?.working_status}}</span>
+        </div>
+        <div class="employee-details-info-row">
+          <span class="info">Projects:</span>
+          <span>
+            <div *ngFor="let project of employee_projects">
+              {{project.project_code}}: <strong>{{project.project_name}}</strong>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class=""row>
+    <div class="col-md-offset-11">
+      <button mat-stroked-button color="primary" (click)="onClose()" >Close</button>
+    </div>
+  </div>
+</div>

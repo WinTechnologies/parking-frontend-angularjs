@@ -1,0 +1,14 @@
+:host {
+  .table-filter {
+    padding: 0 20px 0 1rem;
+
+    mat-icon {
+      position: absolute;
+      left: -24px;
+    }
+  }
+
+  .mat-table {
+    height: 75vh;
+  }
+}

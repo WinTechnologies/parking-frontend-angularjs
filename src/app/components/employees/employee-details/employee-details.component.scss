@@ -1,0 +1,202 @@
+@import "../../../../styles/_color.scss";
+
+:host {
+  .employee-details-page {
+    padding-top:50px;
+
+    &-header {
+      .mat-icon-button {
+        outline: none;
+      }
+    }
+
+    .warning {
+      font-size: 12px;
+      color:red;
+    }
+
+    &-content {
+      &-title {
+        height: 50px;
+        line-height: 50px;
+        font-size: 1.5rem;
+      }
+
+      &-wrapper {
+        .employee-details-info {
+          img {
+            width: 100px;
+            height: 100px;
+          }
+
+          &-column {
+            display: flex;
+            flex-direction: column;
+            padding: 8px 20px;
+          }
+
+          &-row {
+            display: flex;
+
+            span {
+              font-weight: 500;
+              &.info {
+                font-weight: 400;
+                color: $c-grey;
+                width: 100px;
+              }
+            }
+          }
+        }
+
+        .admin-wrapper,
+        .workplan-wrapper,
+        .org-wrapper {
+          padding: 10px;
+        }
+
+        .no-productivity-wrapper,
+        .no-workplan-wrapper,
+        .no-org-wrapper {
+          padding: 10px;
+          display: flex;
+          justify-content: center;
+
+          span.no-data {
+            padding: 150px 0;
+          }
+
+          .buttons-wrapper {
+            padding: 10px;
+            position: absolute;
+            top: 0;
+            right: 0;
+
+            button {
+              color: $c-blue1;
+              background-color: transparent;
+              outline: none;
+            }
+          }
+        }
+
+        .project-wrapper {
+          display: flex;
+          margin: 30px 0 0;
+
+          .project {
+            display: flex;
+            flex-grow: 1;
+            justify-content: flex-start;
+
+            .buttons-wrapper {
+              padding: 10px;
+              position: absolute;
+              top: 0;
+              right: 0;
+
+              button {
+                color: $c-blue1;
+                background-color: transparent;
+                outline: none;
+              }
+            }
+          }
+        }
+
+        .tabs-wrapper {
+          width: 100%;
+          ::ng-deep .tabs-wrapper {
+            padding-top: 0;
+          }
+
+          ::ng-deep .mat-tab-header {
+            border-bottom: none;
+            position: initial;
+            top: 0;
+          }
+
+          ::ng-deep .mat-tab-labels {
+            border-bottom: 2px solid;
+          }
+
+          ::ng-deep .mat-tab-label-active {
+            border-top: 2px solid;
+            border-right: 2px solid;
+            border-left: 2px solid;
+            border-top-right-radius: 4px;
+            border-top-left-radius: 4px;
+            border-bottom: 2px solid $c-white;
+            top: 2px;
+            background-color: $c-white;
+            opacity: 1;
+            z-index: 2;
+          }
+
+          ::ng-deep .mat-tab-label-content {
+            .mat-icon {
+              position: relative;
+              right: 5px;
+            }
+          }
+
+          ::ng-deep .mat-ink-bar {
+            background-color: transparent;
+          }
+
+          ::ng-deep .mat-tab-label {
+            height: 60px;
+          }
+
+          .mat-tab-group.project-tabs {
+            ::ng-deep .mat-tab-label:first-child {
+              width: 100%;
+              .mat-tab-label-content {
+                width: 100%;
+              }
+            }
+          }
+
+          .mat-tab-group.workplan-tabs {
+            ::ng-deep .mat-tab-label:first-child {
+              width: auto;
+              .mat-tab-label-content {
+                width: auto;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .page-top-header {
+   justify-content: initial;
+  }
+
+  ::ng-deep .title-fixed {
+    position: initial;
+  }
+
+  ::ng-deep .mt-50px {
+    margin-top: 0;
+  }
+
+  ::ng-deep .mat-tab-body-wrapper {
+    padding-top: 0 !important;
+  }
+  ::ng-deep .mat-form-field-infix {
+    padding: 4px 0 6px 0;
+    margin: .5rem 0 0 0;
+  }
+  ::ng-deep .mat-tab-body {
+    &[id $= '-1'] > .mat-tab-body-content{
+      padding: 0;
+      overflow: hidden;
+    }
+  }
+}

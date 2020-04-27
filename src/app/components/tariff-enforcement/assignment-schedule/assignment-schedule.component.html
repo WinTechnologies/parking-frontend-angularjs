@@ -1,0 +1,11 @@
+<div class="button-days d-inline-flex align-items-center align-content-center"
+  *ngFor="let day of working_days; let last = last" [style.backgroundColor]="day.isSelected?'#105498':'#A8A9AD'">
+  <span></span>
+  <div class="button-days-text">{{day.name.charAt(0) | uppercase}}</div>
+</div>
+<div class="d-flex">
+  <p>{{date_start | date: 'dd/MM/yyyy' }} -{{date_end | date: 'dd/MM/yyyy'}}</p>
+  <ul class="working_timeslot">
+      <li *ngFor="let timeslot of working_timeslot">{{timeslot}}</li>
+    </ul>
+</div>

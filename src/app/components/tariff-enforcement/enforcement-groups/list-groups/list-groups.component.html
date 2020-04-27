@@ -1,0 +1,89 @@
+<!-- ------------ Groups List --------------------- -->
+<div>
+   <div class="page-title-header bg-white top-panel border-bottom">
+      <div class="d-flex align-items-center justify-content-left">
+        <mat-icon>search</mat-icon>
+        <mat-form-field class="violation-filter">
+          <input
+            matInput
+            placeholder="Search Group"
+            [(ngModel)]="searchText"
+            autocomplete="off"/>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="Arrange by" (selectionChange)="arrangeByField($event.value)">
+            <mat-option *ngFor="let field of arrangeFields" [value]="field.fieldName"> {{field.label}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-select placeholder="View" (selectionChange)="filterPromotions()" [(ngModel)] = "selectedView" >
+            <mat-option *ngFor="let filter of viewFilters" [value]="filter"> {{filter}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="d-flex align-items-center">
+        <div class="mt-2 mr-5">
+          <span>Select:&nbsp;</span>
+          <mat-form-field>
+            <mat-select placeholder="Start from template" [(ngModel)]="selected_group_id"
+              (ngModelChange)="onChangeGroup($event)">
+              <mat-option *ngFor="let group of groups" value="{{group.id}}">
+                {{group.group_name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="buttons-wrapper">
+          <button
+            *ngIf="permission.isCreate"
+            mat-flat-button color="basic"
+            class="d-flex create_group_btn"
+            (click)="onAdd()">
+              <mat-icon>
+                add_circle
+              </mat-icon>
+          Group
+        </button>
+        </div>
+      </div>
+    </div>
+    <div class="ml-3 mr-3 d-flex flex-wrap pt-110px">
+      <div class="group-item-wrapper mr-3 mb-3" *ngFor="let group of groups | filter:searchText; let lastGroup=last">
+        <div [class.expired]="checkExpired(group)">
+          <div *ngIf="checkExpired(group)" class="expired-watermark">Expired</div>
+          <div class="group-item-title d-flex justify-content-between">
+            <div [ngClass] = "focusGroup == group.id || (lastGroup && focusGroup == 0)?'focus-info-name':'info-name'"
+            (click)="viewDetails(group)">
+              {{group.group_name}}
+            </div>
+            <mat-icon
+            *ngIf="permission.isDelete"
+            class="delete-group"
+            (click)="onDelete(group)">
+            remove_circle
+            </mat-icon>
+          </div>
+          <div *ngIf="group && group.working_days" class="group-item-content" (click)="viewDetails(group)">
+            <p>Global Schedule: </p>
+            <div class="button-days d-inline-flex align-items-center align-content-center"
+              *ngFor="let day of group.working_days; let last = last"
+              [style.backgroundColor]="day.isSelected?'#2d404b':'#A8A9AD'">
+              <div class="button-days-text">{{day.name.charAt(0) | uppercase}}</div>
+            </div>
+            <div class="d-flex">
+              <p>
+                {{group.date_start | date: 'dd/MM/yyyy'}} -
+                {{group.date_end ? (group.date_end | date: 'dd/MM/yyyy') : 'Unspecified'}}
+              </p>
+              <ul class="working_timeslot">
+                <li *ngFor="let timeslot of group.working_timeslot">{{timeslot}}</li>
+              </ul>
+            </div>
+            <div class="d-flex justify-content-between">
+              <p class="gray">Created: <span>{{group.created_at | date: 'dd/MM/yyyy'}}</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>

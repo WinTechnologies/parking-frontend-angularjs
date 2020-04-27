@@ -1,0 +1,255 @@
+@import "../../../styles/_color.scss";
+
+:host {
+  .assets-page {
+    &-header {
+
+      .mat-hearder-cell {
+        color: $c-white;
+      }
+
+      &-buttons {
+        button {
+          color: $c-blue1;
+          outline: none;
+          background: transparent;
+        }
+
+        .mat-icon {
+          vertical-align: middle;
+          margin-right: 10px;
+        }
+
+        img {
+          height: 24px;
+          width: 24px;
+        }
+      }
+
+      .mat-form-field {
+        margin-top: 15px;
+      }
+    }
+
+    &-content {
+      padding-bottom: 1rem;
+      padding: 0 1rem 0 1rem;
+
+      &-title {
+        height: 50px;
+        line-height: 50px;
+        font-size: 1.5rem;
+      }
+
+      &-assets-wrapper {
+        overflow-y: auto;
+        padding-top: 50px;
+        color: $c-blue;
+        background-color: $c-greylight1;
+
+        .asset-container {
+          margin: 25px;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+
+          .asset-item {
+            &-title {
+              font-size: 18px;
+            }
+
+            &-content {
+              &-total {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                padding: 10px;
+                width: 160px;
+                height: 250px;
+                background-color: $c-greylight;
+
+                .icon {
+                  height: 160px;
+                  width: 140px;
+                  padding: 20px;
+                  cursor: pointer;
+                  &:hover {
+                    background-color: $c-blue;
+
+                    .name {
+                      color: $c-white;
+                    }
+
+                    img {
+                      &:not([src*='uploads']) {
+                        filter: brightness(0) invert(1);
+                      }
+                    }
+                  }
+
+                  img {
+                    height: 120px;
+                    width: 100px;
+                  }
+                }
+
+                .text-value {
+                  line-height: 50px;
+                }
+              }
+
+              .text {
+                display: flex;
+                flex-direction: column;
+
+                &-label {
+                  text-align: center;
+                  text-transform: uppercase;
+                }
+
+                &-value {
+                  font-size: 42px;
+                  text-align: center;
+                }
+              }
+
+              &-value {
+                margin: 0 10px;
+                width: 160px;
+                height: 120px;
+                background-color: $c-greylight;
+                padding: 10px;
+
+                &:first-child {
+                  margin-bottom:10px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    &-list-wrapper {
+      padding:0 1rem 0 1rem;
+
+      .detail-section-wrapper {
+        border-left: 1px solid;
+      }
+
+      .detail-section {
+        height: calc(100vh - 185px);
+        overflow-y: auto;
+
+        &-header {
+          position: sticky;
+          top: 0;
+          z-index: 100;
+        }
+
+        h5 {
+          background-color: $c-blue;
+          color: $c-white;
+          text-align: center;
+          padding: 0.8rem;
+        }
+
+        .item-wrapper {
+          .text {
+            width: 140px;
+            margin: 5px;
+          }
+
+          .text-info {
+            border-radius: 15px;
+            width: calc(100% - 160px);
+            background-color: aliceblue;
+            padding: 0 15px;
+            min-height: 21px;
+            vertical-align: middle;
+          }
+        }
+      }
+      .mat-table {
+        height: calc(90vh - 185px);
+        overflow-y: auto;
+
+        .mat-header-row {
+          position: sticky;
+          top:0;
+          z-index:20;
+
+          /deep/ .mat-header-cell {
+            padding-left: 5px;
+            display: flex;
+          }
+        }
+      }
+
+      .uninstalled-asset-wrapper {
+        height: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      /deep/ app-mapview-new {
+        .map-view {
+          height: 200px;
+
+          .leaflet-control-attribution {
+            display: none !important;
+          }
+        }
+      }
+    }
+  }
+
+  .list-header {
+    padding-top: 50px;
+  }
+
+  .projects-list-header {
+    padding-top: 60px;
+  }
+
+  .selected {
+    background-color: #8ca5a8;
+    .mat-cell {
+      color: whitesmoke;
+    }
+  }
+
+  .table-section-height {
+    height: 75vh;
+    @media (max-height: 800px) and (min-height: 799px){
+      height: 71vh;
+    }
+    @media (max-height: 900px) and (min-height: 899px){
+      height: 74vh;
+    }
+  }
+
+  .model {
+    overflow: hidden;
+    height: 1rem;
+  }
+}
+
+/deep/ ngx-datatable {
+  .action-cell-w {
+    min-width: 10.5% !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+    @media (max-height: 899px) {
+      min-width: 13.5% !important;
+    }
+  }
+
+  .action-header-cell-w {
+    min-width: 10.5% !important;
+    @media (max-height: 899px) {
+      min-width: 13.5% !important;
+    }
+  }
+}

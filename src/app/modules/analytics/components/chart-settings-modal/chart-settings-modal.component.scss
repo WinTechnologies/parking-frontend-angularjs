@@ -1,0 +1,16 @@
+:host {
+  .actions {
+    display: flex;
+    flex-direction: row;
+  }
+}
+::ng-deep .mat-form-field-type-mat-select .mat-form-field-label {
+  padding-left: 20px;
+}
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-label {
+  padding-left: 20px;
+}
+.form-fields-wrapper {
+  display: flex;
+  justify-content: space-around;
+}

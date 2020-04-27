@@ -1,0 +1,20 @@
+<div class="parking-image-view">
+  <div class="parking-image-view-title">
+    <h1>Pictures</h1>
+    <button (click)="onClose()" mat-icon-button><mat-icon>close</mat-icon></button>
+  </div>
+  <div class="parking-image-view-wrapper" *ngIf="imageUrls&&imageUrls.length">
+    <div *ngFor="let item of imageUrls; let i = index;"
+    class="image-item"
+    (click)="onSelectImage(i)" [class.active]="i==selectedIndex">
+      <button mat-icon-button (click)="onRemoveItem(i)"><mat-icon>cancel</mat-icon></button>
+      <img [src]="item.startsWith('uploads/') ? apiEndpoint + '/' + item : item">
+    </div>
+  </div>
+  <div class="parking-image-view-preivew" *ngIf="imageUrls&&imageUrls.length">
+    <img [src]="imageUrls[selectedIndex].startsWith('uploads/') ? apiEndpoint + '/' + imageUrls[selectedIndex] : imageUrls[selectedIndex]">
+  </div>
+  <div *ngIf="!imageUrls || !imageUrls.length">No Pictures</div>
+  <button mat-flat-button (click)="onChanges()">Changes</button>
+</div>
+

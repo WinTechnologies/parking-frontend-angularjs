@@ -1,0 +1,71 @@
+<div class="assigned-employees-wrapper">
+  <div class="d-flex align-items-center">
+    <mat-form-field class="table-filter">
+      <mat-icon>search</mat-icon>
+      <input
+        matInput
+        (keyup)="applyFilterEmployee($event.target.value)"
+        placeholder="Search employees"
+      />
+    </mat-form-field>
+    <button
+      *ngIf="permission?.isCreate"
+      (click)="showAssignEmployeesModal()"
+      mat-flat-button
+      color="basic"
+      class="d-flex align-items-center ml-auto mr-3 add-staff"
+    >
+      <mat-icon>add_circle</mat-icon><span class="ml-1">Staff</span>
+    </button>
+    <button class="mr-2 btn-primary mat-raised-button" (click)="editColumns()">
+      Customize Columns
+    </button>
+  </div>
+
+  <div class="table-wrapper">
+    <ngx-datatable
+      class="material bg-white"
+      style="height: 60vh"
+      [columnMode]="'force'"
+      [loadingIndicator]="isLoading"
+      [headerHeight]="50"
+      [footerHeight]="50"
+      [rowHeight]="70"
+      [limit]="10"
+      [rows]="assignedEmployees"
+      scrollbarV="true"
+      (activate)="onSelect($event)"
+      (reorder)="reorderColumns($event)"
+    >
+      <ngx-datatable-column
+        *ngFor="let field of tableFields"
+        name="{{ field.label }}"
+        prop="{{ field.name }}"
+      >
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span
+            [matTooltip]="row[field.name]"
+            matTooltipShowDelay="1000"
+            matTooltipHideDelay="1000"
+          >
+            <ng-container [ngSwitch]="field.name">
+              <ng-container *ngSwitchCase="'avatar'">
+                <img *ngIf="row.img_url" [src]="baseUrl + row.img_url" />
+                <img *ngIf="!row.img_url" src="assets/noavatar.png" />
+              </ng-container>
+              <ng-container *ngSwitchCase="'action'">
+                <button
+                  mat-icon-button
+                  (click)="$event.stopPropagation(); onDelete(row)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </ng-container>
+              <ng-container *ngSwitchDefault>{{ row[field.name] }}</ng-container>
+            </ng-container>
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable>
+  </div>
+</div>

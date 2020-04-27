@@ -1,0 +1,52 @@
+@import "../../../../../styles/_color.scss";
+
+:host {
+  .servicelist-select-page {
+    &-content {
+      margin: 5px 20px;
+      background-color: $c-greylight1;
+
+      .servicelist-select-page-table-wrapper {
+        height: 290px;
+        overflow: auto;
+      }
+
+      .mat-table {
+        .mat-row {
+          img {
+            height: 25px;
+            width: 25px;
+          }
+
+          &:hover {
+            cursor: pointer;
+            background-color: $c-lightblue;
+
+            .mat-cell {
+              color: $c-white;
+            }
+          }
+        }
+      }
+
+      .mat-column-checkbox {
+        flex: 0 0 50px;
+
+        .mat-checkbox {
+          ::ng-deep .mat-checkbox-layout {
+            margin: 0;
+          }
+        }
+      }
+    }
+
+    .total-value-wrapper {
+      display: flex;
+      justify-content: space-between;
+
+      .total {
+        width: calc(50% - 25px);
+      }
+    }
+  }
+}

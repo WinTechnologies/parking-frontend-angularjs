@@ -1,0 +1,64 @@
+<nav class="leftSide">
+  <div>
+    <ul class="list-unstyled components">
+      <li class="mb-4">
+        <div class="left-bar-header cat-link" fxFlex="1 1 0%">
+          <button mat-icon-button (click)="showReportList()"><mat-icon>keyboard_backspace</mat-icon></button>
+          <label>{{ currentReport.name }}</label>
+        </div>
+      </li>
+      <li *ngFor="let widget of charts; let index = index">
+        <div class="search-box" fxFlex="1 1 0%" *ngIf="!delConfirm">
+          <mat-checkbox checked="true" (change)="toggleChart($event, index)">{{ widget.settings.name }}</mat-checkbox>
+          <button mat-icon-button class="deleteButton" (click)="deleteChart(index)" *ngIf="!isPublic"><mat-icon>delete</mat-icon></button>
+        </div>
+      </li>
+      <li fxLayoutAlign="center center" class="mb-5" *ngIf="!delConfirm && !isPublic && !currentReport.is_public">
+        <button mat-flat-button color="primary" class="sidebarButton" (click)="shareToAll()">
+          <img src="assets/library_icons/Public_to_icon.svg" /><span>Set to Public</span></button>
+      </li>
+      <li fxLayoutAlign="center center" class="mb-5" *ngIf="!delConfirm && !isPublic && currentReport.is_public">
+        <button mat-flat-button color="primary" class="sidebarButton" (click)="toPrivate()">
+          <img src="assets/library_icons/Public_to_icon.svg" /><span>Set to Private</span></button>
+      </li>
+      <li *ngIf="!delConfirm && !isPublic">
+        <div class="shareGroup">
+          <button mat-flat-button color="primary" class="sidebarButton" (click)="shareToLibrary()" [disabled]="selectedGroup === null">
+            <img src="assets/library_icons/Public_to_icon.svg" /><span>Share to</span>
+          </button>
+          <mat-form-field>
+            <ng-container *ngIf="selectedGroup === null">
+              <mat-select value="'no-group'">
+                <mat-option value="'no-group'">No library group</mat-option>
+              </mat-select>
+            </ng-container>
+
+            <ng-container *ngIf="selectedGroup !== null">
+              <mat-select [(value)]="selectedGroup">
+                <mat-option *ngFor="let group of groups" [value]="group.id">
+                  {{ group.name }}
+                </mat-option>
+              </mat-select>
+            </ng-container>
+          </mat-form-field>
+        </div>
+      </li>
+      <li *ngIf="!delConfirm && !isPublic && sharedGroups.length > 0" class="sharedGroups">
+        <span>{{ currentReport.name }} is shared to</span><br />
+        <ng-container *ngFor="let sharedGroup of sharedGroups">
+          <span style="color: #333">{{ sharedGroup.name }}</span>
+        </ng-container>
+      </li>
+      <li *ngIf="!delConfirm && isPublic" fxLayoutAlign="center center">
+        <button mat-flat-button color="primary" class="sendToMyButton" (click)="toMyLibrary()">
+          <img src="assets/library_icons/Send_to_my_library_icon.svg"><span>Send to my library</span>
+        </button>
+      </li>
+      <li *ngIf="delConfirm">
+        <h4 class="mt-50px">Do you want to delete <br>{{ charts[delChartIndex].settings.name }}?</h4>
+        <button class="delButton mt-60px" (click)="removeChart()">DELETE</button>
+        <button class="cancelButton mt-3" (click)="cancelDel()">CANCEL</button>
+      </li>
+    </ul>
+  </div>
+</nav>

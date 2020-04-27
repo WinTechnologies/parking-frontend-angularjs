@@ -1,0 +1,85 @@
+<main class="detail-page">
+  <!-- ------------------- Greybar ------------------------ -->
+  <header class="page-top-header">
+    <div class="d-flex align-items-center justify-content-between">
+      <button
+        mat-icon-button
+        color="base"
+        (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div>Setting Default Values / {{currentType?.title}}</div>
+    </div>
+  </header>
+  <!-- ------------------------------------------- -->
+  <ng-container *ngIf="currentType && currentUser && allEmployees">
+    <div *ngFor="let list of currentType.lists; let listIndex = index" class="detail-page-content">
+      <h4 class="page-content-title">List of {{list.title}}</h4>
+      <div class="d-flex align-items-center justify-content-between">
+        <mat-form-field class="table-filter ml-3">
+          <mat-icon>search</mat-icon>
+          <input
+            matInput
+            (keyup)="applyFilterTable($event.target.value, listIndex)"
+            placeholder="Search">
+        </mat-form-field>
+        <div fxLayout="row" fxLayoutAlign="center center">
+          <button *ngIf="permission.isCreate" mat-flat-button color="basic" class="create-btn mr-2" (click)="onAdd(listIndex)">
+            <mat-icon>add_circle</mat-icon>
+            <span class="ml-1 text-capitalize">{{list.name}}</span>
+          </button>
+          <button class="mr-2 btn-primary mat-raised-button" (click)="editColumns(listIndex)">Customize Columns</button>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <ngx-datatable class="material bg-white"
+                       style="height: calc(50vh - 130px)"
+                       [columnMode]="'force'"
+                       [headerHeight]="50"
+                       [footerHeight]="50"
+                       [rowHeight]="50"
+                       [limit]="10"
+                       [rows]="defaultValues[listIndex]"
+                       scrollbarV="true"
+                       (activate)="onEdit($event, listIndex)"
+                       (reorder)="reorderColumns($event, listIndex)">
+          <ngx-datatable-column *ngFor="let field of list.tableFields" name="{{field.label}}" prop="{{field.name}}">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <span [matTooltip]="row[field.name]" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+                <ng-container [ngSwitch]="field.name">
+                  <ng-container *ngSwitchCase="'img_url'">
+                    <img class="incedent-image" *ngIf="isImagePreviewShown(row[field.name])" [src]="defineUrl(row[field.name])" />
+                    <div class="incedent-image" *ngIf="isImagePreviewShown(row[field.name], false)">{{row[field.name]}}</div>
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'created_at'">
+                      {{ row[field.name] | date:'medium' }}
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'created_by'">
+                    {{ getUserName(row[field.name]) }}
+                  </ng-container>
+                  <ng-container *ngSwitchCase="'action'">
+                    <button mat-icon-button (click)="$event.stopPropagation();onDelete(row, listIndex)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </ng-container>
+                  <ng-container *ngSwitchDefault>{{ row[field.name] }}</ng-container>
+                </ng-container>
+              </span>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column *ngIf="permission.isDelete && list.name !== 'Job Type'" name="Action" prop="action">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <span matTooltip="Remove" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+                <button mat-icon-button (click)="$event.stopPropagation();onDelete(row, listIndex)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </span>
+            </ng-template>
+          </ngx-datatable-column>
+        </ngx-datatable>
+      </div>
+    </div>
+  </ng-container>
+
+</main>

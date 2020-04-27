@@ -1,0 +1,206 @@
+@import '../../../../../../styles/color';
+.terminal {
+  margin-top: 20px;
+  background: white;
+  ::ng-deep .map-view {
+    height: calc(100vh - 200px) !important;
+  }
+  &-sidebar {
+    padding: 30px;
+    height: calc(100vh - 200px);
+    overflow-y: auto;
+    background: #fafafb;
+    margin-right: 20px;
+
+    &-title {
+      font-weight: 600;
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+    &-error {
+      color: red;
+      width: 300px;
+    }
+    .form-field {
+      span {
+        display: block;
+        font-size: 17px;
+        b.span-bold {
+          color: #bcbcbc;
+          font-size: 15px;
+        }
+      }
+      .mat-form-field {
+        width: 300px;
+        &.units {
+          width: 120px;
+        }
+        &.place_LL {
+          width: 150px;
+        }
+        mat-option.is-loading span {
+          display: flex;
+          justify-content: center;
+        }
+      }
+      textarea {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        color: #bcbcbc;
+      }
+      ::ng-deep .mat-form-field-infix {
+        background: white;
+        border: 1px solid rgba(0, 0, 0, 0.42);
+        border-radius: 5px;
+        padding: 8px 8px 8px 8px;
+        color: #0073AE;
+        font-size: 17px;
+        .mat-select-arrow {
+          color: #0073AE;
+        }
+        span {
+          color: #0073AE;
+        }
+      }
+      .border-right-0 {
+        ::ng-deep .mat-form-field-infix {
+          border-right: 0 !important;
+          border-top-right-radius: 0 !important;
+          border-bottom-right-radius: 0 !important;
+          input {
+            border-right: 1px solid rgba(0, 0, 0, 0.42);
+          }
+        }
+      }
+      .border-left-0 {
+        ::ng-deep .mat-form-field-infix {
+          border-left: 0 !important;
+          border-top-left-radius: 0 !important;
+          border-bottom-left-radius: 0 !important;
+        }
+      }
+      ::ng-deep .mat-form-field-invalid .mat-form-field-infix {
+        border: 1px solid #f44336;
+      }
+      ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline {
+        height: 0 !important;
+      }
+      ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-ripple {
+        height: 0 !important;
+      }
+    }
+
+    .terminal-image-wrapper {
+      width: 250px !important;
+      position: relative;
+      .text {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        line-height: 14px;
+        font-size: 11px;
+        background: rgba(255, 255, 255, 0.6);
+        white-space: nowrap;
+        z-index: 5;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+      .imgfield {
+        width: 200px !important;
+        height: 200px !important;
+      }
+      .remove {
+        overflow: hidden;
+        position: absolute;
+        bottom: 0;
+        z-index: 3;
+        vertical-align: bottom;
+        width: 200px;
+        font-size: 14px;
+        line-height: 20px;
+        top: 0;
+        left: 0;
+        right: 0;
+        opacity: 0;
+        padding: 0;
+        &:hover {
+          opacity: 1;
+          cursor: pointer;
+          background: rgba(169, 68, 66, 0.85);
+        }
+
+        p {
+          position: absolute;
+          bottom: 5px;
+          width: 100%;
+          color: #fff;
+          text-align: center;
+        }
+      }
+    }
+    .payment-method {
+      margin-left: 8rem;
+    }
+
+    .buttons-wrapper {
+      justify-content: flex-end;
+      display: flex;
+      button {
+        min-width: 45%;
+        margin: 20px 2%;
+      }
+      span {
+        display: flex;
+        font-size: 18px;
+        color: darkgray;
+      }
+      span:hover {
+        color: red;
+        cursor: pointer;
+      }
+    }
+
+    .buttons-wrapper {
+      justify-content: flex-end;
+      display: flex;
+      button {
+        min-width: 45%;
+        margin: 20px 2%;
+      }
+      span {
+        display: flex;
+        font-size: 18px;
+        color: darkgray;
+      }
+      span:hover {
+        color: red;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .link{
+    cursor: pointer;
+    color: #007bff;
+  }
+
+  display: flex;
+  &-map-wrapper {
+    flex-grow: 1;
+  }
+
+  .notification-box {
+    text-align: center;
+    padding: 1rem;
+    background-color: white;
+    span {
+      font-weight: bold;
+      color: $mawgif-primary;
+      font-size: 20px;
+    }
+    button {
+      width: 100px;
+    }
+  }
+}

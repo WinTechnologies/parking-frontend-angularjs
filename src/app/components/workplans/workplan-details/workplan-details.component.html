@@ -1,0 +1,89 @@
+<main class="workplan-details-page mt-50px">
+  <!-- ------------------- Greybar ---------------------- -->
+  <header *ngIf="!employeeId" class="page-top-header">
+    <div class="workplan-details-heder-buttons">
+      <button mat-icon-button color="base" (click)="onBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+    <p>Workplan / {{workplan?.wp_name}}</p>
+  </header>
+  <!-- ------------------------------------------- -->
+  <h1 class="workplan-details-page-content-title font-weight-bold title-fixed">
+    {{workplan?.wp_name}}
+  </h1>
+  <div class="workplan-details-page-content">
+    <div class="workplan-details-page-content-wrapper">
+      <div class="tabs-wrapper">
+        <mat-tab-group>
+          <!-- ------------------- Schedule   --------------------------- -->
+          <mat-tab label="Schedule">
+            <div class="schedule-wrapper">
+              <app-schedule-calendar [workplan]="workplan"></app-schedule-calendar>
+            </div>
+          </mat-tab>
+          <!-- ------------------- Reoccurings --------------------------- -->
+          <mat-tab label="Reoccuring">
+            <div class="tab-reoccuring-new-wrapper">
+              <ng-container *ngFor="let reoccuring of reoccurings; let i = index;">
+                <app-reoccuring-new
+                  [(reoccuring)]="reoccuring"
+                  (close)="onRemoveReoccuring(i)"
+                  [canUpdate]="canUpdate">
+                </app-reoccuring-new>
+              </ng-container>
+              <ng-container *ngIf="canUpdate">
+                  <div class="schedule-buttons-wrapper">
+                    <button class="link_btn" mat-flat-button color="basic" (click)="onAddReoccuring()">
+                      <mat-icon>add_circle</mat-icon>
+                      Reoccuring
+                    </button>
+                  </div>
+                  <div class="buttons-wrapper float-right">
+                    <button mat-stroked-button color="secondary" class="mr-2"
+                            (click)="onCancelReoccuring()">Cancel
+                    </button>
+                    <button mat-flat-button color="primary" [disabled]="!checkValidReoccuring()"
+                            (click)="onApplyReoccuring()">Apply
+                    </button>
+                  </div>
+                </ng-container>
+            </div>
+          </mat-tab>
+          <!-- ------------------- Exceptions --------------------------- -->
+          <mat-tab label="Exceptions">
+            <div class="tab-exceptions-wrapper">
+              <ng-container *ngFor="let exception of exceptions; let i = index;">
+                <app-exception-new
+                  [(exception)]="exception"
+                  (close)="onRemoveException(i)"
+                  [canUpdate]="canUpdate">
+                </app-exception-new>
+              </ng-container>
+              <ng-container *ngIf="canUpdate">
+                <div class="schedule-buttons-wrapper">
+                  <button class="link_btn" mat-flat-button color="basic" (click)="onAddException()">
+                    <mat-icon>add_circle</mat-icon>
+                    Exception
+                  </button>
+                </div>
+                <div class="buttons-wrapper float-right">
+                  <button mat-stroked-button color="secondary" class="mr-2"
+                          (click)="onCancelExceptions()">Cancel
+                  </button>
+                  <button mat-flat-button color="primary" [disabled]="!checkValidException()"
+                          (click)="onApplyExceptions()">Apply
+                  </button>
+                </div>
+              </ng-container>
+            </div>
+          </mat-tab>
+          <mat-tab label="Assigned Staff" *ngIf="!employeeId">
+            <app-assigned-employees-list [workplan_name]="workplan?.wp_name"
+                                         [canUpdate]="canUpdate"></app-assigned-employees-list>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+  </div>
+</main>

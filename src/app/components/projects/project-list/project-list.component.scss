@@ -1,0 +1,245 @@
+@import "../../../../styles/_color.scss";
+
+.tabs-wrapper-project {
+  width: 100%;
+
+  ::ng-deep .mat-tab-header {
+    border-bottom: none;
+  }
+
+  ::ng-deep .mat-tab-body-wrapper {
+    margin-top: 50px;
+  }
+
+  ::ng-deep .mat-tab-body-content {
+    padding: 0 !important;
+  }
+
+  ::ng-deep .mat-tab-labels {
+    background-color: #f5f7f9;
+    height: 50px;
+    border-bottom: 2px solid black;
+  }
+
+  ::ng-deep .mat-tab-label {
+    min-width: 140px;
+    font-size: 14px;
+    top: 2px;
+    border-bottom: 2px solid black;
+  }
+
+  ::ng-deep .mat-tab-label-active {
+    border-top: 2px solid black!important;
+    border-right: 2px solid black!important;
+    border-left: 2px solid black!important;
+    border-top-right-radius: 4px!important;
+    border-top-left-radius: 4px!important;
+    opacity: 1;
+    z-index: 2;
+    text-decoration: underline;
+  }
+
+  ::ng-deep .mat-tab-label-content {
+    .mat-icon {
+      position: relative;
+    }
+  }
+
+  ::ng-deep .notes {
+    textarea {
+      padding: .5rem;
+    }
+
+    .mat-form-field-appearance-legacy .mat-form-field-underline {
+      height: 0 !important;
+    }
+
+    .mat-form-field-appearance-legacy .mat-form-field-ripple {
+      height: 0 !important;
+    }
+  }
+
+  ::ng-deep .mat-ink-bar {
+    background-color: transparent;
+  }
+
+  .mat-tab-group.workplan-tabs {
+    ::ng-deep > .mat-tab-header {
+      position: fixed;
+      top: 60px;
+      width: 100%;
+      z-index: 40;
+
+      .mat-tab-labels {
+        .mat-tab-label {
+          border-bottom: 2px solid black;
+
+          &.mat-tab-label-active {
+            border-color: black;
+            border-radius: 4px 4px 0 0;
+            background-color: $c-white !important;
+            color: rgb(45, 64, 75)!important;
+            border-bottom: 2px solid transparent;
+          }
+        }
+      }
+    }
+
+    .tabs-wrapper-tabs{
+      width: 100%;
+
+      ::ng-deep .mat-tab-group.mat-primary .mat-tab-label:not(.mat-tab-disabled):focus {
+        background-color: white;
+      }
+
+      ::ng-deep .mat-tab-header {
+        position: fixed;
+        z-index: 10;
+        background: white;
+        width: 100%;
+        height: 50px;
+      }
+
+      ::ng-deep .mat-tab-labels {
+        background-color: white;
+        border-bottom: 2px solid;
+      }
+
+      ::ng-deep .mat-tab-label{
+        border-right: solid #ccc;
+        border-top: solid #ccc;
+        border-radius: 4px 4px 0 0;
+      }
+
+      ::ng-deep .mat-tab-label-active {
+        border-left: none;
+        border-bottom: 2px solid #fff;
+      }
+
+      .mat-tab-group.tabs-tab {
+        ::ng-deep .mat-tab-label:last-child {
+          border-right: solid #ccc;
+        }
+      }
+    }
+  }
+
+  .button-remove{
+    margin-left: 15px;
+    min-width: 20px;
+    margin-right: -15px;
+    line-height: inherit;
+    padding: 0;
+  }
+
+  ::ng-deep app-analytics > div {
+    min-height: 350px;
+  }
+
+  ::ng-deep .assets-page {
+    padding: 0 30px;
+
+    h1.title-fixed {
+      height: 70px !important;
+      padding: 10px 0 0 0px !important;
+    }
+
+    &-header {
+      position:relative !important;
+      top: 0 !important;
+    }
+  }
+
+  ::ng-deep .generalview-page {
+    .page-top-header {
+      position: relative;
+      top: 0;
+      left: 0;
+    }
+
+    .map-view {
+      height: calc(100vh - 235px) !important;
+    }
+
+    &-content {
+      margin-top:0;
+    }
+  }
+
+  ::ng-deep .pro-dashboard-page {
+    padding: 0 30px;
+  }
+
+  ::ng-deep .analytics {
+    .mat-tab-body-wrapper {
+      padding: 30px;
+    }
+  }
+
+  ::ng-deep .statistics-chart-page {
+    margin-top: 50px;
+
+    .mat-tab-header {
+      position: static !important;
+    }
+  }
+
+  ::ng-deep .org-chart-page {
+    margin-top: 50px;
+  }
+
+  ::ng-deep .productivity-page {
+    padding: 10px;
+
+    .topbar-productivity {
+      padding-top: 0;
+      margin-top: 10px;
+
+      .body-productivity {
+        .mat-tab-body-wrapper {
+          margin-top: 20px !important;
+        }
+
+        app-prediction .forecast_div_1, app-prediction .forecast_div_2, app-prediction .team{
+          margin-top: 1rem !important;
+          margin-left: 2rem !important;
+        }
+
+        app-prediction .forecast_table{
+          margin-top: 1rem !important;
+          margin-left: 3rem !important;
+        }
+
+        app-prediction .container-empty{
+          padding-right: 30px !important;
+          padding-left: 30px !important;
+        }
+      }
+    }
+
+    .mat-tab-header {
+      position: static !important;
+    }
+  }
+
+  ::ng-deep .project-new-page {
+    padding: 0 30px;
+    h1.title-fixed {
+      height: 70px !important;
+      padding: 10px 0 0 15px !important;
+      margin-left: -15px;
+    }
+  }
+
+  ::ng-deep .page-top-header {
+    top: 160px;
+  }
+}
+
+.mr-3px {
+  margin-right: 3px;
+}
+
+.mt-7px {
+  margin-top: 7px;
+}

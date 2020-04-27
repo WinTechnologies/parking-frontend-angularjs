@@ -1,0 +1,59 @@
+.map {
+  height: 77vh;
+  width: 100%;
+  z-index: 2;
+}
+
+.tuner {
+  text-align: center;
+  margin-top: 14px;
+}
+
+.time-range {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  width: 90%;
+  align-items: baseline;
+}
+
+.btn-info {
+  background-color: #00A8E6;
+  border-color: #00A8E6;
+  height: fit-content;
+  width: fit-content;
+}
+
+.slider-wrapper {
+  width: 85%;
+
+  .slider-value.center {
+    margin-left: -35px;
+  }
+
+  .slider-ticks {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.slider-time {
+  font-size: 26px;
+}
+
+.mat-slider-horizontal {
+  height: 48px;
+  min-width: 128px;
+  width: 100%;
+}
+
+p {
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.mat-raised-button.mat-accent, .mat-fab.mat-accent, .mat-mini-fab.mat-accent {
+  background-color: #00A8E6;
+}

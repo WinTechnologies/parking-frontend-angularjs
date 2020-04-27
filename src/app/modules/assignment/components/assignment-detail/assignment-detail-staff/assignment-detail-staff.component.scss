@@ -1,0 +1,27 @@
+@import '../../../../../../styles/_color.scss';
+
+:host {
+  .assigned-employees-wrapper {
+    padding: 0 1rem 0 1rem;
+    & button.add-staff {
+      color: $c-blue1;
+      outline: none;
+      background: transparent;
+    }
+  }
+
+  .table-filter {
+    padding: 0 20px 0 24px;
+
+    mat-icon {
+      position: absolute;
+      left: -24px;
+    }
+  }
+
+  .btn-add {
+    color: #13a7e2;
+    background: none;
+    font-family: inherit;
+  }
+}

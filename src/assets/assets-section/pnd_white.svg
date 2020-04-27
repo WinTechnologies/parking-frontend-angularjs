@@ -1,0 +1,13 @@
+<svg id="Group_14235" data-name="Group 14235" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 43.971 117.5">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <path id="Path_16373" data-name="Path 16373" class="cls-1" d="M41.987,0h-40L0,2.716S0,4.909,3.342,7.729s6.162,5.013,6.162,7H34.467c0-2.089,2.82-4.178,6.162-7s3.342-5.013,3.342-5.013ZM21.933,2.089H1.88L2.716.836h38.54l.836,1.253Z"/>
+  <rect id="Rectangle_3130" data-name="Rectangle 3130" class="cls-1" width="13.891" height="8.773" transform="translate(15.04 23.5)"/>
+  <path id="Path_16374" data-name="Path 16374" class="cls-1" d="M9.1,15.6V66.36H34.167V15.6ZM30.3,41.711a47.783,47.783,0,0,0-8.773-1.044,47.783,47.783,0,0,0-8.773,1.044,35.888,35.888,0,0,1-1.88-11.384,33.914,33.914,0,0,1,1.567-10.653s6.058-.627,9.087-.627,9.087.627,9.087.627a33.914,33.914,0,0,1,1.567,10.653A35.888,35.888,0,0,1,30.3,41.711Z" transform="translate(0.404 0.693)"/>
+  <rect id="Rectangle_3131" data-name="Rectangle 3131" class="cls-1" width="25.067" height="48.358" transform="translate(9.504 69.142)"/>
+</svg>

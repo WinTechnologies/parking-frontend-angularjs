@@ -1,0 +1,94 @@
+<div class="note-list-page ">
+  <div class="container ">
+      <form [formGroup]="noteForm" class="row add-note" >
+         <div class="note-list-page-header-filter col-md-2 col-lg-2 col-xl-2">
+             <mat-form-field class="note-filter ">
+               <mat-icon>search</mat-icon>
+               <input matInput  (keyup)="applyFilterNote($event.target.value)" placeholder="Search note">
+             </mat-form-field>
+         </div>
+          <div class="project col-md-2 col-lg-2 col-xl-2">
+            <mat-form-field >
+              <mat-select placeholder="Select Project" [formControlName]="'project'" >
+                <ng-container  *ngFor="let project of employee_projects">
+                  <mat-option value="{{project.project_id}}">
+                    <strong>{{project.project_code}}:</strong> {{ project.project_name }}
+                  </mat-option>
+                </ng-container>
+              </mat-select>
+              <mat-error>Project is required</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="type col-md-2 col-lg-2 col-xl-2">
+          <mat-form-field>
+            <mat-select placeholder="Select Type" [formControlName]="'listTypeNote'" >
+              <ng-container *ngFor="let type of listTypeNote">
+                <mat-option [value] = "type">
+                    {{type.type_note}}
+                </mat-option>
+              </ng-container>
+            </mat-select>
+            <mat-error>Type is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 col-lg-4 col-xl-5">
+          <textarea
+            class=" text w-100"
+            rows="5"
+            [formControlName]="'remarks'"
+            placeholder="Please input remarks here"
+            required>
+          </textarea>
+        </div>
+        <div  class="col-md-2 col-lg-2 col-xl-1" >
+          <div class="buttons-wrapper">
+            <button mat-flat-button type="submit" (click)="onAddNote()">
+              <div class="d-flex align-items-center">
+              <mat-icon>add_circle</mat-icon>
+              <span class="ml-1">Message</span>
+              </div>
+            </button>
+          </div>
+        </div>
+      </form>
+  </div>
+  <div class="note-list-page-content">
+    <div class="note-list-page-table-wrapper mat-elevation-z8">
+      <mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="created_at">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>
+          <mat-cell *matCellDef="let note"> {{note.created_at | date: 'dd/MM/yyyy' }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="created_time">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Time</mat-header-cell>
+          <mat-cell *matCellDef="let note"> {{note.created_at | date : 'shortTime' }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="project">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Project</mat-header-cell>
+          <mat-cell *matCellDef="let note "> {{note.project_name}}  </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="from_user_fullname">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Username</mat-header-cell>
+          <mat-cell *matCellDef="let note"> {{note.firstname}} {{note.lastname}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="type_note">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Type</mat-header-cell>
+          <mat-cell *matCellDef="let note"> {{note.type_note}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="remarks">
+          <mat-header-cell *matHeaderCellDef mat-sort-header>Remark</mat-header-cell>
+          <mat-cell *matCellDef="let note"> {{note.remarks}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="action">
+          <mat-header-cell *matHeaderCellDef class="btns"></mat-header-cell>
+          <mat-cell *matCellDef="let note" >
+            <button mat-icon-button	(click)="onDelete(note)"><mat-icon>delete</mat-icon></button>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+       <mat-paginator [pageSizeOptions]="[5, 10, 25, 50, 100]"></mat-paginator>
+    </div>
+  </div>
+</div>

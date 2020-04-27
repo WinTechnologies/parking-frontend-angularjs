@@ -1,0 +1,40 @@
+// color scheme
+$active-dark-blue: #023b41;
+$active-blue: #023b41;
+$inactive-grey: #A5A9B4;
+
+:host {
+
+  .promotion-detail-title {
+
+    line-height: 50px;
+    font-size: 1.5rem;
+  }
+  .content-wrapper {
+    padding: 3.5rem 1rem 1rem;
+
+    form {
+      .form-field {
+
+        .form-field-label {
+          // width: 100px;
+          text-align: right;
+          font-weight: normal;
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    section {
+      border-bottom: 2px solid $inactive-grey;
+
+      &.terms-and-conditions {
+        .section-content {
+          .mat-form-field {
+            width: 80%;
+          }
+        }
+      }
+    }
+  }
+}

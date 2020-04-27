@@ -1,0 +1,24 @@
+.element{
+    color: white;
+    margin: 2px;
+    padding: 5px;
+}
+
+table{
+    font-family: 'Roboto Condensed', sans-serif;
+    padding: 15px;
+}
+
+tr{
+    margin: 0 auto;
+}
+
+td{
+    margin: 15px;
+    padding: 3px;
+    width: 15%;
+}
+
+.selected{
+    background-color: red;
+}

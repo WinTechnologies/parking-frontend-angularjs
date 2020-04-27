@@ -1,0 +1,262 @@
+<div class="tariff-parking-details">
+  <header class="page-top-header">
+    <div class="tariff-parking-header-buttons">
+      <button mat-icon-button color="base" (click)="location.back()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <span> Tariff / Parking - Segment Detail </span>
+    </div>
+
+    <div>{{ today | date:'dd/MM/yyyy hh:mm a'}}</div>
+  </header>
+
+  <h4 class="font-weight-bold title-fixed title">
+    Tariff Parking - Segment Detail
+  </h4>
+
+  <div class="tariff-parking-details-content">
+    <form *ngIf="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="row">
+        <div class="col-12 basic-fields-wrapper">
+          <app-tariff-parking-basic [form]="form" (updateBasicData)="onUpdateBasicData($event)"></app-tariff-parking-basic>
+        </div>
+        <div class="col-12 main-fields-wrapper">
+          <mat-form-field>
+            <input matInput placeholder="Segment name" formControlName="segment_name" required />
+            <mat-error *ngIf="form.get('segment_name').errors && form.get('segment_name').errors.required">Segment name is required</mat-error>
+            <mat-error *ngIf="form.get('segment_name').errors && form.get('segment_name').errors.invalidName">Name is duplicated</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input
+              appInputDateFormat
+              matInput
+              [matDatepicker]="pickerDateStart"
+              [max]="form.value.date_end"
+              placeholder="Begin date"
+              formControlName="date_start"
+              required
+            >
+            <mat-datepicker-toggle matSuffix [for]="pickerDateStart"></mat-datepicker-toggle>
+            <mat-datepicker #pickerDateStart></mat-datepicker>
+            <mat-error>Begin date is required</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input
+              appInputDateFormat
+              matInput
+              [matDatepicker]="pickerDateEnd"
+              [min]="form.value.date_start"
+              placeholder="End date"
+              formControlName="date_end"
+              required
+            >
+            <mat-datepicker-toggle matSuffix [for]="pickerDateEnd"></mat-datepicker-toggle>
+            <mat-datepicker #pickerDateEnd></mat-datepicker>
+            <mat-error>End date is required</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-12 applicable-days-wrapper">
+          <span class="label-gray">Applicable days</span>
+          <app-selection-weekday
+            [weekdays]="form.get('applicable_days').value"
+            [weekdaynames]="weekdaynames"
+            (changedWeekdays)="onChangedWeekdays($event)"
+          ></app-selection-weekday>
+          <mat-error class="error-required" *ngIf="formStatus.formSubmitted && form.get('applicable_days').hasError('required')">Applicable days is required</mat-error>
+        </div>
+        <div class="col-12 time-wrapper">
+          <div class="label-gray">Application hours</div>
+          <div class="time-pickers">
+            <mat-form-field>
+              <input atp-time-picker
+                     matInput
+                     placeholder="Start time"
+                     formControlName="time_start"
+                     required
+              >
+              <mat-error>Start time is required</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+              <input atp-time-picker
+                     matInput
+                     placeholder="End time"
+                     formControlName="time_end"
+                     (ngModelChange)="onChangeTime($event)"
+                     required
+              >
+              <mat-error>End time is required</mat-error>
+            </mat-form-field>
+            <mat-checkbox class="mr-3" [checked]="isWholeDay()" (change)="onCheckWholeDay($event)">Whole day</mat-checkbox>
+            <button *ngIf="!isWholeDay()" mat-stroked-button type="button" color="primary" (click)="onClearTimeSlot()">Clear</button>
+            <button *ngIf="!isWholeDay()" mat-flat-button type="button" color="primary" [disabled]="enabledTimeInterval" (click)="onAddTimeSlot()">Add</button>
+          </div>
+          <app-timeline-view *ngIf="!isWholeDay()" [timeslots]="timeSlots" [color]="timeLineColor" [timeFormat]="'24'"></app-timeline-view>
+          <mat-error class="error-required mb-3" *ngIf="form.hasError('timeRangeError')">Selected days and time not available<br>
+            <div *ngFor="let sg of errorSegments">
+              {{sg.segment_name}}
+              {{sg.date_start |date: 'dd/MM/yyyy'}}-{{sg.date_end |date: 'dd/MM/yyyy'}}
+              {{sg.applicable_days}} {{sg.time_start | timeFormat}}-{{sg.time_end | timeFormat}}
+              <br>
+            </div>
+          </mat-error>
+        </div>
+
+        <div *ngIf="enabledTimeInterval" class="col-12 interval-fields mt-2">
+          <mat-form-field>
+            <mat-select placeholder="Price type" (selectionChange)="changePriceType($event)" formControlName="type_tariff" required>
+              <mat-option *ngFor="let type of priceTypes" [value]="type">
+                {{type}}
+              </mat-option>
+            </mat-select>
+            <mat-error>Price types is required</mat-error>
+          </mat-form-field>
+          <mat-form-field *ngIf="getTariffType(form) === ParkingPriceTypes.Absolute">
+            <input type="number" matInput placeholder="Price" formControlName="price_init" min="0" required />
+            <mat-error>Price is required</mat-error>
+          </mat-form-field>
+          <mat-form-field *ngIf="getTariffType(form) == ParkingPriceTypes.FixedRate || getTariffType(form) == ParkingPriceTypes.Ladder">
+            <input type="number" matInput placeholder="Init Price" formControlName="price_init" min="0" required />
+            <mat-error>Init price is required</mat-error>
+          </mat-form-field>
+          <mat-form-field *ngIf="getTariffType(form) !== ParkingPriceTypes.Absolute">
+            <mat-select placeholder="Time step" formControlName="time_step" (selectionChange)="changeTimeStep($event)" required>
+              <mat-option *ngFor="let step of timeSteps" [value]="step.value">
+                {{step.text}}
+              </mat-option>
+            </mat-select>
+            <mat-error>Time step is required</mat-error>
+          </mat-form-field>
+          <mat-form-field *ngIf="getTariffType(form) == ParkingPriceTypes.FixedRate || getTariffType(form) == ParkingPriceTypes.Ladder">
+            <input type="number" matInput placeholder="Price per Time step" formControlName="price_per_time_step" min="0" required />
+            <mat-error>Price per time step is required</mat-error>
+          </mat-form-field>
+          <mat-form-field *ngIf="getTariffType(form) == ParkingPriceTypes.Ladder">
+            <input type="number" matInput placeholder="Growth Factor" formControlName="rate_growth" min="0" required />
+            <mat-error>Growth Factor is required</mat-error>
+          </mat-form-field>
+          <mat-form-field *ngIf="getTariffType(form) !== ParkingPriceTypes.Custom">
+            <input type="text" matInput placeholder="Description" formControlName="description"/>
+          </mat-form-field>
+        </div>
+        <ng-container *ngIf="enabledTimeInterval && getTariffType(form) == ParkingPriceTypes.Custom">
+          <div class="col-12">
+            <mat-radio-group [value]="timeType">
+              <mat-radio-button [value]="ParkingTimeType.TOD" (change)="changeTimeType(ParkingTimeType.TOD)">
+                Time of the day
+              </mat-radio-button>
+              <mat-radio-button [value]="ParkingTimeType.GTS" (change)="changeTimeType(ParkingTimeType.GTS)">
+                Global time spent
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <div class="col-12">
+            <div class="custom-segment-pricetype-title">
+              <span *ngIf="timeType === ParkingTimeType.TOD">Time of the day</span>
+              <span *ngIf="timeType === ParkingTimeType.GTS">Global time spent</span>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="list-breaks-wrapper">
+              <ul class="list-breaks" formArrayName="breaks">
+                <li class="d-flex" *ngFor="let detail of breaks.controls; let index = index; let last = last" [formGroupName]="index">
+                  <div class="break-fields-wrapper">
+                    <mat-form-field>
+                      <input type="text"
+                             matInput
+                             placeholder="{{timeType == ParkingTimeType.TOD ? 'Start time' : 'From amount'}}"
+                             formControlName="time_start" required />
+                      <mat-error>Start time is required</mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                      <mat-select placeholder="Price type" (selectionChange)="changePriceType($event, detail)" formControlName="type_tariff" required>
+                        <mat-option *ngFor="let type of priceTypes.slice(0, 3)" [value]="type">
+                          {{type}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error>Price types is required</mat-error>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="getTariffType(detail) == ParkingPriceTypes.Absolute">
+                      <input type="number" matInput placeholder="Price" formControlName="price_init" min="0" required />
+                      <mat-error>Price is required</mat-error>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="getTariffType(detail) == ParkingPriceTypes.FixedRate || getTariffType(detail) == ParkingPriceTypes.Ladder">
+                      <input type="number" matInput placeholder="Init Price" formControlName="price_init" min="0" required />
+                      <mat-error>Init price is required</mat-error>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="getTariffType(detail) !== ParkingPriceTypes.Absolute && getTariffType(detail)">
+                      <mat-select placeholder="Time step"
+                                  formControlName="time_step"
+                                  required>
+                        <mat-option *ngFor="let step of intervalTimeSteps" [value]="step.value">
+                          {{step.text}}
+                        </mat-option>
+                      </mat-select>
+                      <mat-error>Time step is required</mat-error>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="getTariffType(detail) == ParkingPriceTypes.FixedRate">
+                      <input type="number" matInput placeholder="Price per Time step" formControlName="price_per_time_step" min="0" required />
+                      <mat-error>Price per time step is required</mat-error>
+                    </mat-form-field>
+                    <mat-form-field *ngIf="getTariffType(detail) == ParkingPriceTypes.Ladder">
+                      <input type="number" matInput placeholder="Growth Factor" formControlName="rate_growth" min="0" required />
+                      <mat-error>Growth Factor is required</mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                      <mat-select placeholder="{{timeType == ParkingTimeType.TOD ? 'End time' : 'Till amount'}}" formControlName="time_end" required>
+                        <mat-option *ngFor="let unit of getTimeUnits(detail)" [value]="unit">{{unit}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                      <input type="text" matInput placeholder="Description" formControlName="description"/>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="buttons-wrapper">
+                    <div *ngIf="last && breaks.length > 1" class="d-inline-flex">
+                      <button type="button" mat-button color="basic" (click)="onRemoveSegment(index)" matTooltip="Remove an interval">
+                        <mat-icon>clear</mat-icon>
+                      </button>
+                    </div>
+                    <div *ngIf="last" class="d-inline-flex">
+                      <button *ngIf="checkAddInterval(index)"
+                              type="button"
+                              mat-button color="basic"
+                              matTooltip="Add an interval"
+                              (click)="onAddIntervalForm(detail)"
+                              [disabled]="!breaks.at(index).valid"
+                      >
+                        <mat-icon>add_circle</mat-icon>
+                      </button>
+                      <button *ngIf="checkAddExtraDayInterval(index)"
+                              type="button"
+                              mat-button color="basic"
+                              matTooltip="Add an extra day interval"
+                              class="create-btn"
+                              (click)="onAddIntervalForm(detail, true)"
+                              [disabled]="!breaks.at(index).valid"
+                      >
+                        <mat-icon>add_circle</mat-icon>
+                        <span class="ml-1">extra day (optional)</span>
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <mat-error *ngIf="!formStatus.isCompletedTimeSegment && formStatus.formSubmitted">Please finish time intervals</mat-error>
+            </div>
+          </div>
+        </ng-container>
+        <div class="col-12 d-flex justify-content-end mt-3">
+          <button type="button" mat-stroked-button color="primary" class="mr-2" (click)="onCancel()" >Cancel</button>
+          <button mat-flat-button color="primary" [disabled]="!enabledTimeInterval">{{segment?.id ? 'Update' : 'Create'}}</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+</div>
+
+<app-tariff-segments-table *ngIf="segment.id"
+                           [segments]="segments"
+                           (selectSegment)="onSelectSegment($event)"
+></app-tariff-segments-table>

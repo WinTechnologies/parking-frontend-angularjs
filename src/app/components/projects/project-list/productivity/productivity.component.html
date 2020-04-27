@@ -1,0 +1,131 @@
+<div class="productivity-page">
+  <!-- -------------------- Activities ----------------------- -->
+  <div class="navbar-activities">
+    <h4 class="title-activities">Activities</h4>
+    <div class="navbar-activities-wrapper">
+      <ng-container *ngIf="projectActivity?.has_on_street">
+        <div class="navbar-activity">
+          <h5>On Street</h5>
+          <button
+            mat-button
+            class="button-navbar-activity"
+            (click)="onClickActivity('on_street')"
+            [class.selected]="selected_activity == 'on_street'">
+            <img src="assets/Icons/Projects_section/on_street.svg" alt="on street">
+          </button>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="projectActivity?.has_car_park">
+        <div class="navbar-activity">
+          <h5>Car Park</h5>
+          <button
+            mat-button
+            class="button-navbar-activity"
+            (click)="onClickActivity('car_park')"
+            [class.selected]="selected_activity == 'car_park'">
+            <img src="assets/Icons/Projects_section/car_park.svg" alt="car park" >
+          </button>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="projectActivity?.has_enforcement">
+        <div class="navbar-activity">
+          <h5>Enforcement</h5>
+          <button
+            mat-button
+            class="button-navbar-activity"
+            (click)="onClickActivity('enforcement')"
+            [class.selected]="selected_activity == 'enforcement'">
+            <img src="assets/Icons/Projects_section/enforcement.svg" alt="enforcement" >
+          </button>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="projectActivity?.has_taxi_management">
+        <div class="navbar-activity">
+          <h5>Taxi Management</h5>
+          <button
+            mat-button
+            class="button-navbar-activity"
+            (click)="onClickActivity('taxi_management')"
+            [class.selected]="selected_activity == 'taxi_management'">
+            <img src="assets/Icons/Projects_section/taxi_management.svg" alt="taxi_management" >
+          </button>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="projectActivity?.has_valet_parking">
+        <div class="navbar-activity">
+          <h5>Valet Parking</h5>
+          <button
+            mat-button
+            class="button-navbar-activity"
+            (click)="onClickActivity('valet_parking')"
+            [class.selected]="selected_activity == 'valet_parking'">
+            <img src="assets/Icons/Projects_section/valet_parking.svg" alt="valet_parking" >
+          </button>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="projectActivity?.has_rental_car">
+        <div class="navbar-activity">
+          <h5>Rental Car</h5>
+          <button mat-button class="button-navbar-activity" (click)="onClickActivity('rental_car')" [class.selected]="selected_activity == 'rental_car'">
+            <img src="assets/Icons/Projects_section/rental_car.svg" alt="rental_car" >
+          </button>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <!-- -------------------- Productivity buttons ----------------------- -->
+  <div>
+    <div class="topbar-productivity" *ngIf="selected_activity == 'enforcement'">
+      <div class="productivity-job-position">
+        <div class="job-position-item d-flex flex-wrap">
+            <div class="col center-block text-center" *ngFor="let job_position of job_positions">
+              <div class="row">
+                <h5>{{job_position.name}}</h5>
+              </div>
+              <div class="row" (click)="onClickJobPosition(job_position.name)">
+                <button mat-button class="button-activity" [class.selected]="selected_job_position == job_position.name" >
+                  <img [src]="job_position.iconPath" [alt]="job_position.name" ></button>
+              </div>
+            </div>
+        </div>
+        <!-- -------------------- body ----------------------- -->
+        <div class="body-productivity mt-3" *ngIf="selected_job_position && selected_activity == 'enforcement'">
+            <div class="tabs-wrapper-productivity">
+              <mat-tab-group class="productivity-tabs">
+                <mat-tab>
+                  <ng-template mat-tab-label>
+                    <mat-icon svgIcon="predictions"></mat-icon>
+                    Predictions
+                  </ng-template>
+                  <app-prediction
+                    [project]="project"
+                    [job_position]="selected_job_position"
+                    [canUpdate]="canUpdate"
+                  >
+                  </app-prediction>
+                </mat-tab>
+                <mat-tab>
+                  <ng-template mat-tab-label>
+                    <mat-icon svgIcon="incentives"></mat-icon>
+                    Incentives
+                  </ng-template>
+                  <mat-tab-group class="incentives_tabs">
+                    <mat-tab *ngFor="let incentive_cat of incentive_category" [label]="incentive_cat">
+                      <app-incentive-list *ngFor = 'let title of incentiveTitles'
+                        [project]="project"
+                        [incentive_category]="incentive_cat"
+                        [job_position]="selected_job_position"
+                        [label] = "title"
+                        [canUpdate]="canUpdate"
+                      >
+                      </app-incentive-list>
+                    </mat-tab>
+                  </mat-tab-group>
+                </mat-tab>
+              </mat-tab-group>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

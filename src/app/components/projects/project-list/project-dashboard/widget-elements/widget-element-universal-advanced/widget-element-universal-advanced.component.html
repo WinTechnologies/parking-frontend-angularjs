@@ -1,0 +1,21 @@
+<div class="element" [ngStyle]="{'background-color': color, 'width': elemWidth, 'height': elemHeight ? elemHeight : '100px'}">
+  <h6 *ngIf="label" class="label">{{label}}</h6>
+  <div class="d-flex align-items-center justify-content-center" [ngClass]="{'h-100': !label}">
+    <div class="icon" *ngIf="icon">
+      <img [src]="'../../../../../assets/Icons/Projects_section/Dashboard_Icons/' + icon"/>
+    </div>
+    <div *ngIf="icon_right" class="value slash"> / </div>
+    <div class="icon" *ngIf="icon_right">
+      <img [src]="'../../../../../assets/Icons/Projects_section/Dashboard_Icons/' + icon_right" />
+    </div>
+    <div *ngIf="value_current || value_current === 0" class="value">
+      {{value_current}}<br /><span class="info-label" *ngIf="label_value_current">{{label_value_current}}</span>
+    </div>
+    <ng-container *ngIf="value_total || value_total === 0 && value_current || value_current === 0">
+      <div class="value slash"> /</div>
+    </ng-container>
+    <ng-container *ngIf="value_total || value_total === 0">
+      <div class="value">{{value_total}}<br/><span class="info-label" *ngIf="label_value_total">{{label_value_total}}</span></div>
+    </ng-container>
+  </div>
+</div>

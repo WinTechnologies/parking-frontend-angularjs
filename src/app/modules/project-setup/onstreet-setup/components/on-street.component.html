@@ -1,0 +1,90 @@
+<div class="on-street-page">
+  <!-- --------------- Greybar ---------------- -->
+    <header class="page-top-header">
+      <div class="on-street-page-header-buttons">
+        <button mat-icon-button color="base" (click)="onBack()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+      <span>{{project?.project_name}} / On Street {{selectedType === undefined ? '' : ' > ' + OnStreetType[selectedType.type]}}</span>
+    </header>
+    <!-- ---------------------------------- -->
+    <div class="on-street-page-content">
+      <div class="on-street-page-content-header">
+        <div class="on-street-page-content-header-filter-wrapper">
+          <div class="d-flex align-items-center">
+            <mat-icon>search</mat-icon>
+            <mat-form-field class="filter">
+              <input 
+              matInput  
+              (keyup)="applyFilterAssets($event.target.value)" 
+              placeholder="Search Name">
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="on-street-page-content-header-type-wrapper">
+          <ng-container *ngFor="let type of types">
+            <div [class.selected]="type==selectedType" 
+            class="on-street-page-content-header-type-item"
+            (click)="onSelectType(type)">
+              <img [src]="type.icon">
+              <div class="name">{{type.name}}</div>
+            </div>
+          </ng-container>
+        </div>
+        <div class="divider"></div>
+        <div *ngIf="selectedOptions.length === 1" class="parking-mode-change-button">
+          <button mat-icon-button (click)="onChangeDisplayMode(selectedOptions)">
+              <mat-icon *ngIf="!isListModeOn">list</mat-icon>
+              <mat-icon *ngIf="isListModeOn" svgIcon="maps" class="mr-3px"></mat-icon>
+          </button>
+        </div>
+        <div *ngIf="selectedOptions.length === 1">
+          <button mat-flat-button color="basic" (click)="onAdd(selectedOptions)">
+            <mat-icon>add_circle</mat-icon>Create
+          </button>
+        </div>
+        <div class="filter-menu">
+          <button mat-icon-button [matMenuTriggerFor]="filterMenu">
+            <mat-icon>tune</mat-icon>
+          </button>
+          <mat-menu #filterMenu="matMenu">
+            <div>
+              <mat-selection-list #filterList 
+              [(ngModel)]="selectedOptions"
+              (selectionChange)="onSelection($event, filterList)">
+                <mat-list-option checkboxPosition='before' value="All">
+                  View All
+                  <mat-divider></mat-divider>
+                </mat-list-option>
+                <mat-list-option *ngFor="let filter of filterLists; let i = index;" checkboxPosition='before' [value]="filter">
+                  {{filter}}
+                </mat-list-option>
+              </mat-selection-list>
+            </div> 
+          </mat-menu>
+        </div>
+        <!-- <button *ngIf="selectedType !== undefined" mat-flat-button color="basic" (click)="onAdd()"><mat-icon>add_circle</mat-icon>Create</button> -->
+      </div>
+      <div class="on-street-page-content-content">
+        <app-onstreet-parking #child [mapCenter]="mapCenter" [filter]="filter" [projectId]="projectId" [isListViewOn]="isListModeOn" *ngIf="selectedType?.type == OnStreetType.Parking"></app-onstreet-parking>
+        <app-signage #child [mapCenter]="mapCenter" [filter]="filter" [projectId]="projectId" [isListViewOn]="isListModeOn" *ngIf="selectedType?.type == OnStreetType.Signage"></app-signage>
+        <app-parking-meter #child [mapCenter]="mapCenter" [filter]="filter" [projectId]="projectId" [isListViewOn]="isListModeOn" *ngIf="selectedType?.type == OnStreetType.ParkingMeter"></app-parking-meter>
+        <app-onstreet-project-zone #child [mapCenter]="mapCenter" [filter]="filter" [projectId]="projectId"
+                          [isListViewOn]="isListModeOn" *ngIf="selectedType?.type == OnStreetType.Zone"></app-onstreet-project-zone>
+        <app-open-land #child [mapCenter]="mapCenter" [filter]="filter" [projectId]="projectId" [isListViewOn]="isListModeOn" *ngIf="selectedType?.type == OnStreetType.OpenLand"></app-open-land>
+        <div *ngIf="selectedType === undefined">
+          <div class="onstreet-map-wrapper">
+            <app-mapview-new
+              [mapCenter]="mapCenter"
+              [options]="mapOptions"
+              [mapDataJSON]="mapdata"
+              [mapDrawDataJSON]="mapdrawdata"
+              *ngIf="!isListModeOn"
+            >
+            </app-mapview-new>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

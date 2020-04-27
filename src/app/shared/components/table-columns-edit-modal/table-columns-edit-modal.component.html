@@ -1,0 +1,46 @@
+<div mat-dialog-title>
+  <h4 class="font-weight-bold text-capitalize">Table Column Edit</h4>
+  <button class="mr-2 btn-primary mat-raised-button" (click)="onReset()">
+    Reset View
+  </button>
+</div>
+<div mat-dialog-content>
+  <div cdkDropList class="column-list" (cdkDropListDropped)="drop($event)">
+    <div
+      class="column-box"
+      *ngFor="let column of columns; let index = index"
+      cdkDrag
+      fxLayout="row">
+      <span>{{ column.label }}</span>
+      <span
+        class="mr-3"
+        *ngIf="column.isShow"
+        (click)="onShowFlag(index, false)"
+        fxLayoutAlign="end center"
+        fxFlex>
+        <mat-icon>remove_red_eye</mat-icon>
+      </span>
+      <span
+        class="opacity-05 mr-3"
+        *ngIf="!column.isShow"
+        (click)="onShowFlag(index, true)"
+        fxLayoutAlign="end center"
+        fxFlex>
+        <mat-icon>remove_red_eye</mat-icon>
+        <hr />
+      </span>
+      <div fxLayout="column" fxLayoutAlign="center center" class="upDownButton">
+        <span (click)="onUp(index)"><mat-icon>keyboard_arrow_up</mat-icon></span>
+        <span (click)="onDown(index)"><mat-icon>keyboard_arrow_down</mat-icon></span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="mt-4 text-right">
+  <button class="mr-4 btn-danger mat-raised-button btn" (click)="onCancel()">
+    CLOSE
+  </button>
+  <button class="mr-2 btn-info mat-raised-button btn" (click)="onSave()">
+    SAVE
+  </button>
+</div>

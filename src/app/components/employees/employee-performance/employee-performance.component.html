@@ -1,0 +1,297 @@
+<div>
+  <div class="projects">
+    <mat-form-field>
+      <mat-label>
+        <span *ngIf="currentEmployeeProject; else noProject">Selected Project</span>
+        <ng-template #noProject>ALL PROJECTS</ng-template>
+      </mat-label>
+      <mat-select [(value)]="currentEmployeeProject">
+        <mat-option [value]="null">ALL PROJECTS</mat-option>
+        <mat-option *ngFor="let employee_project of employee_projects" [value]="employee_project">
+          {{employee_project.project_code}}: {{employee_project.project_name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="filters">
+    <div>
+      <mat-button-toggle-group [(ngModel)]="dateToggle">
+        <mat-button-toggle value="month">Current Month</mat-button-toggle>
+        <mat-button-toggle value="week">Current Week</mat-button-toggle>
+        <mat-button-toggle value="day">Current Day</mat-button-toggle>
+      </mat-button-toggle-group>
+      <button mat-button (click)="updateData()">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+    <div>
+      <mat-checkbox [(ngModel)]="useDatePickers"></mat-checkbox>
+      <mat-form-field>
+        <mat-label>From date</mat-label>
+        <input matInput [matDatepicker]="fromDatePicker" disabled (dateInput)="setFromDate($event.target.value)">
+        <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #fromDatePicker [disabled]="false"></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>To date</mat-label>
+        <input matInput [matDatepicker]="toDatePicker" disabled (dateInput)="setToDate($event.target.value)">
+        <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #toDatePicker [disabled]="false"></mat-datepicker>
+      </mat-form-field>
+      <button mat-button (click)="updateData()">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div class="statistic">
+    <div class="item">
+      <div class="header">Total Distance</div>
+      <div class="content">
+        <span *ngIf="totalKm != null; else totalKmNoData">{{totalKm}} KM</span>
+        <ng-template #totalKmNoData><span>-</span></ng-template>
+      </div>
+    </div>
+    <div class="item">
+      <div class="header">Total Time</div>
+      <div class="content">
+        <span *ngIf="totalSeconds != null; else totalSecondsNoData">
+          {{getIntervalFromSeconds(totalSeconds, true)}}
+        </span>
+        <ng-template #totalSecondsNoData><span>-</span></ng-template>
+      </div>
+    </div>
+    <div class="item">
+      <div class="header">Medium Speed</div>
+      <div class="content">
+        <span *ngIf="mediumSpeedKmPerHour != null; else mediumSpeedKmPerHourNoData">
+          {{mediumSpeedKmPerHour}} KM / 1h
+        </span>
+        <ng-template #mediumSpeedKmPerHourNoData><span>-</span></ng-template>
+      </div>
+    </div>
+    <div class="item">
+      <div class="header">Number of Contraventions</div>
+      <div class="content">
+        <span>{{cnCnt}}</span>
+      </div>
+    </div>
+    <div class="item">
+      <div class="header">Deployed</div>
+      <div class="content">
+        <span>{{wpCoveringPercent}}%</span>
+      </div>
+    </div>
+    <div class="item">
+      <div class="header">Ranking</div>
+      <div class="content">
+        <span *ngIf="cnCntRank && cnCntTotalRank">
+          {{cnCntRank}} <span class="smaller-content">of {{cnCntTotalRank}}</span>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="statistic">
+    <div class="item">
+      <div class="header">Fastest CN Interval</div>
+      <div class="content">
+        <span *ngIf="fastestCnIntervalSeconds != null; else fastestCnIntervalNoData">
+          {{getIntervalFromSeconds(fastestCnIntervalSeconds)}}
+        </span>
+        <ng-template #fastestCnIntervalNoData><span>-</span></ng-template>
+      </div>
+    </div>
+    <div class="item">
+      <div class="header">Longest CN Interval</div>
+      <div class="content">
+        <span *ngIf="longestCnIntervalSeconds != null; else longestCnIntervalNoData">
+          {{getIntervalFromSeconds(longestCnIntervalSeconds)}}
+        </span>
+        <ng-template #longestCnIntervalNoData>-</ng-template>
+      </div>
+    </div>
+    <div class="item">
+      <div class="header">Max of Contraventions per day</div>
+      <div class="content">
+        <span>{{cnCntMax}}</span>
+      </div>
+    </div>
+    <div class="item">
+      <div class="header">Min of Contraventions per day</div>
+      <div class="content">
+        <span>{{cnCntMin}}</span>
+      </div>
+    </div>
+    <div class="item">
+      <div class="header">Avg of Contraventions per day</div>
+      <div class="content">
+        <span>{{cnCntAvg}}</span>
+      </div>
+    </div>
+  </div>
+  <mat-grid-list cols="4" [rowHeight]="300">
+    <mat-grid-tile>
+      <app-doughnut-chart
+        [title]="'Distribution of working time status'"
+        [chartLabels]="distrOfWorkTimeStatusLabels"
+        [chartData]="distrOfWorkTimeStatusData"
+      >
+      </app-doughnut-chart>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <app-bar-chart
+        [title]="'Issued'"
+        [chartDataSets]="cnIssues"
+      >
+      </app-bar-chart>
+    </mat-grid-tile>
+    <mat-grid-tile
+      [colspan]="2"
+      [rowspan]="3"
+    >
+      <div class="map-grid-tile">
+        <mat-button-toggle-group class="map-menu" [(ngModel)]="chooseMap">
+          <mat-button-toggle value="status">STATUS</mat-button-toggle>
+          <mat-button-toggle value="intensity">INTENSITY</mat-button-toggle>
+          <mat-button-toggle value="total">TOTAL CNs</mat-button-toggle>
+          <mat-button-toggle value="taken-jobs">TAKEN JOBs</mat-button-toggle>
+        </mat-button-toggle-group>
+        <app-map-status
+          *ngIf="chooseMap == 'status'"
+          [changeCoordinates]="changeCoordinates"
+          [movement]="mapMovement"
+          [contraventions]="mapContraventions"
+        >
+        </app-map-status>
+        <app-map-intensity
+          *ngIf="chooseMap == 'intensity'"
+        >
+        </app-map-intensity>
+        <app-map-total
+          *ngIf="chooseMap == 'total'"
+        >
+        </app-map-total>
+        <app-map-taken-jobs
+          *ngIf="chooseMap == 'taken-jobs'"
+        >
+        </app-map-taken-jobs>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile
+      [colspan]="2"
+    >
+      <app-line-chart
+        [title]="'Distribution of working time status'"
+        [xAxeTitle]="'Distance'"
+        [yAxeTitle]="'Range'"
+        [chartDataSets]="distrOfWorkTimeByDistanceData"
+      >
+      </app-line-chart>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <app-pie-chart
+        [title]="'Contravention status'"
+        [chartLabels]="cnCntByStatusLabels"
+        [chartData]="cnCntByStatusData"
+        [legendPosition]="'bottom'"
+      >
+      </app-pie-chart>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <app-pie-chart
+        [title]="'Contravention status'"
+        [chartLabels]="cnCntByViolationLabels"
+        [chartData]="cnCntByViolationData"
+        [legendPosition]="'bottom'"
+      >
+      </app-pie-chart>
+    </mat-grid-tile>
+    <mat-grid-tile
+      [rowspan]="2"
+      [colspan]="2"
+    >
+      <app-line-chart
+        [title]="'Type of Violation'"
+        [xAxeTitle]="'Number'"
+        [yAxeTitle]="'Hour'"
+        [chartLabels]="violationCntByViolationTypeLabels"
+        [chartDataSets]="violationCntByViolationTypeData"
+      >
+      </app-line-chart>
+    </mat-grid-tile>
+    <mat-grid-tile
+      [colspan]="2"
+    >
+      <app-line-chart
+        [title]="'Plate Type'"
+        [xAxeTitle]="'Number'"
+        [yAxeTitle]="'Hour'"
+        [chartLabels]="violationCntByPlateTypeLabels"
+        [chartDataSets]="violationCntByPlateTypeData"
+      >
+      </app-line-chart>
+    </mat-grid-tile>
+    <mat-grid-tile
+      [colspan]="2"
+    >
+      <app-bar-chart
+        [title]="'Jobs triggered by Contravention'"
+        [horizontal]="true"
+        [chartDataSets]="jobCntByTriggered"
+      >
+      </app-bar-chart>
+    </mat-grid-tile>
+    <mat-grid-tile
+      [rowspan]="2"
+      [colspan]="2"
+    >
+      <app-bar-chart
+        [title]="'Type of Violation'"
+        [horizontal]="true"
+        [chartDataSets]="violationCntByStreet"
+        [showLegendAsData]="true"
+      >
+      </app-bar-chart>
+    </mat-grid-tile>
+    <mat-grid-tile
+      [colspan]="2"
+    >
+      <app-bar-chart
+        [title]="'Jobs triggered by Contravention'"
+        [horizontal]="true"
+        [chartDataSets]="jobCntByType"
+      >
+      </app-bar-chart>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <app-text-chart
+        [title]="'Number of Contraventions'"
+      >
+        <ng-container>{{cnCnt}}</ng-container>
+      </app-text-chart>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <app-text-chart
+        [title]="'Walking distance / Day'"
+      >
+        <ng-container>
+          <span *ngIf="walkingDistancePerDayKm != null; else walkingDistancePerDayNoData">
+            {{walkingDistancePerDayKm}} KM
+          </span>
+          <ng-template #walkingDistancePerDayNoData><span>-</span></ng-template>
+        </ng-container>
+      </app-text-chart>
+    </mat-grid-tile>
+    <mat-grid-tile
+      [colspan]="4"
+    >
+      <app-line-chart
+        [title]="'Plate Type'"
+        [filled]="true"
+        [xAxeTitle]="'Hour'"
+        [yAxeTitle]="'Min. of Observation'"
+        [chartDataSets]="minutesForObservationData"
+      >
+      </app-line-chart>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

@@ -1,0 +1,140 @@
+<div fxLayout="row" fxLayoutAlign="space-between stretch">
+  <div fxFlex="50" fxLayout="row">
+    <div *ngIf="status === groupViewMode.ListView" class="w-100">
+      <div fxLayout="column">
+        <div fxLayout="row" class="m-2">
+          <button mat-flat-button color="primary" class="addButton" (click)="onAddGroup()">ADD GROUP</button>
+          <div class="search-box mat-elevation-z2" fxFlex="1 1 0%">
+            <button mat-icon-button><mat-icon>search</mat-icon></button>
+            <input type="text" #searchGroup (keyup)="onSearchGroup(searchGroup.value)" placeholder="Search Group">
+          </div>
+        </div>
+        <div class="groupList">
+          <div
+            *ngFor="let group of groupsFiltered; let index = index"
+            class="m-2 groupSection">
+            <div class="group-header" fxLayout="row">
+              <h4 fxFlex>{{ group.name }}</h4>
+              <span
+                (click)="onAddGroup(group)"
+                *ngIf="group.admin_by_me || group.created_by_me"
+                fxLayoutAlign="end center"
+                fxFlex>
+                <mat-icon>edit</mat-icon>
+              </span>
+              <img
+                (click)="ondeleteGroup(group, index)"
+                *ngIf="group.created_by_me"
+                fxLayoutAlign="end center"
+                src="/assets/library_icons/Delete_group_normal.svg">
+            </div>
+            <div class="group-body">
+              <div class="pictures m-1" *ngFor="let member of group.members; let indexOfMembers">
+                <img [src]="!member.img_url ? '/assets/library_icons/Human_icon_photo_placeholder.svg' : member.img_url"
+                     class="e_picture" (click)="employeeInfo(member)">
+                <img
+                  class="delEmployeeIcon"
+                  *ngIf="group.created_by_me || group.admin_by_me"
+                  fxLayoutAlign="end center"
+                  (click)="removeEmployee(group.id, member.employee_id, index, indexOfMembers)"
+                  src="/assets/library_icons/Delete_group_normal.svg">
+              </div>
+            </div>
+            <div class="group-footer" fxLayoutAlign="end center">
+              <h4 fxFlex *ngIf="group.admin_by_me && !group.created_by_me">You are Admin</h4>
+              <h4 fxFlex *ngIf="group.created_by_me">You Created</h4>
+              <img fxLayoutAlign="end center" src="/assets/library_icons/Number_in_group_icon.svg"><span>{{ group.member.length }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="formSection" *ngIf="status === groupViewMode.FormView">
+      <h1 mat-dialog-title *ngIf="!selectedGroup.created_by">Create Group</h1>
+      <h1 mat-dialog-title *ngIf="selectedGroup.created_by">Edit Group ({{ selectedGroup.name }})</h1>
+      <form [formGroup]="form">
+        <div mat-dialog-actions align="end">
+          <button mat-stroked-button color="primary" class="mr-2" (click)="onClose()">Cancel</button>
+          <button mat-flat-button color="primary" (click)="onCreate()" type="submit">OK</button>
+        </div>
+        <div mat-dialog-content>
+          <div class="form-fields-wrapper">
+            <mat-form-field>
+              <input matInput placeholder="Name" formControlName="name" required [value]="groupName">
+              <mat-error>Name is required</mat-error>
+            </mat-form-field>
+            <mat-radio-group formControlName="roles">
+              <mat-radio-button [value]="Role.Member">Member</mat-radio-button>
+              <mat-card>
+                <div class="pictures m-1" *ngFor="let member of members; let index=index">
+                  <img [src]="!member.img_url ? '/assets/library_icons/Human_icon_photo_placeholder.svg' : member.img_url"
+                       class="e_picture" (click)="employeeInfo(member)">
+                  <img
+                    class="delEmployeeIcon"
+                    fxLayoutAlign="end center"
+                    (click)="removeMember(index)"
+                    src="/assets/library_icons/Delete_group_normal.svg">
+                  <span class="memberName" (click)="employeeInfo(member)">{{member.firstname}} {{member.lastname}}</span>
+                </div>
+              </mat-card>
+              <mat-radio-button class="mr-5" [value]="Role.Admin">Admin</mat-radio-button>
+              <mat-card>
+                <div class="pictures m-1" *ngFor="let admin of adminBy; let index=index">
+                  <img [src]="!admin.img_url ? '/assets/library_icons/Human_icon_photo_placeholder.svg' : admin.img_url"
+                       class="e_picture" (click)="employeeInfo(admin)">
+                  <img
+                    class="delEmployeeIcon"
+                    fxLayoutAlign="end center"
+                    (click)="removeAdmin(index)"
+                    src="/assets/library_icons/Delete_group_normal.svg">
+                  <span class="memberName" (click)="employeeInfo(admin)">{{admin.firstname}} {{admin.lastname}}</span>
+                </div>
+              </mat-card>
+            </mat-radio-group>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div fxFlex fxFlexOffset="15">
+    <div fxLayout="column">
+      <div class="search-box m-2 mat-elevation-z2 mb-5" fxFlex="1 1 0%">
+        <button mat-icon-button><mat-icon>search</mat-icon></button>
+        <input type="text" #searchEmployee (keyup)="onSearchEmployee(searchEmployee.value)" placeholder="Search Employee...">
+      </div>
+      <div fxLayout="column">
+        <ngx-datatable
+          class="employeeSection"
+          [columnMode]="'force'"
+          [headerHeight]="1"
+          [footerHeight]="1"
+          [rowHeight]="95"
+          [limit]="10"
+          [rows]="employeesFiltered"
+          scrollbarV="true"
+          (activate)="selectEmployee($event)">
+          <ngx-datatable-column>
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <div fxLayout="row" fxLayoutAlign="stretch center" class="employee">
+                <img [src]="row.picture" class="e_picture">
+                <div fxLayout="column" fxFlex>
+                  <h4>{{ row.firstname }} {{ row.lastname }}</h4>
+                  <span>{{ row.job_position }}</span>
+                </div>
+                <div fxFlex fxLayoutAlign="end center" fxLayout="row">
+                  <a href="tel:{{ row.mobile_imei }}" matTooltipPosition="above" matTooltip="Tel: {{ row.mobile_imei }}">
+                    <img src="/assets/library_icons/Call_Member_icon.svg" [alt]="row.mobile_imei">
+                  </a>
+                  <a href="mailto: {{ row.email }}" matTooltipPosition="above" matTooltip="Email: {{ row.email }}">
+                    <img src="/assets/library_icons/Mail_Member_icon.svg" [alt]="row.email">
+                  </a>
+                </div>
+              </div>
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-footer></ngx-datatable-footer>
+        </ngx-datatable>
+      </div>
+    </div>
+  </div>
+</div>

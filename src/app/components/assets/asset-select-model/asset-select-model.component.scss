@@ -1,0 +1,124 @@
+@import "../../../../styles/_color.scss";
+
+:host {
+  .select-models-page {
+    /deep/ .page-top-header {
+      justify-content: normal;
+    }
+
+    &-content {
+      margin: 0 1rem 0 1rem;
+      padding-top: 50px;
+
+      &-title {
+        height: 50px;
+        line-height: 50px;
+        font-size: 1.5rem;
+      }
+
+      &-assets-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        color: $c-blue;
+        background-color: $c-greylight1;
+
+        .asset-container {
+          margin: 20px 37px;
+
+          .asset-item {
+            &-title {
+              font-size: 18px;
+            }
+            &-content {
+              display: flex;
+              &-total {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                padding: 10px;
+                width: 160px;
+                height: 250px;
+                background-color: $c-greylight;
+
+                .icon {
+                  height: 160px;
+                  width: 140px;
+                  padding: 20px;
+                  cursor: pointer;
+
+                  &:hover {
+                    background-color: $c-blue;
+                    img {
+                      &:not([src*='uploads']) {
+                        filter: brightness(0) invert(1);
+                      }
+                    }
+                  }
+
+                  img {
+                    height: 120px;
+                    width: 100px;
+                  }
+                }
+
+                .text-value {
+                  line-height: 50px;
+                }
+              }
+
+              .text {
+                display: flex;
+                flex-direction: column;
+                &-label {
+                  text-align: center;
+                  text-transform: uppercase;
+                }
+                &-value {
+                  font-size: 42px;
+                  text-align: center;
+                }
+              }
+
+              &-value {
+                margin: 0 10px;
+                width: 160px;
+                height: 120px;
+                background-color: $c-greylight;
+                padding: 10px;
+
+                &:first-child {
+                  margin-bottom:10px;
+                }
+              }
+            }
+          }
+
+          .add-icon {
+            width: 330px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 27px;
+            height: 250px;
+            background-color: $c-greylight;
+            color: $c-blue;
+            cursor: pointer;
+            .mat-icon {
+              height: 48px;
+              width: 48px;
+              font-size: 48px;
+            }
+            &:hover {
+              background-color: $c-blue;
+              color: whitesmoke;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  p {
+    margin: 0;
+  }
+}

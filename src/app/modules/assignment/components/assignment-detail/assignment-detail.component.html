@@ -1,0 +1,37 @@
+<main class="detail-page">
+  <header class="page-top-header">
+    <div class="d-flex align-items-center justify-content-between">
+      <button mat-icon-button color="base" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div>Assignment / Assignment Detail</div>
+    </div>
+  </header>
+  <h4 *ngIf="project" class="detail-page-title font-weight-bold title-fixed text-uppercase">
+    Project: {{project.project_code}} {{project.project_name}}
+  </h4>
+
+  <div *ngIf="project" class="detail-page-content">
+    <mat-tab-group [(selectedIndex)]="selectedTab">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          Staff
+        </ng-template>
+        <app-assignment-detail-staff [projectId]="projectId" [permission]="permission" (employeesCount)="onEmployeesCount($event)"></app-assignment-detail-staff>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          Org.Chart
+        </ng-template>
+        <app-org-chart
+          *ngIf="selectedTab"
+          [projectId]="projectId"
+          [canUpdate]="permission.isUpdate"
+          [employeesCount]="employeesCount"
+          (switchTabEvent)="onSwitchTab($event)"
+        ></app-org-chart>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+
+</main>

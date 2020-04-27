@@ -1,0 +1,190 @@
+@import "./_color.scss";
+
+.ngx-datatable.material {
+  width: 100%;
+  .datatable-header {
+    background-color: $mawgif-primary;
+    .datatable-header-cell {
+      color: #fff !important;
+    }
+    .resize-handle {
+      border: none !important;
+    }
+  }
+  .selectedRow {
+    background-color: $c-darkgrey !important;
+    .datatable-body-cell {
+      color: white !important;
+    }
+  }
+
+  .datatable-body-row:hover,
+  .datatable-body-row:focus,
+  .datatable-body-row:active,
+  .datatable-body-row:visited,
+  .datatable-body-row .datatable-row-group:hover,
+  .datatable-body-row .datatable-row-group:focus,
+  .datatable-body-row .datatable-row-group:visited,
+  .datatable-body-row .datatable-row-group:active {
+    background-color: #6c7980 !important;
+    .datatable-body-cell {
+      color: white !important;
+    }
+  }
+
+  .datatable-body-cell {
+    display: flex;
+    align-items: center;
+    img {
+      height: 50px;
+    }
+    .datatable-body-cell-label span {
+      flex: 1;
+      overflow: visible;
+      word-wrap: break-word;
+      text-align: center;
+      margin-left: 2px;
+      margin-right: 2px;
+    }
+  }
+
+  .datatable-footer .datatable-pager .pager .pages.active a {
+    background: #03a9f4 !important;
+    color: #fff !important;
+  }
+
+  .mat-checkbox-frame {
+    background-color: white !important;
+  }
+
+}
+
+.ngx-datatable.material.multi-click-selection .datatable-body-row.active,
+.ngx-datatable.material.multi-click-selection .datatable-body-row.active .datatable-row-group,
+.ngx-datatable.material.multi-selection .datatable-body-row.active,
+.ngx-datatable.material.multi-selection .datatable-body-row.active .datatable-row-group,
+.ngx-datatable.material.single-selection .datatable-body-row.active,
+.ngx-datatable.material.single-selection .datatable-body-row.active .datatable-row-group {
+  background-color: #023B41 !important;
+  .datatable-body-cell {
+    color: white !important;
+  }
+}
+
+
+.mat-table {
+  &.fixed-header {
+    .mat-header-row {
+      position: sticky;
+      top:0;
+      z-index:5;
+    }
+  }
+
+  .mat-header-row {
+    background-color: $mawgif-primary;
+
+    .mat-header-cell,
+    .mat-sort-header-button {
+      color: #fff !important;
+    }
+
+    .mat-sort-header-arrow {
+      color: #32a8cd;
+    }
+
+    .mat-checkbox {
+      .mat-checkbox-layout {
+        margin: 0;
+
+        .mat-checkbox-label {
+          color: #fff !important;
+        }
+      }
+    }
+
+    &:not(:first-child) {
+      background-color: #fff;
+    }
+
+    .mat-header-cell {
+      .mat-form-field-wrapper {
+        .mat-form-field-flex {
+          padding-top: 0;
+        }
+
+        input {
+          color: #000;
+        }
+      }
+    }
+  }
+
+  .mat-row {
+    &:hover,
+    &.selected {
+      background-color: #2E626A;
+
+      .mat-cell {
+        color: #fff;
+      }
+    }
+
+    .mat-cell {
+      font-size : 11px;
+      font-weight: 600;
+
+      &.mat-column-avatar {
+        img {
+          width: 50px;
+          height: 50px;
+        }
+      }
+
+      button.mat-icon-button {
+        color: #edeef0;
+      }
+    }
+  }
+}
+
+.btn-primary {
+  background-color: $mawgif-primary !important;
+}
+
+.mat-paginator-range-actions {
+  button,
+  mat-button {
+    border-radius: 15%;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    background-color: $c-pagination-back;
+    color: $c-pagination-font;
+    margin-right: 10px;
+    margin-left: 10px;
+    border: 1px solid $c-pagination-border;
+
+    &:disabled {
+      background-color: $c-pagination-disabled-back;
+      color: $c-pagination-disabled-color;
+    }
+  }
+
+  .mat-flat-button.mat-primary[disabled], .mat-flat-button.mat-accent[disabled], .mat-flat-button.mat-warn[disabled], .mat-flat-button[disabled][disabled], .mat-raised-button.mat-primary[disabled], .mat-raised-button.mat-accent[disabled], .mat-raised-button.mat-warn[disabled], .mat-raised-button[disabled][disabled], .mat-fab.mat-primary[disabled], .mat-fab.mat-accent[disabled], .mat-fab.mat-warn[disabled], .mat-fab[disabled][disabled], .mat-mini-fab.mat-primary[disabled], .mat-mini-fab.mat-accent[disabled], .mat-mini-fab.mat-warn[disabled], .mat-mini-fab[disabled][disabled] {
+    background-color: $c-pagination-selected-back;
+    color: $c-pagination-selected-font;
+  }
+}
+.mat-paginator-range-label {
+  width: 100px;
+}
+
+mat-table /deep/ mat-row mat-cell {
+  cursor: pointer;
+}
+
+mat-table /deep/ .mat-header-filter,
+mat-table /deep/ mat-row {
+    display: flex !important;
+}

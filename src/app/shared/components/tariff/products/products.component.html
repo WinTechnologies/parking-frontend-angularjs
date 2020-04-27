@@ -1,0 +1,435 @@
+<mat-tab-group #tabGroup>
+  <mat-tab label="Overview">
+    <mat-card class="overview-card">
+      <div class="overview-site">
+        <mat-form-field class="input-el col-3" *ngIf="sites">
+          <mat-select placeholder="Site" [(ngModel)]="overviewSite" (change)="getOverview(overviewSite, overviewClientType)">
+            <mat-option *ngFor="let site of sites" [value]="site.id">
+              {{site.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="input-el col-3" *ngIf="clientTypes">
+          <mat-select placeholder="Client type" [(ngModel)]="overviewClientType" (change)="getOverview(overviewSite, overviewClientType)">
+            <mat-option *ngFor="let type of clientTypes" [value]="type.id">
+              {{type.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="overview-table" *ngIf="overviewTable.length">
+        <div class="overview-week-days">
+          <div class="overview-week-day"></div>
+          <div class="overview-week-day">SUN</div>
+          <div class="overview-week-day">MON</div>
+          <div class="overview-week-day">TUE</div>
+          <div class="overview-week-day">WED</div>
+          <div class="overview-week-day">THU</div>
+          <div class="overview-week-day">FRI</div>
+          <div class="overview-week-day">SAT</div>
+        </div>
+        <div class="overview-week-values">
+          <div class="overview-week-item" *ngFor="let week of overviewTable">
+            <div class="overview-week-value header-value">
+              {{week.start | date: 'dd/MM/yy'}} - {{week.end | date: 'dd/MM/yy'}}
+            </div>
+            <ng-container *ngFor="let day of week.days">
+              <div class="overview-week-value" *ngIf="day.products.length > 1">
+                <ng-container *ngFor="let period of day.products">
+                  <div class="overview-week-period" [ngClass]="getClass(period.price_type)" *ngIf="period.price_type" (click)="openPeriod(period)" (dblclick)="edit(period.id)">
+                    <span>{{period.first_interval.split(':')[0]}}h - {{period.last_interval.split(':')[0]}}h</span>
+                    <span>{{period.price_type}}</span>
+                    <span>Fees: {{getPercent(period.payment_types)}}</span>
+                  </div>
+                  <div class="overview-week-period no-data-type" *ngIf="!period.price_type" (click)="initProductForm(false, true, overviewSite, overviewClientType, day.date, {start: period.first_interval, end: period.last_interval})">
+                    No Data
+                  </div>
+                </ng-container>
+              </div>
+              <div class="overview-week-value" *ngIf="day.products.length == 1">
+                <div class="overview-week-period single-period" [ngClass]="getClass(day.products[0].price_type)" *ngIf="day.products[0].price_type" (click)="openPeriod(day.products[0])" (dblclick)="edit(day.products[0].id)">
+                  <span>Price type: {{day.products[0].price_type}}</span>
+                  <span>Fees: {{getPercent(day.products[0].payment_types)}}</span>
+                </div>
+                <div class="overview-week-period single-period no-data-type" *ngIf="!day.products[0].price_type" (click)="initProductForm(false, true, overviewSite, overviewClientType, day.date, {start: day.products[0].first_interval, end: day.products[0].last_interval})">
+                  No Data
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <div class="overview-types">
+        <div class="overview-type" *ngFor="let type of priceTypes">
+          <div class="type-box" [ngClass]="getClass(type)"></div><span>{{type}}</span>
+        </div>
+      </div>
+      <div class="overview-detail" *ngIf="overviewProduct['price_type']">
+        <h3 [ngClass]="getClass(overviewProduct['price_type'])">{{overviewProduct['price_type']}} Tariff</h3>
+        <div class="tariff-box" [ngClass]="getClass(overviewProduct['price_type'])"></div>
+        <div class="overview-detail-section" *ngIf="overviewProduct['price_type'] === 'Custom' && overviewProduct['interval_time'][0].type === 1">
+          <div class="section-title">Time of the day</div>
+          <div class="section-time" *ngFor="let time of overviewProduct['interval_time']">
+            <span class="time-number">{{time.start}} - {{time.end}}</span><span class="time-value">({{time.value}}{{currency}})</span>
+          </div>
+        </div>
+        <div class="overview-detail-section" *ngIf="overviewProduct['price_type'] === 'Custom' && overviewProduct['interval_time'][0].type === 0">
+          <span class="section-title">Global time spent</span>
+          <div class="section-time" *ngFor="let time of overviewProduct['interval_time']">
+            <span class="time-number">{{time.start}} - {{time.end}}</span><span class="time-value">({{time.value}}{{currency}})</span>
+          </div>
+        </div>
+        <div class="overview-detail-section" *ngIf="overviewProduct['price_type'] === 'Absolute'">
+          <div class="section-title">Price</div>
+          <div class="section-time">
+            <span class="time-value">({{overviewProduct['price']}}{{currency}})</span>
+          </div>
+        </div>
+        <div class="overview-detail-section" *ngIf="overviewProduct['price_type'] === 'Fixed rate'">
+          <div class="section-title">Price per time unit</div>
+          <div class="section-time">
+            <span class="time-value">
+              (<span>{{overviewProduct['price_per_time_unit']}}{{currency}}</span> / <span>{{overviewProduct['time_unit']}}</span>)
+            </span>
+          </div>
+        </div>
+        <div class="overview-detail-section" *ngIf="overviewProduct['price_type'] === 'Ladder'">
+          <div class="section-title">Initial time unit price</div>
+          <div class="section-time">
+            <span class="time-value">
+              (<span>{{overviewProduct['initial_time_unit_price']}}{{currency}}</span> / <span>{{overviewProduct['time_unit']}}</span>)
+            </span>
+          </div>
+        </div>
+        <div class="overview-detail-section">
+          <span class="section-title">Payment methods</span>
+          <mat-checkbox [checked]="type.checked" [disabled]="true" *ngFor="let type of overviewProduct['payment_types']">
+            <section class="mat-typography">
+              <span *ngIf="type.name == 'payment_coins'">Coins</span>
+              <span *ngIf="type.name == 'payment_bank_note'">Bank note</span>
+              <span *ngIf="type.name == 'payment_e_wallet'">E-wallet</span>
+            </section>
+          </mat-checkbox>
+        </div>
+      </div>
+    </mat-card>
+  </mat-tab>
+  <mat-tab label="Tariff">
+    <mat-card>
+      <form [formGroup]="productForm" *ngIf="productForm && product && !refresh" (ngSubmit)="onSubmit()">
+
+        <div class="container-fluid product-container">
+          <div class="row">
+            <div class="col-12 col-lg-8">
+              <div class="row">
+                <mat-form-field class="input-el col-4" *ngIf="sites">
+                  <mat-select placeholder="Site" [formControlName]="'site_id'" [(ngModel)]="product.site_id" (change)="getNotAvailableSegments()" required>
+                    <mat-option *ngFor="let site of sites" [value]="site.id">
+                      {{site.name}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error>Site is required</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-12 col-lg-4">
+              <div class="row">
+                <div class="input-el col-6" style="padding-top: 20px;">
+                  <mat-checkbox [formControlName]="'valet_system'" [(ngModel)]="product.valet_system" [checked]="product.valet_system">
+                    <section class="mat-typography">
+                      <span>Valet system</span>
+                    </section>
+                  </mat-checkbox>
+                </div>
+                <mat-form-field class="input-el col-6" *ngIf="statusList">
+                  <mat-select placeholder="Status" [formControlName]="'status'" [(ngModel)]="product.status">
+                    <mat-option *ngFor="let item of statusList" [value]="item.status"
+                                [disabled]="item.roles.indexOf(userType) == -1 || (item.status == 'active' && product.status != 'validated')">
+                      {{item.status}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-lg-8">
+              <div class="row">
+
+                <mat-form-field class="input-el col-3">
+                  <input matInput placeholder="Create product name" [formControlName]="'name'" [(ngModel)]="product.name" required>
+                  <mat-error>Name is required</mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="input-el col-3" *ngIf="clientTypes">
+                  <mat-select placeholder="Client type" (change)="checkNotAvailableSegments()" [formControlName]="'client_type'" [(ngModel)]="product.client_type" required>
+                    <mat-option *ngFor="let type of clientTypes" [value]="type.id">
+                      {{type.name}}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error>Client types is required</mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="input-el col-3">
+                  <mat-select placeholder="Price type" (change)="checkNotAvailableSegments()" [formControlName]="'price_type'" [(ngModel)]="product.price_type" required>
+                    <mat-option *ngFor="let type of priceTypes" [value]="type">
+                      {{type}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="input-el col-3" *ngIf="product.price_type && product.price_type !='Absolute'">
+                  <mat-select placeholder="Time unit" [formControlName]="'time_unit'" [(ngModel)]="product.time_unit" (change)="checkTimeUnit()">
+                    <mat-option *ngFor="let unit of timeUnits" [value]="unit">
+                      {{unit}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="input-el col-3" *ngIf="product.price_type && product.price_type == 'Fixed rate'">
+                  <input matInput placeholder="Price per time unit" [formControlName]="'price_per_time_unit'" [(ngModel)]="product.price_per_time_unit">
+                </mat-form-field>
+
+                <mat-form-field class="input-el col-3" *ngIf="product.price_type && product.price_type == 'Absolute'">
+                  <input matInput placeholder="Price" [formControlName]="'price'" [(ngModel)]="product.price" required>
+                  <mat-error>Price is required</mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="input-el col-3" *ngIf="product.price_type && product.price_type == 'Ladder'">
+                  <input matInput placeholder="Initial time unit price" [formControlName]="'initial_time_unit_price'" [(ngModel)]="product.initial_time_unit_price" required>
+                  <mat-error>Initial time unit price is required</mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="input-el col-3" *ngIf="product.price_type && product.price_type == 'Ladder'">
+                  <input matInput placeholder="Growth factor" [formControlName]="'growth_factor'" [(ngModel)]="product.growth_factor" required>
+                  <mat-error>Growth factor is required</mat-error>
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container-fluid product-container">
+          <div class="row">
+            <div class="col-12 col-xl-8 d-flex flex-nowrap justify-content-start">
+              <div class="button-days-first d-inline-flex align-items-center align-content-center">
+                <div class="inscription">Applicable days</div>
+              </div>
+              <div class="button-days d-inline-flex align-items-center align-content-center" *ngFor="let day of product.days; let last = last"
+                [style.backgroundColor]="!day.checked ? '#A8A9AD': '#25AAE2'" (click)="day.checked = !day.checked; checkNotAvailableSegments()">
+                <div class="button-days-text">{{day.name | uppercase}}</div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="error-required" *ngIf="!formErrors.daysSelect && formErrors.form_send">Applicable days is required</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container-fluid product-container">
+          <div class="row">
+            <div class="col-12">
+              <app-range-slider [productTimes]="product.time_segments" (times)="setRange($event)"></app-range-slider>
+            </div>
+          </div>
+        </div>
+
+        <div class="container-fluid product-container" *ngIf="!formErrors.timeUnit && timePoints.length > 0">
+          <div class="row">
+            <div class="col-12" style="margin-bottom: 25px;">
+              <div class="error-required">Time unit is not compatible with selected range</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container-fluid product-container" *ngIf="!formErrors.completedSegmentsTime && ((timePoints.length > 0) || formErrors.form_send)">
+          <div class="row">
+            <div class="col-12" style="margin-bottom: 25px;">
+              <div class="error-required">Selected days and time not available</div>
+              <div class="error-required" *ngFor="let notAvSeg of notAvailableSegmentsError">
+                {{notAvSeg.name}} {{notAvSeg.begin_date | date: 'dd/MM/yyyy'}} - {{notAvSeg.end_date | date: 'dd/MM/yyyy'}} {{notAvSeg.days.join(", ")}} {{notAvSeg.start}} - {{notAvSeg.end}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container-fluid product-container" *ngIf="product.price_type && product.price_type == 'Custom'">
+          <div class="row">
+            <div class="col-12">
+              <mat-radio-button (change)="changeTimeType('day')" [checked]="checkTimeType(1)" style="margin: 0 20px 0 0">
+                <section class="mat-typography">
+                  <span>Time for the day</span>
+                </section>
+              </mat-radio-button>
+              <mat-radio-button (change)="changeTimeType('spent')" [checked]="checkTimeType(0)" style="margin: 0 20px 0 0">
+                <section class="mat-typography">
+                  <span>Global time spent</span>
+                </section>
+              </mat-radio-button>
+            </div>
+          </div>
+        </div>
+
+        <div class="container-fluid product-container" *ngIf="product.price_type && product.price_type == 'Custom'">
+          <div class="row">
+            <div class="col-12">
+              <div class="d-flex flex-row flex-fill justify-content-lg-between" style="position: relative;">
+                <div class="time-for-the-day d-inline-flex align-items-center align-content-center">
+                  <div class="time-for-the-day-title" *ngIf="time_type == 'day'">Time for the day</div>
+                  <div class="time-for-the-day-title" *ngIf="time_type == 'spent'">Global time spent</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container-fluid product-container time-container" [class.hidden]="!formErrors.timeUnit || !formErrors.completedSegmentsTime" *ngIf="showSegments && product.price_type && product.price_type == 'Custom'">
+          <div class="row">
+            <div class="col-12 col-xl-8">
+              <app-time-intervals [interval]="getTimeInterval(product.time_unit)" [range]="timePoints" [currency]="currency" [timeType]="time_type" [timesInput]="product.interval_time" (timesOutput)="setTimeIntervals($event)"></app-time-intervals>
+            </div>
+          </div>
+          <div class="error-required" *ngIf="!formErrors.completedSegments && formErrors.form_send">Please finish time intervals</div>
+        </div>
+
+        <div class="container-fluid product-container" style="margin-top: 20px">
+          <div class="row">
+            <div class="col-12 col-lg-8">
+              <div class="row">
+
+                <mat-form-field class="input-el col-4">
+                  <input matInput [matDatepicker]="begin_date" (dateChange)="checkNotAvailableSegments()" [matDatepickerFilter]="startDateFilter.bind(this)" placeholder="Begin date" [formControlName]="'begin_date'" [(ngModel)]="product.begin_date" required>
+                  <mat-datepicker-toggle matSuffix [for]="begin_date"></mat-datepicker-toggle>
+                  <mat-datepicker #begin_date></mat-datepicker>
+                  <mat-error>Begin date is required</mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="input-el col-4">
+                  <input matInput [matDatepicker]="end_date" (dateChange)="checkNotAvailableSegments()" [matDatepickerFilter]="endDateFilter.bind(this)" placeholder="End date" [formControlName]="'end_date'" [(ngModel)]="product.end_date" required>
+                  <mat-datepicker-toggle matSuffix [for]="end_date"></mat-datepicker-toggle>
+                  <mat-datepicker #end_date></mat-datepicker>
+                  <mat-error>End date is required</mat-error>
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container-fluid product-container">
+          <div class="row">
+            <div class="col-12 col-lg-8">
+              <div class="row">
+                <div class="col-12 d-flex flex-column flex-nowrap" *ngIf="!refresh">
+                  <div class="row">
+                    <span class="col-6 inscription caption" style="padding-top: 15px">Payment methods</span>
+                    <span class="col-6 inscription caption" style="padding-top: 15px">Fees (percent)</span>
+                  </div>
+                  <div class="row payment-method" style="margin-top: 15px;" *ngFor="let method of product.payment_methods">
+                    <div class="col-6">
+                      <mat-checkbox [formControlName]="method.name" [(ngModel)]="method.checked" [checked]="method.checked">
+                        <section class="mat-typography">
+                          <span *ngIf="method.name == 'payment_coins'">Coins</span>
+                          <span *ngIf="method.name == 'payment_bank_note'">Bank Note</span>
+                          <span *ngIf="method.name == 'payment_e_wallet'">E-wallet</span>
+                        </section>
+                      </mat-checkbox>
+                    </div>
+                    <div class="col-6">
+                      <div class="d-flex flex-nowrap justify-content-start">
+                        <mat-slider [min]="percent.min" [max]="percent.max" [step]="percent.step" [thumbLabel]="method.percent" [(ngModel)]="method.percent" [formControlName]="method.name + '_percent'" [disabled]="!method.checked" style="width: 100%; padding: 0" #slider></mat-slider>
+                      </div>
+                      <div class="d-flex flex-nowrap justify-content-end">
+                        <span mat-subheader class="inscription inscription-bottom">
+                          <span style="color: #0db9f0">{{method.percent}}%</span>&nbsp;on income
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="error-required" style="" *ngIf="!formErrors.paymentSelect && formErrors.form_send">Payments method is required</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-4 d-flex flex-nowrap justify-content-end align-self-end" style="margin-top: 30px;">
+              <img src="assets/exit.png" height="36px" alt="exit" style="margin-right: 30px; cursor: pointer" (click)="createNewProduct()">
+              <button type="submit" mat-raised-button color="accent">{{product.id ? 'UPDATE' : 'CREATE'}}</button>
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </mat-card>
+  </mat-tab>
+</mat-tab-group>
+
+<div class="zone-container mat-elevation-z8" style="margin-top: 50px;">
+
+  <mat-table [dataSource]="dataSource" matSort>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Product name </mat-header-cell>
+      <mat-cell *matCellDef="let product"> {{product.name}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="site_id">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Site </mat-header-cell>
+      <mat-cell *matCellDef="let product"> {{product.site_name}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="price_type">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Price Type </mat-header-cell>
+      <mat-cell *matCellDef="let product"> {{product.price_type}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="client_type">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Client Type </mat-header-cell>
+      <mat-cell *matCellDef="let product"> {{product.client_type_name}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="begin_date">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Start Date </mat-header-cell>
+      <mat-cell *matCellDef="let product"> {{product.begin_date * 1000 | date: 'dd/MM/yyyy'}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="end_date">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> End Date </mat-header-cell>
+      <mat-cell *matCellDef="let product"> {{product.end_date * 1000 | date: 'dd/MM/yyyy'}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="percent">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Fee </mat-header-cell>
+      <mat-cell *matCellDef="let product"> {{product.fees}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="project_id">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Project </mat-header-cell>
+      <mat-cell *matCellDef="let product"> {{product.project_id}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="payment">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Payment Methods </mat-header-cell>
+      <mat-cell *matCellDef="let product"> {{product.payment}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
+      <mat-cell *matCellDef="let product" class="d-flex justify-content-end align-items-center">
+        <button class="edit" title="edit" (click)="edit(product.id)"></button>
+        <button class="delete" title="delete" (click)="delete(product)"><mat-icon>close</mat-icon></button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let project; columns: displayedColumns;" [class.selected]="project === selectedProject">
+    <!--<mat-row *matRowDef="let project; columns: displayedColumns;" (click)="onSelect(project)" [class.selected]="project === selectedProject">-->
+    </mat-row>&ndash;&gt;
+  </mat-table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+
+</div>

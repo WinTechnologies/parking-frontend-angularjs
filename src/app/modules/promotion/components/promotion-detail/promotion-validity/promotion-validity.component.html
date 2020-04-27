@@ -1,0 +1,53 @@
+<h4 class="font-weight-bold">Validity</h4>
+<div class="section-content">
+  <div class="validity-dates pt-3" [formGroup]="formGroup">
+    <mat-form-field class="picker_date">
+      <input
+        appInputDateFormat
+        matInput
+        formControlName="date_start"
+        [matDatepicker]="pickerDateStart"
+        [max]="formGroup.value.date_end"
+        placeholder="Date from"
+        required
+      />
+      <mat-datepicker-toggle matSuffix [for]="pickerDateStart"></mat-datepicker-toggle>
+      <mat-datepicker #pickerDateStart></mat-datepicker>
+      <mat-error>Valid Date from is required</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input
+        appInputDateFormat
+        matInput
+        formControlName="date_end"
+        [matDatepicker]="pickerDateEnd"
+        [min]="formGroup.value.date_start"
+        placeholder="Date to (Optional)"
+      />
+      <mat-datepicker-toggle matSuffix [for]="pickerDateEnd"></mat-datepicker-toggle>
+      <mat-datepicker #pickerDateEnd></mat-datepicker>
+      <mat-error>InValid Date</mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="validity-time">
+    <mat-form-field>
+      <input type="time" atp-time-picker matInput placeholder="Start time" start="7:00" end="23:00" [(ngModel)]="start_time" [disabled]="!canUpdate">
+    </mat-form-field>
+    <mat-form-field>
+      <input type="time" atp-time-picker matInput placeholder="End time" start="7:00" end="23:00" [(ngModel)]="end_time" [disabled]="!canUpdate">
+    </mat-form-field>
+    <button *ngIf="canUpdate" mat-stroked-button type="button" color="base" (click)="onClearTimeSlot()">Clear</button>
+    <button *ngIf="canUpdate" mat-flat-button type="button" color="primary" (click)="onAddTimeSlot()">Add</button>
+  </div>
+
+  <div class="weekdays-wrapper mb-2">
+    Apply to:
+    <app-selection-weekday 
+      [weekdays]="promotion.working_days"
+      [canUpdate]="canUpdate" (changedWeekdays)="onChangedWeekdays($event)">
+    </app-selection-weekday>
+  </div>
+  <app-timeline-view [timeslots]="slots" [color]="color">
+  </app-timeline-view>
+</div>

@@ -1,0 +1,55 @@
+<div class="row" *ngFor="let item of timesArray">
+  <div class="col-6 time-fees">
+    <div class="time-item">
+      <mat-form-field class="input-el">
+        <mat-select [placeholder]="timeType === 'day' ? 'Start time' : 'From amount'" [value]="item['start'].value" [disabled]="true">
+          <mat-option [value]="item['start'].value">
+            {{item['start'].text}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="price">
+        <input type="text" [value]="item['amount']">{{currency}}
+      </div>
+      <mat-form-field class="input-el">
+        <mat-select [placeholder]="timeType === 'day' ? 'End time' : 'Till amount'" [value]="item['end'].value" [disabled]="true">
+          <mat-option [value]="item['end'].value">
+            {{item['end'].text}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="delete" (click)="deleteTime(item)"><mat-icon>close</mat-icon></div>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="showSelect">
+  <div class="col-6 time-fees">
+    <div class="time-item">
+      <mat-form-field class="input-el">
+        <mat-select [placeholder]="timeType === 'day' ? 'Start time' : 'From amount'" [(ngModel)]="newTime.startPoint" (change)="selectPoint()">
+          <ng-container *ngFor="let item of selectPoints">
+            <mat-option *ngIf="item.show" [value]="item" [disabled]="item.disabled || item.disabledStart">
+              {{item.text}}
+            </mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+      <div class="price">
+        <input type="text" [(ngModel)]="newTime.amount">{{currency}}
+      </div>
+      <mat-form-field class="input-el">
+        <mat-select [placeholder]="timeType === 'day' ? 'End time' : 'Till amount'" [(ngModel)]="newTime.endPoint" (change)="selectPoint()">
+          <ng-container *ngFor="let item of selectPoints">
+            <mat-option *ngIf="item.show" [value]="item" [disabled]="item.disabled || item.disabledEnd">
+              {{item.text}}
+            </mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+      <div class="delete" (click)="clearTime()"><mat-icon>close</mat-icon></div>
+      <div class="add" (click)="addTime()"><mat-icon>add</mat-icon></div>
+      <div class="warning" *ngIf="addingError">Please fill in all the fields</div>
+    </div>
+  </div>
+</div>

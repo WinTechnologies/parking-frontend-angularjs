@@ -1,0 +1,60 @@
+<div class="section-content" [formGroup]="formGroup">
+  <div class="discount-and-credit py-2">
+    <div class="d-flex">
+      <div class="discount col-6 pl-0">
+        <h4 class="font-weight-bold">Discount</h4>
+        <div class="pt-3">
+          <mat-form-field>
+            <input matInput type="number" placeholder="Value(SAR)" formControlName="discount_value" required (ngModelChange)="changeControl('discount_value', $event)">
+            <mat-error *ngIf="formGroup.get('discount_value').hasError('min')">Discount value should be positive</mat-error>
+            <mat-error *ngIf="formGroup.get('discount_value').hasError('required')">One of three values is required</mat-error>
+          </mat-form-field>
+          <mat-form-field class="pl-3">
+            <input matInput type="number" placeholder="Percentage(%)" formControlName="discount_percetage" required (ngModelChange)="changeControl('discount_percetage', $event)">
+            <mat-error *ngIf="formGroup.get('discount_percetage').hasError('min')">Discount percentage should be positive</mat-error>
+            <mat-error *ngIf="formGroup.get('discount_percetage').hasError('required')">One of three values is required</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="credit col-6 pl-0">
+        <h4 class="font-weight-bold">Credit</h4>
+        <div class="pt-3">
+        <mat-form-field>
+          <input matInput type="number" placeholder="Credit" formControlName="credit_value" required (ngModelChange)="changeControl('credit_value', $event)">
+          <mat-error *ngIf="formGroup.get('credit_value').hasError('min')">Credit value should be positive</mat-error>
+          <mat-error *ngIf="formGroup.get('credit_value').hasError('required')">One of three values is required</mat-error>
+        </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="additional-values pt-3 d-flex">
+    <div>
+      <mat-form-field>
+        <input matInput type="number" placeholder="Minimum Spending" formControlName="min_spending" required>
+        <mat-error *ngIf="formGroup.get('min_spending').hasError('min')">Minimum spending should be positive</mat-error>
+        <mat-error *ngIf="formGroup.get('min_spending').hasError('required')">Minimum spending is required</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="pl-3">
+      <mat-form-field>
+        <input matInput type="number"
+               placeholder="Instances"
+               formControlName="nbr_instances"
+               (ngModelChange)="changeInstance($event)"
+               required
+        >
+        <mat-error *ngIf="formGroup.get('nbr_instances').hasError('min')">Instances should be positive</mat-error>
+        <mat-error *ngIf="formGroup.get('nbr_instances').hasError('required')">Instances is required</mat-error>
+      </mat-form-field>
+      <mat-checkbox class="mr-4 pl-3" formControlName="unlimited" (change)="checkUnlimited($event)">Unlimited</mat-checkbox>
+      <mat-form-field>
+        <mat-label>Per User</mat-label>
+        <mat-select formControlName="nbr_instances_per_user">
+          <mat-option *ngFor="let instanceValue of instanceValues" [value]="instanceValue">{{instanceValue}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+</div>

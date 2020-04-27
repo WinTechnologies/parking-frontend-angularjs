@@ -1,0 +1,96 @@
+@import "../../../../styles/_color.scss";
+:host {
+    .list {
+        display: flex;
+        background-color: #ffffff;
+
+        &-cell-img {
+          margin-top: 0 !important;
+          padding: 5px;
+        }
+
+        &-list-page-content {
+            background-color: #ffffff;
+        }
+
+        &-page-table-wrapper {
+            height: 100%;
+            width: 100%;
+        }
+
+        &-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 7px 0px;
+
+            .btn {
+                font-family: unset !important;
+            }
+        }
+
+        &-details-container {
+            max-width: 25%;
+
+            .img-item {
+                padding: 2px;
+                position: relative;
+                align-items: center;
+                margin: 0 10px 0 12px;
+                cursor: pointer;
+                border: 1px solid transparent;
+
+                .cancel-btn {
+                margin: -5px 0 0 75% !important;
+                color: red;
+                z-index:2000;
+                }
+
+                .list-thumbnail {
+                margin-top: -35px;
+                max-width: 100%;
+                position: relative;
+                max-width: 100%;
+                }
+            }
+
+            .img-item-selected {
+                border: 1px solid $c-blue1 !important;
+                margin: 0 10px 0 15px !important;
+            }
+
+            .list-image {
+                width: 100%;
+            }
+            /deep/ app-mapview-new {
+                .map-view {
+                max-height: 225px;
+                }
+                .leaflet-bottom.leaflet-right {
+                display: none !important;
+                }
+            }
+        }
+        &-table-wrapper {
+            padding-bottom: 10px;
+        }
+    }
+    ::ng-deep {
+        .datatable-body-row.active .datatable-row-group {
+            background-color: #6c7c85 !important;
+        }
+
+        mat-checkbox.checkbox-checked {
+            .mat-checkbox-background {
+                background-color: #ffd740 !important;
+            }
+        }
+
+        ngx-datatable.ngx-table {
+            height: 70vh;
+
+            @media (min-height: 900px) {
+                height: 73vh !important;
+            }
+        }
+    }
+}

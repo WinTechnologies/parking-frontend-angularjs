@@ -1,0 +1,53 @@
+<div class="keydate-list-page">
+  <div class="keydate-list-page-header">
+    <h1>Key Dates</h1>
+    <div>
+      <button *ngIf="canUpdate" mat-flat-button color="basic" (click)="onAdd()">
+        <span class="pop-btn"> <mat-icon>add_circle</mat-icon>Key Dates</span>
+      </button>
+      <button
+        class="mr-2 btn-primary mat-raised-button"
+        (click)="editColumns()"
+        *ngIf="keydates.length > 0"
+      >
+        Customize Columns
+      </button>
+    </div>
+  </div>
+  <div class="keydate-list-page-content">
+    <div *ngIf="keydates.length > 0" class="keydate-list-page-content-table-wrapper">
+      <ngx-datatable
+        class="material bg-white"
+        style="height: 250px"
+        [columnMode]="'force'"
+        [headerHeight]="50"
+        [footerHeight]="50"
+        [rowHeight]="70"
+        [limit]="10"
+        [rows]="dataSource"
+        scrollbarV="true"
+        (activate)="onEdit($event)"
+        (reorder)="reorderColumns($event)">
+        <ngx-datatable-column *ngFor="let field of tableFields" name="{{ field.label }}" prop="{{ field.name }}">
+          <ng-template let-row="row" ngx-datatable-cell-template>
+            <span [matTooltip]="row[field.name]" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+              <ng-container [ngSwitch]="field.name">
+                <ng-container *ngSwitchCase="'allday'"><mat-icon *ngIf="row.allday">check</mat-icon></ng-container>
+                <ng-container *ngSwitchCase="'start_date'">{{ row.start_date | date: 'dd/MM/yyyy' }}</ng-container>
+                <ng-container *ngSwitchCase="'end_date'">{{ row.end_date | date: 'dd/MM/yyyy' }}</ng-container>
+                <ng-container *ngSwitchCase="'action'">
+                  <button *ngIf="canUpdate" mat-icon-button><mat-icon>edit</mat-icon></button>
+                  <button *ngIf="canUpdate" mat-icon-button (click)="onDelete($event, row)"><mat-icon>delete</mat-icon></button>
+                </ng-container>
+                <ng-container *ngSwitchDefault>{{ row[field.name] }}</ng-container>
+              </ng-container>
+            </span>
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
+    </div>
+    <div *ngIf="!keydates.length || keydates.length == 0" class="keydate-list-page-content-no-data">
+      No data, please add new keydate
+    </div>
+  </div>
+</div>

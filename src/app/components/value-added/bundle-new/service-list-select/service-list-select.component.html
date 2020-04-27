@@ -1,0 +1,45 @@
+<div mat-dialog-content>
+  <div class="servicelist-select-page">
+    <div class="servicelist-select-page-content">
+      <div class="servicelist-select-page-table-wrapper">
+        <ngx-datatable class="material bg-white"
+                       style="height: 250px; margin-bottom: 10px;"
+                       [columnMode]="'force'"
+                       [headerHeight]="50"
+                       [footerHeight]="50"
+                       [rowHeight]="50"
+                       [limit]="10"
+                       scrollbarV="true"
+                       (reorder)="reorderColumns($event)"
+                       [rows]="services"
+                       (activate)="onSelect($event)">
+          <ngx-datatable-column *ngFor="let field of tableFields" name="{{field.label}}" prop="{{field.name}}">
+            <ng-template let-column="column" ngx-datatable-header-template *ngIf="field.name === 'checkbox'">
+              <ng-container *ngIf="field.name === 'checkbox'">
+                <mat-checkbox (change)="changeAllCheck()" [(ngModel)]="allChecked"></mat-checkbox>
+              </ng-container>
+            </ng-template>
+            <ng-template let-row="row" ngx-datatable-cell-template>
+            <span [matTooltip]="row[field.name]" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+              <ng-container [ngSwitch]="field.name">
+                <ng-container *ngSwitchCase="'checkbox'">
+                  <mat-checkbox (change)="changeCheckItem()" (click)="$event.stopPropagation();" [(ngModel)]="row.checked"></mat-checkbox>
+                </ng-container>
+                <ng-container *ngSwitchCase="'avatar'">
+                  <img *ngIf="row.img_url" [src]="img_url + row.img_url" alt="">
+                  <img *ngIf="!row.img_url" src="assets/noavatar.png" alt="">
+                </ng-container>
+                <ng-container *ngSwitchDefault>{{ row[field.name] }}</ng-container>
+              </ng-container>
+            </span>
+            </ng-template>
+          </ngx-datatable-column>
+        </ngx-datatable>
+        <div class="total-value-wrapper">
+          <span>Tatal Value:</span>
+          <span class="total">{{total}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

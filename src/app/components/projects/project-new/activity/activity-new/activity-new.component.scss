@@ -1,0 +1,30 @@
+@import "../../../../../../styles/color";
+
+:host {
+  .mat-dialog-title {
+    display: flex;
+    justify-content: space-between;
+
+    h1 {
+      font-weight: 700;
+      font-size: 16px;
+      color: $c-lightblue;
+    }
+
+    button.mat-icon-button {
+      outline: none;
+      margin-right: -15px;
+      margin-top: -15px;
+    }
+  }
+  .mat-dialog-content {
+    .list-wrapper {
+      display: flex;
+      img {
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+      }
+    }
+  }
+}

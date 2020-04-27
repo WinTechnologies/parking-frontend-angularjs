@@ -1,0 +1,281 @@
+<div class="cn-challenge">
+  <div class="cn-challenge-search-wrapper">
+    <div class="buttons-wrapper" [style.position]="'absolute'">
+      <button mat-icon-button class="list-button" (click)="onSwitchViewMode()"><mat-icon>list</mat-icon></button>
+    </div>
+    <form
+      *ngIf="searchForm"
+      [formGroup]="searchForm"
+      (ngSubmit)="onSubmit()"
+      autocomplete="off"
+      novalidate>
+        <div
+          fxLayout="row wrap"
+          fxLayoutAlign="space-between"
+          class="show-options-wrapper">
+            <div class="filter-wrapper">
+              <mat-icon>search</mat-icon>
+              <mat-form-field>
+                <mat-select id="project" formControlName="project_id" placeholder="{{'common.project' | translate}}">
+                  <mat-option value="">{{'common.all' | translate}}</mat-option>
+                  <mat-option *ngFor="let project of cnSearchValues.projects" [value]="project.id">
+                    <strong>{{project.project_code}}: </strong>{{project.project_name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="form-field">
+              <span>{{'cn_review.from'| translate}} : </span>
+              <mat-form-field>
+                <input formControlName="start_date" matInput [matDatepickerFilter]="startDateFilter.bind(this)" [matDatepicker]="date_start"/>
+                <mat-datepicker-toggle matSuffix [for]="date_start"></mat-datepicker-toggle>
+                <mat-datepicker #date_start></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div class="form-field">
+              <span>{{'cn_review.to'| translate}} : </span>
+              <mat-form-field>
+                <input formControlName="end_date" matInput [matDatepickerFilter]="endDateFilter.bind(this)" [matDatepicker]="date_end"/>
+                <mat-datepicker-toggle matSuffix [for]="date_end"></mat-datepicker-toggle>
+                <mat-datepicker #date_end></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div class="form-field">
+              <span>{{'cn_review.from'| translate}} : </span>
+              <mat-form-field>
+                <input formControlName="start_time" type="time" atp-time-picker matInput>
+              </mat-form-field>
+            </div>
+            <div class="form-field">
+              <span>{{'cn_review.to'| translate}} : </span>
+              <mat-form-field>
+                <input formControlName="end_time" type="time" atp-time-picker matInput>
+              </mat-form-field>
+            </div>
+            <div class="filter-wrapper">
+              <mat-icon>search</mat-icon>
+              <mat-form-field>
+                <input
+                  matInput
+                  formControlName="creator_username"
+                  placeholder="{{'cn_review.employee'| translate}} ({{'cn_review.reviewer'| translate}})"
+                  (keyup)="updateTable()">
+              </mat-form-field>
+            </div>
+            <div class="buttons-wrapper">
+              <button mat-raised-button color="primary">{{'cn_review.search'| translate}}</button>
+              <button mat-icon-button type="button" (click)="isShowSearchOption = !isShowSearchOption"><mat-icon>tune</mat-icon></button>
+            </div>
+        </div>
+        <div
+          *ngIf="isShowSearchOption"
+          fxLayout="row wrap"
+          fxLayoutAlign="space-between start"
+          class="show-options-wrapper">
+            <div class="filter-wrapper">
+              <mat-icon>search</mat-icon>
+              <mat-form-field>
+                <input
+                  matInput
+                  formControlName="cn_number"
+                  placeholder="{{'cn_review.cn#'| translate}}"
+                  (keyup)="updateTable()">
+              </mat-form-field>
+            </div>
+
+            <div class="filter-wrapper">
+              <mat-icon>search</mat-icon>
+              <mat-form-field>
+                <input
+                  matInput
+                  formControlName="cn_number_offline"
+                  placeholder="{{'cn_review.cn#_offline'| translate}}"
+                  (keyup)="updateTable()">
+              </mat-form-field>
+            </div>
+
+            <div class="form-field">
+              <span>{{'cn_review.code'| translate}} : </span>
+              <mat-form-field>
+                <mat-select formControlName="violation_code">
+                  <mat-option value="">{{'common.all' | translate}}</mat-option>
+                  <mat-option
+                    *ngFor="let v of cnSearchValues.violations"
+                    [value]="v.violation_code"
+                    [matTooltip]="v.violation_name_en">{{v.violation_code}}: {{v.violation_name_en | slice : 0 : 40}} ...</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="form-field">
+              <span>{{'cn_review.issued'| translate}}:</span>
+              <mat-form-field>
+                <mat-select formControlName="plate_country">
+                    <mat-option value="">{{'common.all' | translate}}</mat-option>
+                    <mat-option
+                      *ngFor="let issued of cnSearchValues.issuedCountries"
+                      [value]="issued">{{issued}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="filter-wrapper">
+              <mat-icon>search</mat-icon>
+              <mat-form-field>
+                <input
+                  matInput
+                  formControlName="car_plate"
+                  placeholder="{{'cn_review.plate'| translate}}"
+                  (keyup)="updateTable()">
+              </mat-form-field>
+            </div>
+            <div class="form-field">
+              <span>{{'cn_review.type'| translate}} : </span>
+              <mat-form-field>
+                <mat-select formControlName="plate_type">
+                    <mat-option value="">{{'common.all' | translate}}</mat-option>
+                    <mat-option
+                      *ngFor="let type of cnSearchValues.plateTypes"
+                      [value]="type">{{type.type_name_en}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="status-option-wrapper" fxLayout="row wrap" fxLayoutAlign="center space-between">
+              <mat-selection-list #statusList formControlName="status_challenge">
+                <mat-list-option checkboxPosition='before' *ngFor="let status of cnSearchValues.challengeStatusList" [value]="status.value">
+                  {{status.name | translate}}
+                </mat-list-option>
+              </mat-selection-list>
+            </div>
+        </div>
+    </form>
+  </div>
+  <div *ngIf="!isShowReviewDetail" class="cn-search-result-wrapper mat-box-shadow margin-333">
+    <ngx-datatable
+      class="material bg-white"
+      style="height: 75vh"
+      [columnMode]="'force'"
+      [headerHeight]="50"
+      [footerHeight]="50"
+      [rowHeight]="50"
+      [limit]="10"
+      [rows]="rows"
+      scrollbarV="true"
+      (activate)="onActivate($event)">
+      <ngx-datatable-column name="">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <img *ngIf="row?.plate_picture" [src]="baseUrl + row.plate_picture" alt="">
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="{{'cn_review.cn#'| translate}}" prop="cn_number">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span [matTooltip]="row?.cn_number" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+            {{ row?.cn_number }}
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="{{'cn_review.cn#_offline'| translate}}" prop="cn_number_offline">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <small [matTooltip]="row?.cn_number_offline" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+            {{ row?.cn_number_offline }}
+          </small>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="{{'cn_review.project'| translate}}" prop="project_name">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span [matTooltip]="row?.project_name" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+            {{ row?.project_name }}
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="{{'cn_review.issued'| translate}}" prop="plate_country">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span [matTooltip]="row?.plate_country" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+            {{ row?.plate_country }}
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="{{'cn_review.plate'| translate}}" prop="car_plate">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span [matTooltip]="row?.car_plate" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+            {{ row?.car_plate }}
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="{{'cn_review.type'| translate}}" prop="plate_type">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span [matTooltip]="row?.plate_type" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+            {{ row?.plate_type }}
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="{{'cn_review.make'| translate}}" prop="car_brand">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span [matTooltip]="row?.car_brand" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+            {{ row?.car_brand }}
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="{{'cn_review.model'| translate}}" prop="car_model">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span [matTooltip]="row?.car_model" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+            {{ row?.car_model }}
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="{{'cn_review.color'| translate}}" prop="car_color">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span [matTooltip]="row?.car_color" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+            {{ row?.car_color }}
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="{{'cn_review.project'| translate}} {{'cn_review.time'| translate}}" prop="project_name">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span [matTooltip]="row?.project_name" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+            {{ row?.project_name }}
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="{{'cn_review.date'| translate}}" prop="creation">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span [matTooltip]="row?.creation | date:'dd/MM/yyyy'" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+            {{ row?.creation | date:'dd/MM/yyyy' }}
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="{{'cn_review.time'| translate}}" prop="creation">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span [matTooltip]="row?.creation | date:'hh:mm:a'" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+            {{ row?.creation | date:'hh:mm:a' }}
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="{{'cn_review.requested_by'| translate}}" prop="requested_by">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span [matTooltip]="row?.requested_by" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+            {{ row?.requested_by }}
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="{{'cn_review.reason'| translate}}" prop="challenge_reason">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span [matTooltip]="row?.challenge_reason" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+            {{ row?.challenge_reason }}
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+      <ngx-datatable-column name="{{'cn_review.status'| translate}}" prop="status_challenge">
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <span [matTooltip]="row?.status_challenge" matTooltipShowDelay="1000" matTooltipHideDelay="1000">
+            {{ row?.status_challenge }}
+          </span>
+        </ng-template>
+      </ngx-datatable-column>
+    </ngx-datatable>
+  </div>
+  <app-cn-challenge-details
+    *ngIf="isShowReviewDetail"
+    [challenges]="rows"
+    [challenge]="selectedChallenge"
+    [permission]="permission"
+  ></app-cn-challenge-details>
+</div>

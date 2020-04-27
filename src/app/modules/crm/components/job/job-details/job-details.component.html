@@ -1,0 +1,77 @@
+<div class="information-wrapper">
+    <div class="information-block">
+        <h5 class="title">{{getStatusName(job)}}</h5>
+        <button class="close" mat-button (click)="onClose()">X</button>
+        <div class="information-item">
+            <div class="assets">
+                <div class="images-asset violation-pictures">
+                    <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+                </div>
+            </div>
+        </div>
+        <div class="item-item">
+            <span class="violation" (click)="onMapView()">{{violationLocation}}</span>
+        </div>
+    </div>
+    <div *ngFor="let section of Job_Details_Fields" class="information-block ml-3">
+        <h5 class="title py-1">{{section.sectionTitle}}</h5>
+        <div *ngIf="section.sectionTitle==='Other Information'">
+            <div class="images-asset defect-pictures" *ngIf="defectPictures">
+                <ngx-gallery [options]="galleryOptions" [images]="defectPictures"></ngx-gallery>
+            </div>
+        </div>
+        <div *ngFor="let field of section.fields" class="information-item row mr-0 my-3 ">
+            <div class="col-4">
+                <ng-container [ngSwitch]="field.label">
+                    <ng-container *ngSwitchCase="'Amount'">{{ field.label }}({{job['currency_code'] }})</ng-container>
+                <ng-container *ngSwitchDefault>{{ field.label }}</ng-container>
+                </ng-container>
+            </div>
+            <div class="col-8 text-info information-item-value">
+                <ng-container [ngSwitch]="field.name">
+                    <ng-container *ngSwitchCase="'creation'">{{ formatTimeWithGmt(job[field.name])}}</ng-container>
+                    <ng-container *ngSwitchCase="'violation_created'">{{ formatTimeWithGmt(job[field.name])}}</ng-container>
+                    <ng-container *ngSwitchCase="'sent_at'">{{ formatTimeWithGmt(job[field.name])}}</ng-container>
+                    <ng-container *ngSwitchCase="'is_paid'">{{ job[field.name] ? 'Paid' : 'Unpaid' }}</ng-container>
+                    <ng-container *ngSwitchCase="'category'">{{ getStatusName(job) }}</ng-container>
+                    <ng-container *ngSwitchCase="'plate_country'">
+                        <span class="flag-icon flag-icon-gb flag-icon-squared {{getFlagClass()}}"></span>
+                        {{job[field.name]}}
+                    </ng-container>
+                    <ng-container *ngSwitchDefault>{{ job[field.name] }}</ng-container>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+    <div class="information-block ml-3"  *ngIf="clampPictures && (job.job_type === 'CLAMP JOB' || job.job_type === 'DECLAMP JOB')">
+        <h5 class="title py-1">CLAMP JOB Pictures</h5>
+        <div class="images-asset clamp-pictures">
+            <ngx-gallery [options]="galleryOptions" [images]="clampPictures"></ngx-gallery>
+        </div>
+    </div>
+    <div class="information-block ml-3" *ngIf="declampPictures && job.job_type === 'DECLAMP JOB'">
+        <h5 class="title py-1">DECLAMP JOB Pictures</h5>
+        <div class="images-asset declamp-pictures">
+            <ngx-gallery [options]="galleryOptions" [images]="declampPictures"></ngx-gallery>
+        </div>
+    </div>
+    <div class="information-block ml-3" *ngIf="towPictures && job.job_type === 'TOW JOB'">
+        <h5 class="title py-1">TOW JOB Pictures</h5>
+        <div class="images-asset tow-pictures">
+            <ngx-gallery [options]="galleryOptions" [images]="towPictures"></ngx-gallery>
+        </div>
+    </div>
+    <div *ngFor="let history of statusList" class="information-block ml-3">
+        <h5 class="title py-1">{{history.status}} JOB Information</h5>
+        <div *ngFor="let status of history | keyvalue:originalOrder" class="information-item row mr-0 my-3 ">
+            <div class="col-4">{{createLabel(status.key)}}</div>
+            <div class="col-8 text-info information-item-value">
+                <ng-container [ngSwitch]="status.key">
+                    <ng-container *ngSwitchCase="'date_start'">{{ formatTimeWithGmt(status.value )}}</ng-container>
+                    <ng-container *ngSwitchCase="'date_end'">{{ formatTimeWithGmt(status.value )}}</ng-container>
+                    <ng-container *ngSwitchDefault>{{ status.value }}</ng-container>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>

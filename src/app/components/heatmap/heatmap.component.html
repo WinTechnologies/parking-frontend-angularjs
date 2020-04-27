@@ -1,0 +1,22 @@
+<div #mapDiv class="map"></div>
+<div class="row tuner" *ngIf="heatPoints.length > 0">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="time-range">
+            <a class="btn btn-info">
+                <span class="glyphicon" [class.glyphicon-pause]="!isPaused" [class.glyphicon-play]="isPaused"
+                    (click)="togglePlay()"></span>
+            </a>
+            <div class="slider-wrapper">
+                <mat-slider class="slider" [disabled]="false" [max]="24" [min]="1" [step]="1" [(ngModel)]="sliderHour"
+                    (change)="onSliderChanged($event)">
+                </mat-slider>
+                <div class="slider-ticks">
+                    <span class="slider-value">{{'1:00'}}</span>
+                    <span class="slider-value center">{{'12:00'}}</span>
+                    <span class="slider-value">{{'24:00'}}</span>
+                </div>
+            </div>
+        </div>
+        <p><span class="slider-time">{{displayTime}}</span></p>
+    </div>
+</div>

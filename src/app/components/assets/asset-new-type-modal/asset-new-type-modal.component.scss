@@ -1,0 +1,65 @@
+@import "../../../../styles/_color.scss";
+
+:host {
+  .mat-dialog-title {
+    color: $c-white;
+    background-color: $c-blue;
+    margin: -24px -24px 20px;
+    padding: 10px 24px;
+    span {
+      font-weight: 700;
+      font-size: 24px;
+    }
+  }
+
+  .original-image {
+    width: 120px;
+    height: 120px;
+  }
+
+  label {
+    margin: auto 5px;
+    min-width: 30px;
+  }
+
+  .required {
+    color: rgb(255, 53, 53);
+  }
+}
+
+::ng-deep mat-select.disabled {
+  border-bottom: 1px dotted gray;
+  .mat-select-value {
+    color: gray;
+  }
+}
+
+::ng-deep mat-select {
+  max-width: 180px;
+  padding-left: 5px;
+
+  .mat-select-trigger {
+    .mat-select-value {
+      .mat-select-value-text {
+        vertical-align: bottom !important;
+      }
+    }
+  }
+
+  .ng-trigger {
+    max-width: 180px;
+
+    .mat-option {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+}
+
+::ng-deep .ng2-file-input > .ng2-file-input-drop-container > span {
+  &::after {
+    content: ' *';
+    font-weight: 600;
+    color: rgb(255, 53, 53);
+  }
+}

@@ -1,0 +1,136 @@
+.ruler, .ruler li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: inline-block;
+}
+
+/* IE6-7 */
+.ruler, .ruler li {
+    *display: inline;
+}
+
+.ruler {
+    background: #a8a9ad;
+    border-radius: 2px;
+    color: #d8e0f3;
+    margin: 0;
+    height: 2px;
+    padding-right: 4%;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.ruler li {
+    flex-grow: 1;
+    text-align: center;
+    position: relative;
+    width: 4%;
+    cursor: pointer;
+}
+
+.ruler li:before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    right: 0;
+    border-radius: 100%;
+    width: 8px;
+    height: 8px;
+    background: #a8a9ad;
+    z-index: 10;
+    cursor: pointer;
+}
+
+.ruler li:hover {
+    color: #0db9f0;
+    cursor: pointer;
+}
+
+.ruler li:hover > span.outer-ruler-span {
+    background: #0db9f0;
+}
+
+.inner-ruler-span {
+    position: absolute;
+    top: -40px;
+    right: 4px;
+    transform: translateX(50%);
+    font-size: 11px;
+    color: #a8a9ad;
+    cursor: pointer
+}
+
+.outer-ruler-span {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    top: -9px;
+    right: -6px;
+    z-index: 0;
+}
+
+.outer-ruler-span:hover {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #0db9f0;
+    cursor: pointer;
+}
+
+/*.ruler li:hover > span.ruler-inactive {
+    background: #0db9f0;
+    height: 4px;
+    !*width: 2.81em;*!
+    margin-top: -32px;
+    position: absolute;
+    cursor: pointer;
+}*/
+
+.tick-active {
+    background: #0db9f0;
+}
+
+.range-slider {
+    margin-top: 66px;
+    margin-bottom: 44px;
+}
+
+.ruler-inactive {
+    position: absolute;
+}
+
+.ruler-active {
+    background: #0db9f0;
+    height: 2px;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    transform: translateX(100%);
+    cursor: pointer;
+}
+
+li.hour-selected > span.outer-ruler-span, li.hour-selected + li > span.outer-ruler-span {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #0db9f0;
+    cursor: pointer;
+}
+
+li.hour-selected + li.hour-selected > span.outer-ruler-span {
+  background: none;
+}
+
+li.hour-selected > span.inner-ruler-span, li.hour-selected + li > span.inner-ruler-span{
+    color: #0db9f0;
+}
+
+li.hour-selected:before, li.hour-selected + li:before{
+    background: #ffffff !important;
+}
+
+li.hour-selected + li.hour-selected:before {
+  background: #0db9f0 !important;
+}

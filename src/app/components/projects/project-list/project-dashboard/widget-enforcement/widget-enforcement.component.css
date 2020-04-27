@@ -1,0 +1,16 @@
+app-widget-element-universal-advanced, 
+app-widget-element-universal,
+app-widget-element-chart,
+app-widget-element-table {
+    width: 100%;
+}
+
+h4{
+    color: rgb(45, 64, 75);
+    font-size: 16px;
+}
+.add_widget{
+    margin-left: 100px;
+    color:dodgerblue!important;
+    font-size: 14px;
+}

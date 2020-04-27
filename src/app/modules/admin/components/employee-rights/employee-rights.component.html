@@ -1,0 +1,80 @@
+<div class="employee-rights-wrapper">
+  <!-- ------------------- Greybar ------------------------ -->
+  <header class="page-top-header">
+    <mat-form-field>
+      <mat-select
+        placeholder="Select project"
+        [(ngModel)]="selectedProjectId"
+        (ngModelChange)="getEmployeesByFilters()"
+      >
+        <mat-option *ngFor="let project of projects" [value]="project.id">
+          {{project.project_code}}:{{ project.project_name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </header>
+  <!-- ------------------------------------------- -->
+  <div class="d-flex mt-50px">
+    <div class="col-3">
+      <div class="permission-filter">
+        <div class="d-flex justify-content-between align-items-center mb-3 mt-3">
+          <h4 class="m-0">Rights:</h4>
+          <button
+            mat-flat-button
+            color="primary"
+            (click)="getEmployeesByFilters()"
+          >
+            Apply
+          </button>
+        </div>
+        <mat-accordion *ngIf="template">
+          <mat-expansion-panel expanded="true">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Global
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="feature-sub-list">
+              <div
+                class="feature-right mb-2"
+                *ngFor="let feature of globalFeatures"
+              >
+                <app-permission-feature
+                  [feature]="feature"
+                  [featureValue]="template[feature.feature]"
+                  [canUpdate]="true"
+                  (changed)="onChangeFeature($event, feature.feature)"
+                ></app-permission-feature>
+              </div>
+            </div>
+          </mat-expansion-panel>
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Project
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="feature-sub-list">
+              <div
+                class="feature-right mb-2"
+                *ngFor="let feature of projectFeatures"
+              >
+                <app-permission-feature
+                  [feature]="feature"
+                  [featureValue]="template[feature.feature]"
+                  [canUpdate]="!!template['project_manage']?.is_update"
+                  (changed)="onChangeFeature($event, feature.feature)"
+                ></app-permission-feature>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </div>
+    <div class="col-9">
+      <app-permission-employees
+        [employees]="employees"
+      ></app-permission-employees>
+    </div>
+  </div>
+</div>

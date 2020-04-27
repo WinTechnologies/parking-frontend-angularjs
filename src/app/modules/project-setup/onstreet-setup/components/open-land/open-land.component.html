@@ -1,0 +1,122 @@
+<div class="open-land">
+  <ng-container *ngIf="isListViewOn">
+      <app-listview-new
+      [filter]="filter" 
+      [projectId]="projectId"
+      [options]="mapOptions"
+      [mapdata]="mapdata"
+      [mapdrawdata]="mapdrawdata"
+      [listType]="'Open land'"
+      [listData]="openLands"
+      (updateMapData)="onUpdateMapData($event)"
+      (selectedRowItem)="onMapEditedEvent($event)"
+      [ngClass]="{'width-calc': projectOpenLand?.id}"
+      ></app-listview-new>
+  </ng-container>
+  <ng-container  *ngIf="!isListViewOn || projectOpenLand?.id">
+    <div class="open-land-sidebar" [ngClass]="{'right-sidebar': isListViewOn}">
+      <ng-container *ngIf="isListViewOn && projectOpenLand?.id">
+        <app-mapview-new
+          [mapCenter]="mapPositionCenter"
+          [options]="mapOptions"
+          [mapDataJSON]="mapdata"
+          [mapDrawDataJSON]="mapdrawdata"
+          [zoomValue]="12"
+          (mapDataChangedEmitter)="onSiteMapDataChanged($event)"
+          (mapDataEditEmitter)="onMapEditedEvent($event)"
+        >
+        </app-mapview-new>
+      </ng-container>
+      <div class="open-land-sidebar-title">
+        {{projectOpenLand?.id ? ' EDIT' : 'ADD'}}
+      </div>
+      <form
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+      *ngIf="form"
+      autocomplete="off"
+      novalidate>
+      <div class="form-field">
+        <span>Code :</span>
+        <mat-form-field class="zone-id">
+          <input matInput type="text" formControlName="land_code" (keypress)="inputCheck($event)" (paste)="inputCheck($event)">
+          <mat-error>Code is required. This field accepts only alphabetical and numerical characters.</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-field">
+        <span>Name :</span>
+        <mat-form-field class="zone-id">
+          <input matInput type="text" formControlName="land_name">
+          <mat-error>Name is required</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="form-field">
+        <span>Perimeter <b class="span-bold">(auto-fill by draw tool)</b></span>
+        <mat-form-field class="place_LL border-right-0">
+          <input matInput type="text" formControlName="perimeter" readonly>
+          <mat-error>Perimeter is required</mat-error>
+        </mat-form-field>
+        <mat-form-field class="units line-height-15 place_LL border-left-0">
+          <mat-select formControlName="measurement_unit" (selectionChange)="onChangeUnit($event.value)">
+            <mat-option *ngFor="let item of perimeter_units" [value]="item"> {{item}} </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="form-field">
+        <span>Area <b class="span-bold">(auto-fill by draw tool)</b></span>
+        <mat-form-field class="place_LL border-right-0">
+          <input matInput type="text" formControlName="area" readonly>
+          <mat-error>Area is required</mat-error>
+        </mat-form-field>     
+        <mat-form-field class="units place_LL border-left-0">
+          <input matInput type="text" formControlName="area_units" readonly>
+        </mat-form-field>
+      </div>
+      <div class="form-field">
+        <span>Estimated spaces :</span>
+        <mat-form-field>
+          <input matInput type="number" formControlName="estimated_spaces">
+          <mat-error>Estimated spaces is required</mat-error>
+        </mat-form-field>
+        <!-- <span class="parking-spaces">Parking Spaces</span> -->
+      </div>
+      <div class="form-field">
+        <span>Zone :</span>
+        <mat-form-field class="zone-id">
+          <mat-select formControlName="zone_id">
+            <mat-option *ngFor="let item of zones" [value]="item.id"> {{item.zone_name}} </mat-option>
+          </mat-select>
+          <mat-error>Zone is required</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="buttons-wrapper mt-4">
+        <button mat-stroked-button type="button" class="mr-2 ml-2" (click)="onCancel()">CANCEL</button>
+        <button class="add" mat-flat-button type="submit" color="primary">{{projectOpenLand?.id ? 'UPDATE' : 'CREATE'}}</button>
+      </div>
+      <div class="buttons-wrapper" *ngIf="projectOpenLand?.id">
+        <span (click)="onDelete(projectOpenLand)">DELETE  <mat-icon>delete</mat-icon></span>
+      </div>
+      </form>
+    </div>
+  </ng-container>
+  <ng-container  *ngIf="!isListViewOn">
+    <div *ngIf="valid_code" class="open-land-map-wrapper">
+      <app-mapview-new
+        [mapCenter]="mapCenter"
+        [options]="mapOptions"
+        [mapDataJSON]="mapdata"
+        [mapDrawDataJSON]="mapdrawdata"
+        (mapDataChangedEmitter)="onSiteMapDataChanged($event)"
+        (mapDataEditEmitter)="onMapEditedEvent($event)"
+      >
+      </app-mapview-new>
+    </div>
+    <div *ngIf="!valid_code" class="text-center p-5">
+      There is no city for this project , Please click
+      <span (click)="projectRedirect()" class="link">
+          here
+        </span>
+      set it up
+    </div>
+  </ng-container>  
+</div>
